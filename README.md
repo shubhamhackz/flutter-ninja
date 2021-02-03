@@ -1,3 +1,11 @@
+# Flutter Ninja
+
+A gentle introduction to an essential language.
+
+## Overview
+
+This book aims to be a useful companion for anyone wishing to learn Flutter.
+
 ## Table of contents
 
 > For your convenience, source code will be added shortly.
