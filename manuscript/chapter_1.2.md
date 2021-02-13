@@ -57,7 +57,7 @@ This section mainly introduces the characteristics of Flutter. If you feel that 
 
 In this section, we first give an overall introduction to the Flutter framework, aiming to give readers an overall impression, which is very important for beginners. If you dive into Flutter all at once, you will be like a person without a map in the desert. Even if you can find an oasis, you will not know where the next oasis is. Therefore, no matter what technology we learn, we must first have a clear "map", and our learning process should be based on a clear picture, so that we will not be trapped in the details and "being incomplete". Now, let's take a look at the Flutter framework diagram officially provided by Flutter, as shown in Figure 1-1:
 
-![Picture 1-1](https://pcdn.flutterchina.club/imgs/1-1.png)
+![Picture 1-1](https://github.com/shubhamhackz/flutter-ninja/blob/main/resources/1-1.png)
 
 ### Flutter Framework
 Flutter is designed as an extensible, layered system. It exists as a series of independent libraries that each depend on the underlying layer. No layer has privileged access to the layer below, and every part of the framework level is designed to be optional and replaceable.This is a pure Dart SDK, which implements a set of basic libraries.
