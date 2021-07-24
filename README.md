@@ -119,7 +119,7 @@ This book aims to be a useful companion for anyone wishing to learn Flutter.
 * [Github Repo](https://github.com/flutterchina/flutter-in-action)
 * [Buy Phisycal Book](https://github.com/flutterchina/flutter-in-action)
 * [Sponsor Flutter China Repo](https://paypal.me/wendux91)
-
+* [Flutter China](https://github.com/flutterchina)
 ## Disclaimer
 ```
 This ebook is a translation of work done by Du Wen, the founder of the "Flutter Chinese Network" community,
