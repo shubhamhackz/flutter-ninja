@@ -114,6 +114,12 @@ This book aims to be a useful companion for anyone wishing to learn Flutter.
   * [Login Page](manuscript/chapter_15.7.md)
   * [Multi-Language and Multi-Theme](manuscript/chapter_15.8.md)
 
+## Du Wen
+* [Original Ebook link](https://book.flutterchina.club)
+* [Github Repo](https://github.com/flutterchina/flutter-in-action)
+* [Buy Phisycal Book](https://github.com/flutterchina/flutter-in-action)
+* [Sponsor Original Repo](https://paypal.me/wendux91)
+
 ## Disclaimer
 ```
 This ebook is a translation of work done by Du Wen, the founder of the "Flutter Chinese Network" community,
