@@ -120,6 +120,8 @@ This ebook is a translation of work done by Du Wen, the founder of the "Flutter 
 I took permission from the author of the ebook and does not take any responsibilities for any of his work.
 Flutter China has many such developments and projetcs which remains hidden and could be bery useful if it 
 could be translated to english.
+
+Original Ebook link - https://book.flutterchina.club/
 ```
 
     
