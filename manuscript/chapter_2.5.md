@@ -1,212 +1,230 @@
-# 2.4 Resource Management
+# 2.5 Debug Flutter application
+There are various tools and features to help debug Flutter applications.
 
-The Flutter APP installation package will contain two parts: code and assets. Assets are packaged in the program installation package and can be accessed at runtime. Common types of assets include static data (such as JSON files), configuration files, icons and pictures (JPEG, WebP, GIF, animated WebP/GIF, PNG, BMP and WBMP), etc.
+# Dart analyzer
+Before running the application, please run and flutter analyzetest your code. This tool is a static code inspection tool. It is dartanalyzera package of the tool. It is mainly used to analyze the code and help developers find possible errors. For example, the Dart analyzer uses a lot of type annotations in the code to help track down problems, avoid var, Untyped parameters, untyped list text, etc.
 
-## Specify assets
+If you use IntelliJ's Flutter plug-in, then the analyzer is automatically enabled when you open the IDE. If the reader is using another IDE, it is strongly recommended that the reader enable the Dart analyzer, because most of the time, the Dart analyzer can be run in the code Found most problems before.
 
-Like package management, Flutter also uses [`pubspec.yaml`](https://www.dartlang.org/tools/pub/pubspec)files to manage the resources required by the application, for example:
+# Dart Observatory (statement-level single-step debugging and analyzer)
+If we use the flutter runstartup application, then when it is running, we can open the Web page of the Observatory tool, for example, Observatory listens by default http://127.0.0.1:8100/ (opens new window), You can open the link directly in your browser. Connect directly to your application using the statement-level stepping debugger. If you are using IntelliJ, you can also use its built-in debugger to debug your application.
 
-```
-flutter:
-  assets:
-    - assets/my_icon.png
-    - assets/background.png
+Observatory also supports analysis and inspection of the heap. For more information about Observatory, please refer to Observatory documentation (opens new window).
 
-```
+If you use Observatory for analysis, make sure to run the application through the --profileoption to run the flutter runcommand. Otherwise, the main problem that will appear in the configuration file will be debugging assertions to verify various invariants of the framework (see "Debug Mode Assertions" below).
 
-`assets`Specify the files that should be included in the application. Each asset `pubspec.yaml`identifies its path relative to the file system path where the file is located. The order of asset declaration is irrelevant. The actual directory of the asset can be any folder (in this example, the asset folder).
+# debugger() statement
+When using Dart Observatory (or another Dart debugger, such as the debugger in IntelliJ IDE), you can use this debugger()statement to insert programmatic breakpoints. To use this, you must add it import 'dart:developer';to the top of the relevant file.
 
-During the build, Flutter places assets in special archives called _asset bundles_ , and the application can read them (but not modify them) at runtime.
-
-## Asset variant (variant)
-
-The build process supports the concept of "asset variants": different versions of assets may be displayed in different contexts. When `pubspec.yaml`the asset path is specified in the assets section, during the build process, any file with the same name will be searched in adjacent subdirectories. These files will then be included in the asset bundle along with the specified asset.
-
-For example, if the following files are in the application directory:
-
--   … / Pubspec.yaml
--   …/graphics/my_icon.png
--   …/graphics/background.png
--   …/graphics/dark/background.png
--   …etc.
-
-Then the `pubspec.yaml`file only needs to include:
+debugger()The statement takes an optional whenparameter, which you can specify to break only when certain conditions are true, as shown below:
 
 ```
-flutter:
-  assets:
-    - graphics/background.png
+[void someFunction(double offset) {
+  debugger(when: offset > 30.0);
+  // ...
+}](url)
+```
+# print, debugPrint,flutter logs
+The Dart print()function will output to the system console, which you can use flutter logsto view it (basically a wrapper adb logcat).
+
+If you output too much at a time, Android sometimes discards some log lines. To avoid this, you can use the Flutter foundationlibrarydebugPrint() (opens new window). This is a package print, which limits the output to one level to avoid being discarded by the Android kernel.
+
+Many classes in the Flutter framework have toStringimplementations. By convention, these outputs usually include runtimeTypesingle-line output of the object , usually in the form ClassName (more information about this instance...). Some classes used in the tree also have toStringDeepa multi-line description of the entire subtree from that point. Some toStringclasses with detailed information will implement one toStringShort, which only returns the type of object or other very brief (one or two words) description.
+
+# Debug mode assertion
+During Flutter application debugging, Dart assertstatements are enabled, and the Flutter framework uses it to perform many runtime checks to verify whether some immutable rules are violated.
+
+When an immutable rule is violated, it is reported to the console with some contextual information to help track down the source of the problem.
+
+To turn off debug mode and use release mode, use flutter run --releaseRun your application. This also turns off the Observatory debugger. An intermediate mode can turn off all debugging aids except Observatory, called "profile mode", just use it --profileinstead --release.
+
+#Debug application layer
+Each layer of the Flutter framework provides the debugPrintfunction of dumping its current state or event to the console (used ).
+
+# Widget tree
+To dump the state of the Widgets tree, calldebugDumpApp() (opens new window). As long as the application has been built at least once (that is, at build()any time after the call ), you can build()call this method ( runApp()after the call) at any time when the application is not in the construction phase (that is, not called within a method ).
+
+For example, this application:
 
 ```
+import 'package:flutter/material.dart';
 
-Then these two `graphics/background.png`and `graphics/dark/background.png`will be included in your asset bundle. The former is considered a _main asset_ , and the latter is considered a variant.
-
-When selecting images that match the current device resolution, Flutter will use asset variants (see below). In the future, Flutter may extend this mechanism to localization, reading prompts, etc.
-
-## Load assets
-
-Your app can [`AssetBundle`](https://docs.flutter.io/flutter/services/AssetBundle-class.html)access its assets through objects. There are two main ways to allow loading of strings or image (binary) files from the Asset bundle.
-
-### Load text assets
-
--   [`rootBundle`](https://docs.flutter.io/flutter/services/rootBundle.html)Load via object: Every Flutter application has an [`rootBundle`](https://docs.flutter.io/flutter/services/rootBundle.html)object, through which you can easily access the main resource package, and directly use `package:flutter/services.dart`the global static `rootBundle`object to load the asset.
--   By [`DefaultAssetBundle`](https://docs.flutter.io/flutter/widgets/DefaultAssetBundle-class.html)loading: It is recommended [`DefaultAssetBundle`](https://docs.flutter.io/flutter/widgets/DefaultAssetBundle-class.html)to get the current BuildContext of AssetBundle. This method is not to use the default asset bundle built by the application, but to make the parent widget dynamically replace a different AssetBundle at runtime, which is useful for localization or testing scenarios.
-
-Generally, you can `DefaultAssetBundle.of()`load assets (such as JSON files) indirectly while the application is running, and `AssetBundle`you can `rootBundle`load these assets directly outside of the widget context or when other handles are not available , for example:
-
-```
-import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
-
-Future<String> loadAsset() async {
-  return await rootBundle.loadString('assets/config.json');
-}
-
-```
-
-### Load picture
-
-Similar to native development, Flutter can also load images suitable for the current device's resolution.
-
-#### Declare resolution-related image assets
-
-[`AssetImage`](https://docs.flutter.io/flutter/painting/AssetImage-class.html)The asset request logic can be mapped to the asset closest to the current device pixel ratio (dpi). In order for this mapping to work, assets must be saved according to a specific directory structure:
-
--   …/image.png
--   …/**M**x/image.png
--   …/**N**x/image.png
--   …etc.
-
-Where M and N are numeric identifiers, corresponding to the resolution of the image contained therein, that is, they specify pictures of different device pixel ratios.
-
-The main resource corresponds to 1.0 times the resolution picture by default. Look at an example:
-
--   …/my_icon.png
--   …/2.0x/my_icon.png
--   …/3.0x/my_icon.png
-
-It `.../2.0x/my_icon.png`will be selected on a device with a device pixel ratio of 1.8 . For a device pixel ratio of 2.7, it `.../3.0x/my_icon.png`will be selected.
-
-If `Image`the width and height of the rendered image are not specified on the widget, the `Image`widget will occupy the same screen space as the main resource. In other words, if it `.../my_icon.png`is 72px by 72px, then it `.../3.0x/my_icon.png`should be 216px by 216px; but if the width and height are not specified, they will all be rendered as 72 pixels × 72 pixels (in logical pixels).
-
-`pubspec.yaml`Each item in the asset section should correspond to the actual file, except for the main resource item. When the main resource lacks a certain resource, it will be selected in the order of resolution from low to high, that is to say, if it is not in 1x, it will be found in 2x, and if it is not in 2x, it will be found in 3x.
-
-#### Load picture
-
-To load pictures, you can use [`AssetImage`](https://docs.flutter.io/flutter/painting/AssetImage-class.html)the class. For example, we can load the background image from the asset declaration above:
-
-```
-Widget build(BuildContext context) {
-  return new DecoratedBox(
-    decoration: new BoxDecoration(
-      image: new DecorationImage(
-        image: new AssetImage('graphics/background.png'),
-      ),
+void main() {
+  runApp(
+    new MaterialApp(
+      home: new AppHome(),
     ),
   );
 }
 
-```
-
-Note that it `AssetImage`is not a widget, it is actually one `ImageProvider`. Sometimes you may expect to get a widget that displays pictures directly, then you can use `Image.asset()`methods such as:
-
-```
-Widget build(BuildContext context) {
-  return Image.asset('graphics/background.png');
+class AppHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Material(
+      child: new Center(
+        child: new FlatButton(
+          onPressed: () {
+            debugDumpApp();
+          },
+          child: new Text('Dump App'),
+        ),
+      ),
+    );
+  }
 }
+```
+…Will output something like this (the exact details will vary according to the version of the framework, the size of the device, etc.):
+```
+I/flutter ( 6559): WidgetsFlutterBinding - CHECKED MODE
+I/flutter ( 6559): RenderObjectToWidgetAdapter<RenderBox>([GlobalObjectKey RenderView(497039273)]; renderObject: RenderView)
+I/flutter ( 6559): └MaterialApp(state: _MaterialAppState(1009803148))
+I/flutter ( 6559):  └ScrollConfiguration()
+I/flutter ( 6559):   └AnimatedTheme(duration: 200ms; state: _AnimatedThemeState(543295893; ticker inactive; ThemeDataTween(ThemeData(Brightness.light Color(0xff2196f3) etc...) → null)))
+I/flutter ( 6559):    └Theme(ThemeData(Brightness.light Color(0xff2196f3) etc...))
+I/flutter ( 6559):     └WidgetsApp([GlobalObjectKey _MaterialAppState(1009803148)]; state: _WidgetsAppState(552902158))
+I/flutter ( 6559):      └CheckedModeBanner()
+I/flutter ( 6559):       └Banner()
+I/flutter ( 6559):        └CustomPaint(renderObject: RenderCustomPaint)
+I/flutter ( 6559):         └DefaultTextStyle(inherit: true; color: Color(0xd0ff0000); family: "monospace"; size: 48.0; weight: 900; decoration: double Color(0xffffff00) TextDecoration.underline)
+I/flutter ( 6559):          └MediaQuery(MediaQueryData(size: Size(411.4, 683.4), devicePixelRatio: 2.625, textScaleFactor: 1.0, padding: EdgeInsets(0.0, 24.0, 0.0, 0.0)))
+I/flutter ( 6559):           └LocaleQuery(null)
+I/flutter ( 6559):            └Title(color: Color(0xff2196f3))
+... 
+```
+This is a "flattened" tree that shows all the widgets projected through various construction functions (if you call in the root of the widget tree toStringDeepwidget, this is the tree you get). You will see a lot of widgets that do not appear in your application source code because they are build()inserted by widget functions in the framework . E.g,InkFeature (opens new window)It is an implementation detail of Material widget.
+
+When the button changes from being pressed to being released, debugDumpApp() is called, and the FlatButton object is called at the same time setState()and marks itself as "dirty". This is why if you look at the dump, you will see that specific objects are marked as "dirty". You can also check which gesture listeners have been registered; in this case, a single GestureDetector is listed and listens to the "tap" gesture ("tap" is TapGestureDetectorthe toStringShortoutput of the function)
+
+If you write your own widget, you can overridedebugFillProperties() (opens new window)To add information. Will DiagnosticsProperty (opens new window)The object is used as a method parameter, and the parent method is called. This function is toStringused by this method to fill in the description information of the widget.
+
+# Render tree
+If you are trying to debug a layout issue, the Widget tree may not be detailed enough. In this case, you can debugDumpRenderTree()dump the render tree by calling . Just as debugDumpApp()you can call this function at any time except for the layout or drawing phase. As a general rule, call back from the frame (opens new window)Or calling it in the event handler is the best solution.
+
+To call debugDumpRenderTree(), you need to add import'package:flutter/rendering.dart';to your source file.
+
+The output of the above small example is as follows:
+```
+I/flutter ( 6559): RenderView
+I/flutter ( 6559):  │ debug mode enabled - android
+I/flutter ( 6559):  │ window size: Size(1080.0, 1794.0) (in physical pixels)
+I/flutter ( 6559):  │ device pixel ratio: 2.625 (physical pixels per logical pixel)
+I/flutter ( 6559):  │ configuration: Size(411.4, 683.4) at 2.625x (in logical pixels)
+I/flutter ( 6559):  │
+I/flutter ( 6559):  └─child: RenderCustomPaint
+I/flutter ( 6559):    │ creator: CustomPaint ← Banner ← CheckedModeBanner ←
+I/flutter ( 6559):    │   WidgetsApp-[GlobalObjectKey _MaterialAppState(1009803148)] ←
+I/flutter ( 6559):    │   Theme ← AnimatedTheme ← ScrollConfiguration ← MaterialApp ←
+I/flutter ( 6559):    │   [root]
+I/flutter ( 6559):    │ parentData: <none>
+I/flutter ( 6559):    │ constraints: BoxConstraints(w=411.4, h=683.4)
+I/flutter ( 6559):    │ size: Size(411.4, 683.4)
+... 
+```
+This is the output RenderObjectof the toStringDeepfunction of the root object .
+
+When debugging layout issues, the key thing to look at is the sizeand constraintsfield. Constraints are passed down the tree and dimensions are passed up.
+
+If you write your own rendering object, you can overridedebugFillProperties() (opens new window)Add information to the dump. Will DiagnosticsProperty (opens new window)The object is used as the parameter of the method, and the parent method is called.
+
+# Layer tree
+Readers can understand that the rendering tree can be layered, and the final drawing needs to be combined with different layers, and Layer is the layer that needs to be combined when drawing, if you try to debug the composition problem, you can usedebugDumpLayerTree() (opens new window). For the above example, it will output:
 
 ```
+I/flutter : TransformLayer
+I/flutter :  │ creator: [root]
+I/flutter :  │ offset: Offset(0.0, 0.0)
+I/flutter :  │ transform:
+I/flutter :  │   [0] 3.5,0.0,0.0,0.0
+I/flutter :  │   [1] 0.0,3.5,0.0,0.0
+I/flutter :  │   [2] 0.0,0.0,1.0,0.0
+I/flutter :  │   [3] 0.0,0.0,0.0,1.0
+I/flutter :  │
+I/flutter :  ├─child 1: OffsetLayer
+I/flutter :  │ │ creator: RepaintBoundary ← _FocusScope ← Semantics ← Focus-[GlobalObjectKey MaterialPageRoute(560156430)] ← _ModalScope-[GlobalKey 328026813] ← _OverlayEntry-[GlobalKey 388965355] ← Stack ← Overlay-[GlobalKey 625702218] ← Navigator-[GlobalObjectKey _MaterialAppState(859106034)] ← Title ← ⋯
+I/flutter :  │ │ offset: Offset(0.0, 0.0)
+I/flutter :  │ │
+I/flutter :  │ └─child 1: PictureLayer
+I/flutter :  │
+I/flutter :  └─child 2: PictureLayer
+```
+This is Layerthe toStringDeepoutput of root .
 
-When using the default asset bundle to load resources, the resolution is automatically processed internally, which is imperceptible to developers. (If you use some of the lower-level classes, such as [`ImageStream`](https://docs.flutter.io/flutter/painting/ImageStream-class.html)or [`ImageCache`](https://docs.flutter.io/flutter/painting/ImageCache-class.html)you will notice that there are associated with the scaling parameter)
+The transformation of the root is the transformation of the applied device pixel ratio; in this case, each logical pixel represents 3.5 device pixels.
 
-#### Depends on the resource image in the package
+RepaintBoundaryThe widget creates one in the layer of the render tree RenderRepaintBoundary. This is used to reduce the need for redrawing.
 
-To load the image in the dependent package, you must `AssetImage`provide `package`parameters.
+# Semantics
+You can also calldebugDumpSemanticsTree() (opens new window)Get a dump of the semantic tree (the tree presented to the system accessibility API). To use this feature, you must first enable accessibility features, such as enabling system accessibility tools or SemanticsDebugger(discussed below).
 
-For example, suppose your application depends on a package named "my_icons", which has the following directory structure:
-
--   … / Pubspec.yaml
--   …/icons/heart.png
--   …/icons/1.5x/heart.png
--   …/icons/2.0x/heart.png
--   …etc.
-
-Then load the image, use:
+For the above example, it will output:
 
 ```
- new AssetImage('icons/heart.png', package: 'my_icons')
-
+I/flutter : SemanticsNode(0; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
+I/flutter :  ├SemanticsNode(1; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
+I/flutter :  │ └SemanticsNode(2; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4); canBeTapped)
+I/flutter :  └SemanticsNode(3; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
+I/flutter :    └SemanticsNode(4; Rect.fromLTRB(0.0, 0.0, 82.0, 36.0); canBeTapped; "Dump App")
 ```
+# Scheduling
+To find out where the start/end event occurred relative to the frame, you can switchdebugPrintBeginFrameBanner (opens new window)anddebugPrintEndFrameBanner (opens new window)Boolean to print the beginning and end of the frame to the console.
 
-or
-
+E.g:
 ```
-new Image.asset('icons/heart.png', package: 'my_icons')
-
+I/flutter : ▄▄▄▄▄▄▄▄ Frame 12         30s 437.086ms ▄▄▄▄▄▄▄▄
+I/flutter : Debug print: Am I performing this work more than once per frame?
+I/flutter : Debug print: Am I performing this work more than once per frame?
+I/flutter : ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 ```
+debugPrintScheduleFrameStacks (opens new window)It can also be used to print the call stack that caused the current frame to be scheduled.
 
-**Note: The package should also be obtained by adding `package`parameters when using its own resources** .
+#Visual debugging
+You can also set up debugPaintSizeEnabledto truevisually debug layout problems. This is renderinga boolean value from the library. It can be enabled at any time and affects drawing when it is true. The easiest way to set it up is to set it at void main()the top of the.
 
-##### Assets in the package
+When it is enabled, all boxes will get a bright dark cyan border, padding (from widgets such as Padding) is displayed in light blue, sub-widgets are surrounded by a dark blue box, alignment (from widgets such as Center and Align) Displayed as a yellow arrow. Blank (such as a Container without any child nodes) is displayed in gray.
 
-If `pubspec.yaml`the desired resource is declared in the file, it will be packaged into the corresponding package. In particular, the resources used by the package itself must be `pubspec.yaml`specified in.
+debugPaintBaselinesEnabled (opens new window)Do a similar thing, but for objects with a baseline, the text baseline is displayed in green and the ideographic baseline is displayed in orange.
 
-Packages can also choose `lib/`to include `pubspec.yaml`resources in their folders that are not declared in their files. In this case, for the pictures to be packaged, the application must `pubspec.yaml`specify which images to include. For example, a package named "fancy_backgrounds" may contain the following files:
+debugPaintPointersEnabled (opens new window)The logo turns on a special mode, and any objects that are being clicked will be highlighted in dark cyan. This can help you determine whether an object performs a hit test in an incorrect way (Flutter detects whether there is a widget that can respond to user actions at the clicked position), for example, if it actually exceeds the scope of its parent, first Will not consider passing the hit test.
 
--   …/lib/backgrounds/background1.png
--   …/lib/backgrounds/background2.png
--   …/lib/backgrounds/background3.png
+If you are trying to debug composite layers, for example to determine if and where to add RepaintBoundarywidgets, you can usedebugPaintLayerBordersEnabled (opens new window)Logo, the logo uses orange or outline lines to mark the boundaries of each layer, or usedebugRepaintRainbowEnabled (opens new window)The logo, as long as they are redrawn, this will cause the layer to be covered by a set of rotating colors.
 
-To include the first image, it must be `pubspec.yaml`declared in the assets section:
+All these flags can only work in debug mode. Generally, debug...anything starting with " " in the Flutter framework can only work in debug mode.
 
+# Debug animation
+The easiest way to debug animations is to slow them down. To do this, pleasetimeDilation (opens new window)The variable (in the scheduler library) is set to a number greater than 1.0, such as 50.0. It is best to set it only once when the application starts. If you change it during the run, especially if you change its value to a smaller value while the animation is running, you may experience a regression in the observation, which may result in an assertion hit, and this usually interferes with our development work.
+
+# Debug performance issues
+To understand why your application is causing re-layout or re-drawing, you can set thedebugPrintMarkNeedsLayoutStacks (opens new window)and debugPrintMarkNeedsPaintStacks (opens new window)Sign. Whenever the render box is required to re-layout and re-draw, these will log the stack trace to the console. If this method is useful to you, you can use servicesthe debugPrintStack()methods in the library to print stack traces on demand.
+
+# Statistic application startup time
+To collect detailed information about the time it takes for a Flutter application to start, you can flutter runuse trace-startupand profileoptions at runtime .
 ```
-flutter:
-  assets:
-    - packages/fancy_backgrounds/backgrounds/background1.png
-
+$ flutter run --trace-startup --profile
 ```
+The trace output is saved start_up_info.jsonin the build directory in the Flutter project directory. The output lists the time taken from the start of the application to these trace events (captured in microseconds):
 
-`lib/`Is implicit, so it should not be included in the asset path.
+When entering the Flutter engine.
+When showing the first frame of the app.
+When initializing the Flutter framework.
+When the Flutter framework is initialized.
+like :
+```
+{
+  "engineEnterTimestampMicros": 96025565262,
+  "timeToFirstFrameMicros": 2171978,
+  "timeToFrameworkInitMicros": 514585,
+  "timeAfterFrameworkInitMicros": 1657393
+}
+```
+# Track Dart code performance
+To perform custom performance tracking and measure the wall/CPU time of any code segment in Dart (similar to using systrace on Android (opens new window)). Use dart:developerof Timeline (opens new window)Tools to include the code block you want to test, for example:
+```
+Timeline.startSync('interesting function');
+// iWonderHowLongThisTakes();
+Timeline.finishSync();
+```
+Then open the Observatory timeline page of your application, select the'Dart' checkbox in "Recorded Streams", and perform the function you want to measure.
 
-### Specific platform assets
+Refresh the page will be in Chrome's tracking tool (opens new window)Displays the timeline records of the application in chronological order.
 
-The above resources are all in the flutter application. These resources can only be used after the Flutter framework is running. If we want to set an APP icon or add a launch image to our application, then we must use the assets of a specific platform.
-
-#### Set app icon
-
-The way to update the startup icon of the Flutter application is the same as that of updating the startup icon in the native Android or iOS application.
-
--   Android
-    
-    In the root directory of the Flutter project, navigate to the `.../android/app/src/main/res`directory, which contains various resource folders (for example, the `mipmap-hdpi`placeholder image "ic_launcher.png" is already included, see Figure 2-8). Just follow the instructions in the [Android Developer Guide](https://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html#size) , replace it with the required resources, and follow the recommended icon size standards for each screen density (dpi).
-    
-    ![Figure 2-8](https://pcdn.flutterchina.club/imgs/2-8.png)
-    
-    > **Note:** If you rename a .png file, you must also at your `AndroidManifest.xml`'s label update name attribute.`<application>``android:icon`
-    
--   iOS
-    
-    In the root directory of the Flutter project, navigate to `.../ios/Runner`. The directory `Assets.xcassets/AppIcon.appiconset`already contains placeholder pictures (see Figure 2-9), just replace them with pictures of appropriate size and keep the original file name.
-    
-    ![Figure 2-9](https://pcdn.flutterchina.club/imgs/2-9.png)
-    
-
-#### Update start page
-
-![Figure 2-10](https://pcdn.flutterchina.club/imgs/2-10.png)
-
-When the Flutter framework is loaded, Flutter will use the local platform mechanism to draw the startup page. This launch page will last until the first frame of Flutter rendering the application.
-
-> **Note:** This means that if you do not `main()`call the [runApp](https://docs.flutter.io/flutter/widgets/runApp.html) function in the application method (or more specifically, if you do not call [`window.render`](https://docs.flutter.io/flutter/dart-ui/Window/render.html)to respond [`window.onDrawFrame`](https://docs.flutter.io/flutter/dart-ui/Window/onDrawFrame.html)), the splash screen will always be displayed.
-
-##### Android
-
-To add a splash screen to your Flutter application, navigate to `.../android/app/src/main`. Now `res/drawable/launch_background.xml`, through the custom drawable to achieve a custom start interface (you can also directly change a picture).
-
-##### iOS
-
-To add a picture to the center of the splash screen, navigate to `.../ios/Runner`. In `Assets.xcassets/LaunchImage.imageset`, dragged into the picture and name `LaunchImage.png`, `LaunchImage@2x.png`, `LaunchImage@3x.png`. If you use a different file name, you must also update the `Contents.json`file in the same directory. The specific size of the picture can be found in Apple's official standard.
-
-You can also fully customize the storyboard by opening Xcode. Navigate to the Project Navigator `Runner/Runner`and `Assets.xcassets`drag in the picture by opening it , or customize it by using Interface Builder in LaunchScreen.storyboard, as shown in Figure 2-11.
-
-![Figure 2-11](https://pcdn.flutterchina.club/imgs/2-11.png)
+Please ensure that the runtime flutter runis --profilemarked to ensure that the runtime performance characteristics are minimally different from your final product.
