@@ -114,6 +114,14 @@ This book aims to be a useful companion for anyone wishing to learn Flutter.
   * [Login Page](manuscript/chapter_15.7.md)
   * [Multi-Language and Multi-Theme](manuscript/chapter_15.8.md)
 
+## Disclaimer
+```
+This ebook is a translation of work done by Du Wen, the founder of the "Flutter Chinese Network" community,
+I took permission from the author of the ebook and does not take any responsibilities for any of his work.
+Flutter China has many such developments and projetcs which remains hidden and could be bery useful if it 
+could be translated to english.
+```
+
     
   
   
