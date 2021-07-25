@@ -88,10 +88,10 @@ This book aims to be a useful companion for anyone wishing to learn Flutter.
 * Packages and Plugins
   * [Package Development](manuscript/chapter_12.1.md)
   * [Introduction to Platform Channels](manuscript/chapter_12.2.md)
-  * [Develop Flutter Plugin)](manuscript/chapter_12.3.md)
+  * [Develop Flutter Plugin](manuscript/chapter_12.3.md)
   * [Developing Plugin (Implementing Android API)](manuscript/chapter_12.4.md)
-  * [Developing Plugin (Implementing IOS APIl](manuscript/chapter_12.5.md)   
-  * [Texture and PLatform View](manuscript/chapter_12.6.md)  
+  * [Developing Plugin (Implementing IOS API)](manuscript/chapter_12.5.md)   
+  * [Texture and Platform View](manuscript/chapter_12.6.md)  
 * Internationalization and Localization
   * [Multilingual App](manuscript/chapter_13.1.md)
   * [Implementing Localization](manuscript/chapter_13.2.md)
