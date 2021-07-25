@@ -80,7 +80,7 @@ This book aims to be a useful companion for anyone wishing to learn Flutter.
   * [Self-Painting Example : ProgressBar](manuscript/chapter_10.5.md)  
 * File Operations and Network Requests
   * [File Operations](manuscript/chapter_11.1.md)
-  * [Http Request (HttpClient](manuscript/chapter_11.2.md)
+  * [Initiate HTTP request through HttpClient](manuscript/chapter_11.2.md)
   * [Http Request (Dio](manuscript/chapter_11.3.md)
   * [WebSocket](manuscript/chapter_11.4.md)
   * [Use Socket API](manuscript/chapter_11.5.md)   
