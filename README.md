@@ -81,10 +81,11 @@ This book aims to be a useful companion for anyone wishing to learn Flutter.
 * File Operations and Network Requests
   * [File Operations](manuscript/chapter_11.1.md)
   * [Initiate HTTP request through HttpClient](manuscript/chapter_11.2.md)
-  * [Http Request (Dio](manuscript/chapter_11.3.md)
-  * [WebSocket](manuscript/chapter_11.4.md)
-  * [Use Socket API](manuscript/chapter_11.5.md)   
-  * [JSON to Dart Model Class](manuscript/chapter_11.5.md)
+  * [Http Request (Dio)](manuscript/chapter_11.3.md)
+  * [Http Download in Blocks](manuscript/chapter_11.4.md)
+  * [WebSocket](manuscript/chapter_11.5.md)
+  * [Use Socket API](manuscript/chapter_11.6.md)   
+  * [JSON to Dart Model Class](manuscript/chapter_11.7.md)
 * Packages and Plugins
   * [Package Development](manuscript/chapter_12.1.md)
   * [Introduction to Platform Channels](manuscript/chapter_12.2.md)
