@@ -2,13 +2,13 @@
 
 Using the [Intl](https://pub.dartlang.org/packages/intl) package, we can not only realize internationalization very easily, but also separate the string text into separate files to facilitate the division of labor and collaboration between developers and translators. In order to use the [Intl](https://pub.dartlang.org/packages/intl) package we need to add two dependencies:
 
-```
+``` dart 
 dependencies:
-  #...省略无关项
-  intl: ^0.15.7 
+ #...省略无关项
+ intl: ^0.15.7 
 dev_dependencies:
-   #...省略无关项
-  intl_translation: ^0.17.2
+  #...省略无关项
+ intl_translation: ^0.17.2
 
 ```
 
@@ -18,16 +18,16 @@ dev_dependencies:
 
 First, create a l10n-arb directory in the root directory of the project, which will save the arb file that we will generate through the intl_translation command. The content of a simple arb file is as follows:
 
-```
+``` dart 
 {
-  "@@last_modified": "2018-12-10T15:46:20.897228",
-  "@@locale":"zh_CH",
-  "title": "Flutter应用",
-  "@title": {
-    "description": "Title for the Demo application",
-    "type": "text",
-    "placeholders": {}
-  }
+ "@@last_modified": "2018-12-10T15:46:20.897228",
+ "@@locale":"zh_CH",
+ "title": "Flutter应用",
+ "@title": {
+   "description": "Title for the Demo application",
+   "type": "text",
+   "placeholders": {}
+ }
 }
 
 ```
@@ -42,53 +42,53 @@ Similar to the steps in the previous section, we still have to implement the `Lo
 
 Next, we `lib/l10n`create a new "localization_intl.dart" file in the directory, the content of the file is as follows:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'messages_all.dart'; //1
 
 class DemoLocalizations {
-  static Future<DemoLocalizations> load(Locale locale) {
-    final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
-    //2
-    return initializeMessages(localeName).then((b) {
-      Intl.defaultLocale = localeName;
-      return new DemoLocalizations();
-    });
-  }
+ static Future<DemoLocalizations> load(Locale locale) {
+   final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+   final String localeName = Intl.canonicalizedLocale(name);
+   //2
+   return initializeMessages(localeName).then((b) {
+     Intl.defaultLocale = localeName;
+     return new DemoLocalizations();
+   });
+ }
 
-  static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
-  }
+ static DemoLocalizations of(BuildContext context) {
+   return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
+ }
 
-  String get title {
-    return Intl.message(
-      'Flutter APP',
-      name: 'title',
-      desc: 'Title for the Demo application',
-    );
-  }
+ String get title {
+   return Intl.message(
+     'Flutter APP',
+     name: 'title',
+     desc: 'Title for the Demo application',
+   );
+ }
 }
 
 //Locale代理类
 class DemoLocalizationsDelegate extends LocalizationsDelegate<DemoLocalizations> {
-  const DemoLocalizationsDelegate();
+ const DemoLocalizationsDelegate();
 
-  //是否支持某个Local
-  @override
-  bool isSupported(Locale locale) => ['en', 'zh'].contains(locale.languageCode);
+ //是否支持某个Local
+ @override
+ bool isSupported(Locale locale) => ['en', 'zh'].contains(locale.languageCode);
 
-  // Flutter会调用此类加载相应的Locale资源类
-  @override
-  Future<DemoLocalizations> load(Locale locale) {
-    //3
-    return  DemoLocalizations.load(locale);
-  }
+ // Flutter会调用此类加载相应的Locale资源类
+ @override
+ Future<DemoLocalizations> load(Locale locale) {
+   //3
+   return  DemoLocalizations.load(locale);
+ }
 
-  // 当Localizations Widget重新build时，是否调用load重新加载Locale资源.
-  @override
-  bool shouldReload(DemoLocalizationsDelegate old) => false;
+ // 当Localizations Widget重新build时，是否调用load重新加载Locale资源.
+ @override
+ bool shouldReload(DemoLocalizationsDelegate old) => false;
 }
 
 ```
@@ -111,15 +111,15 @@ Now we can add properties or methods that need to be internationalized in the De
 
 We can `Intl.plural(...)`achieve this by:
 
-```
+``` dart 
 remainingEmailsMessage(int howMany) => Intl.plural(howMany,
-    zero: 'There are no emails left',
-    one: 'There is $howMany email left',
-    other: 'There are $howMany emails left',
-    name: "remainingEmailsMessage",
-    args: [howMany],
-    desc: "How many emails remain after archiving.",
-    examples: const {'howMany': 42, 'userName': 'Fred'});
+   zero: 'There are no emails left',
+   one: 'There is $howMany email left',
+   other: 'There are $howMany emails left',
+   name: "remainingEmailsMessage",
+   args: [howMany],
+   desc: "How many emails remain after archiving.",
+   examples: const {'howMany': 42, 'userName': 'Fred'});
 
 ```
 
@@ -131,58 +131,58 @@ You can see that the `Intl.plural`method can `howMany`output different prompt me
 
 Now we can use the [intl_translation](https://pub.dartlang.org/packages/intl_translation) package tool to extract the strings in the code to an arb file, and run the following naming:
 
-```
+``` dart 
 flutter pub pub run intl_translation:extract_to_arb --output-dir=l10n-arb \ lib/l10n/localization_intl.dart
 
 ```
 
 After running this command, the attributes and strings that we previously identified through the Intl API will be extracted into the "l10n-arb/intl_messages.arb" file, let's take a look at its content:
 
-```
+``` dart 
 {
-  "@@last_modified": "2018-12-10T17:37:28.505088",
-  "title": "Flutter APP",
-  "@title": {
-    "description": "Title for the Demo application",
-    "type": "text",
-    "placeholders": {}
-  },
-  "remainingEmailsMessage": "{howMany,plural, =0{There are no emails left}=1{There is {howMany} email left}other{There are {howMany} emails left}}",
-  "@remainingEmailsMessage": {
-    "description": "How many emails remain after archiving.",
-    "type": "text",
-    "placeholders": {
-      "howMany": {
-        "example": 42
-      }
-    }
-  }
+ "@@last_modified": "2018-12-10T17:37:28.505088",
+ "title": "Flutter APP",
+ "@title": {
+   "description": "Title for the Demo application",
+   "type": "text",
+   "placeholders": {}
+ },
+ "remainingEmailsMessage": "{howMany,plural, =0{There are no emails left}=1{There is {howMany} email left}other{There are {howMany} emails left}}",
+ "@remainingEmailsMessage": {
+   "description": "How many emails remain after archiving.",
+   "type": "text",
+   "placeholders": {
+     "howMany": {
+       "example": 42
+     }
+   }
+ }
 }
 
 ```
 
 This is the default Locale resource file. If we want to support Chinese Simplified now, we only need to create an "intl_zh_CN.arb" file in the same level directory of the file, and then copy the content of "intl_messages.arb" to the "intl_zh_CN.arb" file , Then translate English to Chinese, the translated "intl_zh_CN.arb" file content is as follows:
 
-```
+``` dart 
 {
-  "@@last_modified": "2018-12-10T15:46:20.897228",
-  "@@locale":"zh_CN",
-  "title": "Flutter应用",
-  "@title": {
-    "description": "Title for the Demo application",
-    "type": "text",
-    "placeholders": {}
-  },
-  "remainingEmailsMessage": "{howMany,plural, =0{没有未读邮件}=1{有{howMany}封未读邮件}other{有{howMany}封未读邮件}}",
-  "@remainingEmailsMessage": {
-    "description": "How many emails remain after archiving.",
-    "type": "text",
-    "placeholders": {
-      "howMany": {
-        "example": 42
-      }
-    }
-  }
+ "@@last_modified": "2018-12-10T15:46:20.897228",
+ "@@locale":"zh_CN",
+ "title": "Flutter应用",
+ "@title": {
+   "description": "Title for the Demo application",
+   "type": "text",
+   "placeholders": {}
+ },
+ "remainingEmailsMessage": "{howMany,plural, =0{没有未读邮件}=1{有{howMany}封未读邮件}other{有{howMany}封未读邮件}}",
+ "@remainingEmailsMessage": {
+   "description": "How many emails remain after archiving.",
+   "type": "text",
+   "placeholders": {
+     "howMany": {
+       "example": 42
+     }
+   }
+ }
 }
 
 ```
@@ -199,7 +199,7 @@ There are two points to explain:
 
 The last step is to generate a dart file based on arb:
 
-```
+``` dart 
 flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/l10n/localization_intl.dart l10n-arb/intl_*.arb
 
 ```
@@ -210,7 +210,7 @@ When this command is run for the first time, multiple files will be generated in
 
 At this point, we will use the [Intl](https://pub.dartlang.org/packages/intl) package to introduce the internationalization process of the APP. We can find that the first and second steps are only needed for the first time, and our main work during development is the third step. . Since the last two steps are required every time after the third step is completed, we can put the last two steps in a shell script. When we complete the third step or complete the arb file translation, we only need to execute the script separately. . We create an intl.sh script in the root directory with the content:
 
-```
+``` dart 
 flutter pub pub run intl_translation:extract_to_arb --output-dir=l10n-arb lib/l10n/localization_intl.dart
 flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/l10n/localization_intl.dart l10n-arb/intl_*.arb
 
@@ -218,14 +218,14 @@ flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --n
 
 Then grant execution permissions:
 
-```
+``` dart 
 chmod +x intl.sh
 
 ```
 
 Execute intl.sh
 
-```
+``` dart 
 ./intl.sh
 
 ```

@@ -2,20 +2,20 @@
 
 `GridView`You can build a two-dimensional grid list, the default constructor is defined as follows:
 
-```
+``` dart 
 GridView({
-  Axis scrollDirection = Axis.vertical,
-  bool reverse = false,
-  ScrollController controller,
-  bool primary,
-  ScrollPhysics physics,
-  bool shrinkWrap = false,
-  EdgeInsetsGeometry padding,
-  @required SliverGridDelegate gridDelegate, //控制子widget layout的委托
-  bool addAutomaticKeepAlives = true,
-  bool addRepaintBoundaries = true,
-  double cacheExtent,
-  List<Widget> children = const <Widget>[],
+ Axis scrollDirection = Axis.vertical,
+ bool reverse = false,
+ ScrollController controller,
+ bool primary,
+ ScrollPhysics physics,
+ bool shrinkWrap = false,
+ EdgeInsetsGeometry padding,
+ @required SliverGridDelegate gridDelegate, //控制子widget layout的委托
+ bool addAutomaticKeepAlives = true,
+ bool addRepaintBoundaries = true,
+ double cacheExtent,
+ List<Widget> children = const <Widget>[],
 })
 
 ```
@@ -28,12 +28,12 @@ We can see, `GridView`and `ListView`most of the parameters are the same, their m
 
 This subclass implements a layout algorithm with a fixed number of sub-elements on the horizontal axis, and its constructor is:
 
-```
+``` dart 
 SliverGridDelegateWithFixedCrossAxisCount({
-  @required double crossAxisCount, 
-  double mainAxisSpacing = 0.0,
-  double crossAxisSpacing = 0.0,
-  double childAspectRatio = 1.0,
+ @required double crossAxisCount, 
+ double mainAxisSpacing = 0.0,
+ double crossAxisSpacing = 0.0,
+ double childAspectRatio = 1.0,
 })
 
 ```
@@ -47,20 +47,20 @@ Can be found, the size of the child elements is through `crossAxisCount`and the 
 
 Let's look at an example:
 
-```
+``` dart 
 GridView(
-  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 3, //横轴三个子widget
-      childAspectRatio: 1.0 //宽高比为1时，子widget
-  ),
-  children:<Widget>[
-    Icon(Icons.ac_unit),
-    Icon(Icons.airport_shuttle),
-    Icon(Icons.all_inclusive),
-    Icon(Icons.beach_access),
-    Icon(Icons.cake),
-    Icon(Icons.free_breakfast)
-  ]
+ gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+     crossAxisCount: 3, //横轴三个子widget
+     childAspectRatio: 1.0 //宽高比为1时，子widget
+ ),
+ children:<Widget>[
+   Icon(Icons.ac_unit),
+   Icon(Icons.airport_shuttle),
+   Icon(Icons.all_inclusive),
+   Icon(Icons.beach_access),
+   Icon(Icons.cake),
+   Icon(Icons.free_breakfast)
+ ]
 );
 
 ```
@@ -71,18 +71,18 @@ GridView(
 
 `GridView.count`The constructor is used internally `SliverGridDelegateWithFixedCrossAxisCount`, and we can quickly create a fixed number of sub-elements on the horizontal axis through it `GridView`. The above sample code is equivalent to:
 
-```
+``` dart 
 GridView.count( 
-  crossAxisCount: 3,
-  childAspectRatio: 1.0,
-  children: <Widget>[
-    Icon(Icons.ac_unit),
-    Icon(Icons.airport_shuttle),
-    Icon(Icons.all_inclusive),
-    Icon(Icons.beach_access),
-    Icon(Icons.cake),
-    Icon(Icons.free_breakfast),
-  ],
+ crossAxisCount: 3,
+ childAspectRatio: 1.0,
+ children: <Widget>[
+   Icon(Icons.ac_unit),
+   Icon(Icons.airport_shuttle),
+   Icon(Icons.all_inclusive),
+   Icon(Icons.beach_access),
+   Icon(Icons.cake),
+   Icon(Icons.free_breakfast),
+ ],
 );
 
 ```
@@ -91,12 +91,12 @@ GridView.count(
 
 This subclass implements a layout algorithm with a fixed maximum length for the horizontal axis sub-elements, and its constructor is:
 
-```
+``` dart 
 SliverGridDelegateWithMaxCrossAxisExtent({
-  double maxCrossAxisExtent,
-  double mainAxisSpacing = 0.0,
-  double crossAxisSpacing = 0.0,
-  double childAspectRatio = 1.0,
+ double maxCrossAxisExtent,
+ double mainAxisSpacing = 0.0,
+ double crossAxisSpacing = 0.0,
+ double childAspectRatio = 1.0,
 })
 
 ```
@@ -105,21 +105,21 @@ SliverGridDelegateWithMaxCrossAxisExtent({
 
 Let's look at an example:
 
-```
+``` dart 
 GridView(
-  padding: EdgeInsets.zero,
-  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: 120.0,
-      childAspectRatio: 2.0 //宽高比为2
-  ),
-  children: <Widget>[
-    Icon(Icons.ac_unit),
-    Icon(Icons.airport_shuttle),
-    Icon(Icons.all_inclusive),
-    Icon(Icons.beach_access),
-    Icon(Icons.cake),
-    Icon(Icons.free_breakfast),
-  ],
+ padding: EdgeInsets.zero,
+ gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+     maxCrossAxisExtent: 120.0,
+     childAspectRatio: 2.0 //宽高比为2
+ ),
+ children: <Widget>[
+   Icon(Icons.ac_unit),
+   Icon(Icons.airport_shuttle),
+   Icon(Icons.all_inclusive),
+   Icon(Icons.beach_access),
+   Icon(Icons.cake),
+   Icon(Icons.free_breakfast),
+ ],
 );
 
 ```
@@ -130,19 +130,19 @@ GridView(
 
 The GridView.extent constructor uses SliverGridDelegateWithMaxCrossAxisExtent internally, through which we can quickly create a GridView with a fixed maximum length for the vertical axis child element. The above sample code is equivalent to:
 
-```
+``` dart 
 GridView.extent(
-   maxCrossAxisExtent: 120.0,
-   childAspectRatio: 2.0,
-   children: <Widget>[
-     Icon(Icons.ac_unit),
-     Icon(Icons.airport_shuttle),
-     Icon(Icons.all_inclusive),
-     Icon(Icons.beach_access),
-     Icon(Icons.cake),
-     Icon(Icons.free_breakfast),
-   ],
- );
+  maxCrossAxisExtent: 120.0,
+  childAspectRatio: 2.0,
+  children: <Widget>[
+    Icon(Icons.ac_unit),
+    Icon(Icons.airport_shuttle),
+    Icon(Icons.all_inclusive),
+    Icon(Icons.beach_access),
+    Icon(Icons.cake),
+    Icon(Icons.free_breakfast),
+  ],
+);
 
 ```
 
@@ -150,11 +150,11 @@ GridView.extent(
 
 The GridView we introduced above requires a widget array as its child elements. These methods will build all child widgets in advance, so it is only applicable when the number of child widgets is relatively small. When there are more child widgets, we can `GridView.builder`dynamically create child widgets. widget. `GridView.builder`There are two parameters that must be specified:
 
-```
+``` dart 
 GridView.builder(
- ...
- @required SliverGridDelegate gridDelegate, 
- @required IndexedWidgetBuilder itemBuilder,
+...
+@required SliverGridDelegate gridDelegate, 
+@required IndexedWidgetBuilder itemBuilder,
 )
 
 ```
@@ -165,54 +165,54 @@ Among them `itemBuilder`is the child widget builder.
 
 Suppose we need to get some batches asynchronous data from a source (such as a network) `Icon`, and then `GridView`to show:
 
-```
+``` dart 
 class InfiniteGridView extends StatefulWidget {
-  @override
-  _InfiniteGridViewState createState() => new _InfiniteGridViewState();
+ @override
+ _InfiniteGridViewState createState() => new _InfiniteGridViewState();
 }
 
 class _InfiniteGridViewState extends State<InfiniteGridView> {
 
-  List<IconData> _icons = []; //保存Icon数据
+ List<IconData> _icons = []; //保存Icon数据
 
-  @override
-  void initState() {
-    // 初始化数据  
-    _retrieveIcons();
-  }
+ @override
+ void initState() {
+   // 初始化数据  
+   _retrieveIcons();
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, //每行三列
-            childAspectRatio: 1.0 //显示区域宽高相等
-        ),
-        itemCount: _icons.length,
-        itemBuilder: (context, index) {
-          //如果显示到最后一个并且Icon总数小于200时继续获取数据
-          if (index == _icons.length - 1 && _icons.length < 200) {
-            _retrieveIcons();
-          }
-          return Icon(_icons[index]);
-        }
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return GridView.builder(
+       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+           crossAxisCount: 3, //每行三列
+           childAspectRatio: 1.0 //显示区域宽高相等
+       ),
+       itemCount: _icons.length,
+       itemBuilder: (context, index) {
+         //如果显示到最后一个并且Icon总数小于200时继续获取数据
+         if (index == _icons.length - 1 && _icons.length < 200) {
+           _retrieveIcons();
+         }
+         return Icon(_icons[index]);
+       }
+   );
+ }
 
-  //模拟异步获取数据
-  void _retrieveIcons() {
-    Future.delayed(Duration(milliseconds: 200)).then((e) {
-      setState(() {
-        _icons.addAll([
-          Icons.ac_unit,
-          Icons.airport_shuttle,
-          Icons.all_inclusive,
-          Icons.beach_access, Icons.cake,
-          Icons.free_breakfast
-        ]);
-      });
-    });
-  }
+ //模拟异步获取数据
+ void _retrieveIcons() {
+   Future.delayed(Duration(milliseconds: 200)).then((e) {
+     setState(() {
+       _icons.addAll([
+         Icons.ac_unit,
+         Icons.airport_shuttle,
+         Icons.all_inclusive,
+         Icons.beach_access, Icons.cake,
+         Icons.free_breakfast
+       ]);
+     });
+   });
+ }
 }
 
 ```

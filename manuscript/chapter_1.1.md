@@ -8,7 +8,7 @@ In this section, I'll explain the evolution of mobile development technologies. 
 
 Native development refers to the mobile application development using development tools, SDKs, and languages supported by a particular operating system such as iOS or Android. For example, a native Android app refers to an application developed by using Java or Kotlin using the Android SDK directly; while a native iOS app refers to an application developed by directly using the iOS SDK using languages like Objective-C or Swift. 
 
- Advantages of Native Development:
+Advantages of Native Development:
 
 -   Access to all features of the platform (GPS,Camera,Microphone).
 -   Flawless performance.
@@ -23,7 +23,7 @@ Disadvantages of Native Development:
 
 In the early days of mobile development, app development for businesses was not complicated, and native development could cope with product demand iterations. However, in recent years, with the advent of the Internet of Things and the rapid advancement of the Internet, in many business scenarios, traditional pure native development can no longer meet the growing needs of businesses.
 
- Mainly manifested in:
+Mainly manifested in:
 
 -   As the demand for dynamic content surges, when the demand changes, native applications need to update the app through version updates which involve pushing updated build to the play store or app store and going through all the review and release process. Which is difficult to deal with in this fast-changing Internet era. So the necessity of dynamic application updates (application content can be updated without publishing a version) becomes crucial.
 -   Business requirement changes rapidly, and development cost becomes lofty. As native development requires maintaining two codebases and two development teams for Android and iOS, when the app is updated then both the labor cost and development time increases..
@@ -57,40 +57,40 @@ As mentioned earlier, native development can access all the functions of the pla
 Let's take Android as an example to implement a native API for obtaining the phone model for JavaScript calls. In this example, the process of calling native API by JavaScript will be shown. Readers can intuitively experience the process of calling. We use the wendux's open source dsBridge on Github as JsBridge for communication. dsBridge is a cross-platform JsBridge that supports synchronous calling. In this example, only the synchronous calling function is used.
 
 1.  First implement the API to get the phone model in the native `getPhoneModel`
-    
-    ```
-    class JSAPI {
-     @JavascriptInterface
-     public Object getPhoneModel(Object msg) {
-       return Build.MODEL;
-     }
+   
+``` dart 
+   class JSAPI {
+    @JavascriptInterface
+    public Object getPhoneModel(Object msg) {
+      return Build.MODEL;
     }
-    
-    ```
-    
+   }
+   
+```
+   
 2.  Register native API to JsBridge through WebView
-    
-    ```
-    import wendu.dsbridge.DWebView
-    ...
-    //DWebView inherits from WebView, provided by dsBridge  
-    DWebView dwebView = (DWebView) findViewById(R.id.dwebview);
-    //Register native API to JsBridge
-    dwebView.addJavascriptObject(new JsAPI(), null);
-    
-    ```
-    
+   
+``` dart 
+   import wendu.dsbridge.DWebView
+   ...
+   //DWebView inherits from WebView, provided by dsBridge  
+   DWebView dwebView = (DWebView) findViewById(R.id.dwebview);
+   //Register native API to JsBridge
+   dwebView.addJavascriptObject(new JsAPI(), null);
+   
+```
+   
 3.  Call native API in JavaScript
-    
-    ```
-    var dsBridge = require("dsbridge")
-    //Directly call the native API `getPhoneModel
-    var model = dsBridge.call("getPhoneModel");
-    //print model
-    console.log(model);
-    
-    ```
-    
+   
+``` dart 
+   var dsBridge = require("dsbridge")
+   //Directly call the native API `getPhoneModel
+   var model = dsBridge.call("getPhoneModel");
+   //print model
+   console.log(model);
+   
+```
+   
 
 The above example demonstrates the process of JavaScript calling native API. Similarly, in general, the excellent JsBridge also supports native calling JavaScript, and dsBridge also supports it. If you are interested, you can go to the github dsBridge project homepage to view.
 
@@ -170,12 +170,12 @@ Disadvantages:
 
 In this article, we look at the last cross-platform technology: self-painted UI + native. The idea of ​​this technology is to draw the UI by implementing a unified interface rendering engine on different platforms without relying on the system's native controls, so the consistency of the UI on different platforms can be achieved. Note that the self-drawing engine solves the cross-platform problem of the UI. If it involves calling other system capabilities, it still involves native development.
 
- The advantages of this platform technology are as follows:
+The advantages of this platform technology are as follows:
 
 1.  High performance; since the self-drawing engine directly calls the system API to draw the UI, the performance is close to that of native controls.
-    
+   
 2.  Flexible, easy to maintain the component library, high fidelity and consistency of UI appearance; since UI rendering does not rely on native controls, there is no need to maintain a set of component libraries separately for controls of different platforms, so the code is easy to maintain. Since the component library is the same set of code and the same rendering engine, the display appearance of the component can achieve high fidelity and high consistency on different platforms; in addition, because it does not rely on native controls, it will not be restricted by the native layout system. This layout system will be very flexible.
-    
+   
 
 Disadvantages:
 
@@ -194,7 +194,7 @@ Main resons behing QT's Failure :
 - The official promotion is not good and the support is not enough.
 - QT was late as the market has been occupied by other dynamic frameworks (Hybrid and RN)
 - In mobile development, C++ development has inherent disadvantages compared to Web development stacks, and the direct result is that QT development efficiency is too low.
- 
+
 
 Based on these four points, although QT is a pioneer in the development of cross-platform self-drawing engines on mobile, it has become a martyr.
 

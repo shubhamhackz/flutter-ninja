@@ -2,7 +2,7 @@
 
 Let's first create a brand new Flutter project, named "github_client_app"; the steps to create a new project depend on the editor used by the reader, and are relatively simple, so I won't repeat it here. After creation, the project structure is as follows:
 
-```
+``` dart 
 github_client_app
 ├── android
 ├── ios
@@ -19,7 +19,7 @@ Multi-language support. We use the solution introduced in Chapter 13 "Internatio
 
 Now the project directory becomes:
 
-```
+``` dart 
 github_client_app
 ├── android
 ├── fonts
@@ -34,7 +34,7 @@ github_client_app
 
 Since our Dart codes are all under the "lib" folder, the author created the following directories under the lib file based on technical selection and experience:
 
-```
+``` dart 
 lib
 ├── common
 ├── l10n

@@ -16,7 +16,7 @@ If we can’t achieve the required UI through existing components, we can do it 
 
 UI component itself has the appearance of a Flutter offered, such as text `Text`, `Image`are through the corresponding `RenderObject`(we will "Flutter core principles" described in detail in the chapter `RenderObject`) rendered, such as Text is `RenderParagraph`rendered; and `Image`a is `RenderImage`rendered. `RenderObject`Is an abstract class, it defines an abstract method `paint(...)`:
 
-```
+``` dart 
 void paint(PaintingContext context, Offset offset)
 
 ```

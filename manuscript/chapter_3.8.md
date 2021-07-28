@@ -6,12 +6,12 @@ There are two types of progress indicators provided in the Material component li
 
 `LinearProgressIndicator`It is a linear, bar-shaped progress bar, defined as follows:
 
-```
+``` dart 
 LinearProgressIndicator({
-  double value,
-  Color backgroundColor,
-  Animation<Color> valueColor,
-  ...
+ double value,
+ Color backgroundColor,
+ Animation<Color> valueColor,
+ ...
 })
 
 ```
@@ -22,17 +22,17 @@ LinearProgressIndicator({
 
 ### Example
 
-```
+``` dart 
 // 模糊进度条(会执行一个动画)
 LinearProgressIndicator(
-  backgroundColor: Colors.grey[200],
-  valueColor: AlwaysStoppedAnimation(Colors.blue),
+ backgroundColor: Colors.grey[200],
+ valueColor: AlwaysStoppedAnimation(Colors.blue),
 ),
 //进度条显示50%
 LinearProgressIndicator(
-  backgroundColor: Colors.grey[200],
-  valueColor: AlwaysStoppedAnimation(Colors.blue),
-  value: .5, 
+ backgroundColor: Colors.grey[200],
+ valueColor: AlwaysStoppedAnimation(Colors.blue),
+ value: .5, 
 )
 
 ```
@@ -47,30 +47,30 @@ The first progress bar is performing a loop animation: the blue bar is always mo
 
 `CircularProgressIndicator`It is a circular progress bar, defined as follows:
 
-```
- CircularProgressIndicator({
-  double value,
-  Color backgroundColor,
-  Animation<Color> valueColor,
-  this.strokeWidth = 4.0,
-  ...   
+``` dart 
+CircularProgressIndicator({
+ double value,
+ Color backgroundColor,
+ Animation<Color> valueColor,
+ this.strokeWidth = 4.0,
+ ...   
 })
 
 ```
 
 The first three parameters are the `LinearProgressIndicator`same and will not be repeated. `strokeWidth`Indicates the thickness of the circular progress bar. Examples are as follows:
 
-```
+``` dart 
 // 模糊进度条(会执行一个旋转动画)
 CircularProgressIndicator(
-  backgroundColor: Colors.grey[200],
-  valueColor: AlwaysStoppedAnimation(Colors.blue),
+ backgroundColor: Colors.grey[200],
+ valueColor: AlwaysStoppedAnimation(Colors.blue),
 ),
 //进度条显示50%，会显示一个半圆
 CircularProgressIndicator(
-  backgroundColor: Colors.grey[200],
-  valueColor: AlwaysStoppedAnimation(Colors.blue),
-  value: .5,
+ backgroundColor: Colors.grey[200],
+ valueColor: AlwaysStoppedAnimation(Colors.blue),
+ value: .5,
 ),
 
 ```
@@ -87,25 +87,25 @@ We can find that the `LinearProgressIndicator`sum `CircularProgressIndicator`doe
 
 In fact, the `LinearProgressIndicator`sum `CircularProgressIndicator`is based on the size of the parent container as the drawing boundary. Knowing this, we can, as restricted by the size of Widget `ConstrainedBox`, `SizedBox`(we will introduce in the back of the container class components chapter) to specify the size, such as:
 
-```
+``` dart 
 // 线性进度条高度指定为3
 SizedBox(
-  height: 3,
-  child: LinearProgressIndicator(
-    backgroundColor: Colors.grey[200],
-    valueColor: AlwaysStoppedAnimation(Colors.blue),
-    value: .5,
-  ),
+ height: 3,
+ child: LinearProgressIndicator(
+   backgroundColor: Colors.grey[200],
+   valueColor: AlwaysStoppedAnimation(Colors.blue),
+   value: .5,
+ ),
 ),
 // 圆形进度条直径指定为100
 SizedBox(
-  height: 100,
-  width: 100,
-  child: CircularProgressIndicator(
-    backgroundColor: Colors.grey[200],
-    valueColor: AlwaysStoppedAnimation(Colors.blue),
-    value: .7,
-  ),
+ height: 100,
+ width: 100,
+ child: CircularProgressIndicator(
+   backgroundColor: Colors.grey[200],
+   valueColor: AlwaysStoppedAnimation(Colors.blue),
+   value: .7,
+ ),
 ),
 
 ```
@@ -116,16 +116,16 @@ The running effect is shown in Figure 3-32:
 
 Note that if `CircularProgressIndicator`the width and height of the display space are different, it will be displayed as an ellipse. Such as:
 
-```
+``` dart 
 // 宽高不等
 SizedBox(
-  height: 100,
-  width: 130,
-  child: CircularProgressIndicator(
-    backgroundColor: Colors.grey[200],
-    valueColor: AlwaysStoppedAnimation(Colors.blue),
-    value: .7,
-  ),
+ height: 100,
+ width: 130,
+ child: CircularProgressIndicator(
+   backgroundColor: Colors.grey[200],
+   valueColor: AlwaysStoppedAnimation(Colors.blue),
+   value: .7,
+ ),
 ),
 
 ```
@@ -140,52 +140,52 @@ As mentioned earlier, you can `valueColor`animate the color of the progress bar.
 
 We implement an animation where the progress bar changes from gray to blue in 3 seconds:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 class ProgressRoute extends StatefulWidget {
-  @override
-  _ProgressRouteState createState() => _ProgressRouteState();
+ @override
+ _ProgressRouteState createState() => _ProgressRouteState();
 }
 
 class _ProgressRouteState extends State<ProgressRoute>
-    with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+   with SingleTickerProviderStateMixin {
+ AnimationController _animationController;
 
-  @override
-  void initState() {
-    //动画执行时间3秒  
-    _animationController =
-        new AnimationController(vsync: this, duration: Duration(seconds: 3));
-    _animationController.forward();
-    _animationController.addListener(() => setState(() => {}));
-    super.initState();
-  }
+ @override
+ void initState() {
+   //动画执行时间3秒  
+   _animationController =
+       new AnimationController(vsync: this, duration: Duration(seconds: 3));
+   _animationController.forward();
+   _animationController.addListener(() => setState(() => {}));
+   super.initState();
+ }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+ @override
+ void dispose() {
+   _animationController.dispose();
+   super.dispose();
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-            Padding(
-            padding: EdgeInsets.all(16),
-            child: LinearProgressIndicator(
-              backgroundColor: Colors.grey[200],
-              valueColor: ColorTween(begin: Colors.grey, end: Colors.blue)
-                .animate(_animationController), // 从灰色变成蓝色
-              value: _animationController.value,
-            ),
-          );
-        ],
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return SingleChildScrollView(
+     child: Column(
+       children: <Widget>[
+           Padding(
+           padding: EdgeInsets.all(16),
+           child: LinearProgressIndicator(
+             backgroundColor: Colors.grey[200],
+             valueColor: ColorTween(begin: Colors.grey, end: Colors.blue)
+               .animate(_animationController), // 从灰色变成蓝色
+             value: _animationController.value,
+           ),
+         );
+       ],
+     ),
+   );
+ }
 }
 
 ```

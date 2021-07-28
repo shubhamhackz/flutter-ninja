@@ -22,7 +22,7 @@ You can create a Package project through Android Studio: File>New>New Flutter Pr
 
 You can also use `--template=package`to perform `flutter create`to create a command:
 
-```
+``` dart 
 flutter create --template=package hello
 
 ```
@@ -30,9 +30,9 @@ flutter create --template=package hello
 This will `hello/`create a package project with the following dedicated content under the folder:
 
 -   `lib/hello.dart`: Dart code of Package
-    
+   
 -   `test/hello_test.dart`: The unit test code of Package.
-    
+   
 
 ### Implement package
 
@@ -42,7 +42,7 @@ For pure Dart packages, you only need to add functions in the main file or in th
 
 In the "shelf.dart" in the lib root directory, multiple dart files in the "lib/src" directory are exported:
 
-```
+``` dart 
 export 'src/cascade.dart';
 export 'src/handler.dart';
 export 'src/handlers/logger.dart';
@@ -62,7 +62,7 @@ The source code of the main functions in the Package are in the src directory. S
 
 When we need to use this Package, we can specify the entry file of the package through the "package:" instruction:
 
-```
+``` dart 
 import 'package:utilities/utilities.dart';
 
 ```
@@ -73,10 +73,10 @@ Source files in the same package can also be imported using relative paths.
 
 You can use the [dartdoc](https://github.com/dart-lang/dartdoc#dartdoc) tool to generate documentation for the Package. All developers need to do is to follow the documentation comment syntax to add documentation comments to the code, and finally use dartdoc to directly generate API documentation (a static website). Documentation comments start with a triple slash "///", such as:
 
-```
+``` dart 
 /// The event handler responsible for updating the badge in the UI.
 void updateBadge() {
-  ...
+ ...
 }
 
 ```
@@ -89,9 +89,9 @@ If we are developing a `hello`package that depends on another package, we need t
 
 In the `hello/pubspec.yaml`middle:
 
-```
+``` dart 
 dependencies:
-  url_launcher: ^0.4.2
+ url_launcher: ^0.4.2
 
 ```
 
@@ -105,12 +105,12 @@ However, if it `hello`happens to be a plug-in package and its platform-specific 
 
 In `hello/android/build.gradle`:
 
-```
+``` dart 
 android {
-    // lines skipped
-    dependencies {
-        provided rootProject.findProject(":url_launcher")
-    }
+   // lines skipped
+   dependencies {
+       provided rootProject.findProject(":url_launcher")
+   }
 }
 
 ```
@@ -121,10 +121,10 @@ You can now access the class in the `hello/android/src`source code .`import io.f
 
 In `hello/ios/hello.podspec`:
 
-```
+``` dart 
 Pod::Spec.new do |s|
-  # lines skipped
-  s.dependency 'url_launcher'
+ # lines skipped
+ s.dependency 'url_launcher'
 
 ```
 
@@ -134,10 +134,10 @@ You can now `hello/ios/Classes`source code `#import "UrlLauncherPlugin.h"`and th
 
 Suppose we want `hello`to use `some_package`sum in our package `other_package`, and both packages depend on it `url_launcher`, but they depend on `url_launcher`different versions. Then we have potential conflicts. The best way to avoid this is when specifying dependencies, package authors use [version ranges](https://www.dartlang.org/tools/pub/dependencies#version-constraints) instead of specific versions.
 
-```
+``` dart 
 dependencies:
-  url_launcher: ^0.4.2    # 这样会较好, 任何0.4.x(x >= 2)都可.
-  image_picker: '0.1.1'   # 不是很好，只有0.1.1版本.
+ url_launcher: ^0.4.2    # 这样会较好, 任何0.4.x(x >= 2)都可.
+ image_picker: '0.1.1'   # 不是很好，只有0.1.1版本.
 
 ```
 
@@ -147,12 +147,12 @@ Even `some_package`and `other_package`declared incompatible `url_launcher`versio
 
 Forced to use `0.4.3`version `url_launcher`in `hello/pubspec.yaml`the:
 
-```
+``` dart 
 dependencies:
-  some_package:
-  other_package:
+ some_package:
+ other_package:
 dependency_overrides:
-  url_launcher: '0.4.3'
+ url_launcher: '0.4.3'
 
 ```
 
@@ -160,11 +160,11 @@ If the conflicting dependency is not a package, but an Android-specific library,
 
 Mandatory use of the `23.0`version of the `guava`library, in `hello/android/build.gradle`:
 
-```
+``` dart 
 configurations.all {
-    resolutionStrategy {
-        force 'com.google.guava:guava:23.0-android'
-    }
+   resolutionStrategy {
+       force 'com.google.guava:guava:23.0-android'
+   }
 }
 
 ```
@@ -177,14 +177,14 @@ Once a package is implemented, we can publish it on [Pub](https://pub.dartlang.o
 
 Prior to publication, inspection `pubspec.yaml`, `README.md`and `CHANGELOG.md`documentation to ensure the integrity and accuracy of its contents. Then, run the dry-run command to see if everything is ready to go:
 
-```
+``` dart 
 flutter packages pub publish --dry-run
 
 ```
 
 After verifying that it is correct, we can run the release command:
 
-```
+``` dart 
 flutter packages pub publish
 
 ```
@@ -192,9 +192,9 @@ flutter packages pub publish
 > If you encounter a package release failure, first check whether it is due to well-known network reasons. If it is a network problem, you can use a VPN. It should be noted that some proxies will only proxy some APP network requests, such as browsers. It may not be able to proxy dart's network requests, so in this case, even if the proxy is turned on, you still cannot connect to Pub. Therefore, it is safer to use a global proxy or global VPN when publishing Pub packages. If there is no problem with the network, run the release command with administrator privileges (sudo) and try again.  
 > In many cases, turning on the global proxy will not let the traffic in the terminal go through the proxy server. Taking socks5 as an example, you should enter the following command in the terminal:
 > 
-> ```
+``` dart 
 > export all_proxy=socks5://127.0.0.1:1080
 > 
-> ```
+```
 > 
 > At this time, the http and https traffic in the terminal will go through the proxy server, and you can `curl -i https://ip.cn`check whether the proxy setting is successful or not through instructions.

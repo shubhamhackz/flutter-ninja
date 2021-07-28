@@ -2,7 +2,7 @@
 
 In actual combat, the backend interface often returns some structured data, such as JSON, XML, etc., as in the previous example when we requested the Github API, the data it returns is a string in JSON format. In order to facilitate us to manipulate JSON in the code, we First convert the JSON format string into a Dart object. This can be achieved by `dart:convert`the built-in JSON decoder json.decode(). This method can convert the JSON string to a List or Map according to the specific content of the JSON string, so that we can Use them to find the required value, such as:
 
-```
+``` dart 
 //一个JSON格式的用户列表字符串
 String jsonStr='[{"name":"Jack"},{"name":"Rose"}]';
 //将JSON字符串转为Dart对象(此处是List)
@@ -14,17 +14,17 @@ print(items[0]["name"]);
 
 The method of converting JSON string to List/Map through json.decode() is relatively simple. It has no external dependencies or other settings, which is very convenient for small projects. But when the project becomes larger, this kind of manual serialization logic may become unmanageable and error-prone. For example, the following JSON:
 
-```
+``` dart 
 {
-  "name": "John Smith",
-  "email": "john@example.com"
+ "name": "John Smith",
+ "email": "john@example.com"
 }
 
 ```
 
 We can `json.decode`decode JSON by calling the method, using the JSON string as a parameter:
 
-```
+``` dart 
 Map<String, dynamic> user = json.decode(json);
 
 print('Howdy, ${user['name']}!');
@@ -43,29 +43,29 @@ In this way, the calling code can now have type safety, auto-complete fields (na
 
 **user.dart**
 
-```
+``` dart 
 class User {
-  final String name;
-  final String email;
+ final String name;
+ final String email;
 
-  User(this.name, this.email);
+ User(this.name, this.email);
 
-  User.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        email = json['email'];
+ User.fromJson(Map<String, dynamic> json)
+     : name = json['name'],
+       email = json['email'];
 
-  Map<String, dynamic> toJson() =>
-    <String, dynamic>{
-      'name': name,
-      'email': email,
-    };
+ Map<String, dynamic> toJson() =>
+   <String, dynamic>{
+     'name': name,
+     'email': email,
+   };
 }
 
 ```
 
 Now, the serialization logic is moved inside the model itself. Using this new method, we can deserialize users very easily.
 
-```
+``` dart 
 Map userMap = json.decode(json);
 var user = new User.fromJson(userMap);
 
@@ -76,7 +76,7 @@ print('We sent the verification link to ${user.email}.');
 
 To serialize a user, we just `User`pass the object to the `json.encode`method. We don't need to manually call `toJson`this method, because `JSON.encode will automatically call it internally.
 
-```
+``` dart 
 String json = json.encode(user);
 
 ```
@@ -95,15 +95,15 @@ To be included `json_serializable`in our project, we need a regular and two **de
 
 **pubspec.yaml**
 
-```
+``` dart 
 dependencies:
-  # Your other regular dependencies here
-  json_annotation: ^2.0.0
+ # Your other regular dependencies here
+ json_annotation: ^2.0.0
 
 dev_dependencies:
-  # Your other dev_dependencies here
-  build_runner: ^1.0.0
-  json_serializable: ^2.0.0
+ # Your other dev_dependencies here
+ build_runner: ^1.0.0
+ json_serializable: ^2.0.0
 
 ```
 
@@ -115,7 +115,7 @@ Let's see how to convert our `User`class into one `json_serializable`. For simpl
 
 **user.dart**
 
-```
+``` dart 
 import 'package:json_annotation/json_annotation.dart';
 
 // user.g.dart 将在我们运行生成命令后自动生成
@@ -125,13 +125,13 @@ part 'user.g.dart';
 @JsonSerializable()
 
 class User{
-  User(this.name, this.email);
+ User(this.name, this.email);
 
-  String name;
-  String email;
-  //不同的类使用不同的mixin即可
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);  
+ String name;
+ String email;
+ //不同的类使用不同的mixin即可
+ factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+ Map<String, dynamic> toJson() => _$UserToJson(this);  
 }
 
 ```
@@ -140,7 +140,7 @@ With the above settings, the source code generator will generate JSON code for s
 
 If needed, it is easy to customize the naming strategy. For example, if the API we are using returns an object with _snake_case_ , but we want to use _lowerCamelCase_ in our model , then we can use the @JsonKey annotation:
 
-```
+``` dart 
 //显式关联JSON字段名与Model属性的对应关系 
 @JsonKey(name: 'registration_date_millis')
 final int registrationDateMillis;
@@ -159,7 +159,7 @@ These errors are completely normal, because the generated code for the Model cla
 
 By running in our project root directory:
 
-```
+``` dart 
 flutter packages pub run build_runner build
 
 ```
@@ -177,147 +177,147 @@ Using _watcher_ can make our source code generation process more convenient. It 
 One of the biggest problems with the above method is to write a template for each json, which is relatively boring. If there is a tool that can directly generate templates based on JSON text, then we can completely free our hands. The author has implemented a script with dart, which can automatically generate a template and directly convert JSON into a Model class. Let’s see how to do it:
 
 1.  Define a "template template" named "template.dart":
-    
-    ```
-    import 'package:json_annotation/json_annotation.dart';
-    %t
-    part '%s.g.dart';
-    @JsonSerializable()
-    class %s {
-        %s();
-    
-        %s
-        factory %s.fromJson(Map<String,dynamic> json) => _$%sFromJson(json);
-        Map<String, dynamic> toJson() => _$%sToJson(this);
-    }
-    
-    ```
-    
-    The "%t" and "%s" in the template are placeholders, which will be dynamically replaced with appropriate import headers and class names when the script is running.
-    
+   
+``` dart 
+   import 'package:json_annotation/json_annotation.dart';
+   %t
+   part '%s.g.dart';
+   @JsonSerializable()
+   class %s {
+       %s();
+   
+       %s
+       factory %s.fromJson(Map<String,dynamic> json) => _$%sFromJson(json);
+       Map<String, dynamic> toJson() => _$%sToJson(this);
+   }
+   
+```
+   
+   The "%t" and "%s" in the template are placeholders, which will be dynamically replaced with appropriate import headers and class names when the script is running.
+   
 2.  Write a script (mo.dart) that automatically generates templates. It can traverse and generate templates according to the specified JSON directory. We define some rules when generating:
-    
-    -   If the JSON file name starts with an underscore "_", the JSON file is ignored.
-    -   Complex JSON objects tend to be nested, and we can manually specify the nested objects through a special flag (example later).
-    
-    The script is written by Dart, and the source code is as follows:
-    
-    ```
-    import 'dart:convert';
-    import 'dart:io';
-    import 'package:path/path.dart' as path;
-    const TAG="\$";
-    const SRC="./json"; //JSON 目录
-    const DIST="lib/models/"; //输出model目录
-    
-    void walk() { //遍历JSON目录生成模板
-      var src = new Directory(SRC);
-      var list = src.listSync();
-      var template=new File("./template.dart").readAsStringSync();
-      File file;
-      list.forEach((f) {
-        if (FileSystemEntity.isFileSync(f.path)) {
-          file = new File(f.path);
-          var paths=path.basename(f.path).split(".");
-          String name=paths.first;
-          if(paths.last.toLowerCase()!="json"||name.startsWith("_")) return ;
-          if(name.startsWith("_")) return;
-          //下面生成模板
-          var map = json.decode(file.readAsStringSync());
-          //为了避免重复导入相同的包，我们用Set来保存生成的import语句。
-          var set= new Set<String>();
-          StringBuffer attrs= new StringBuffer();
-          (map as Map<String, dynamic>).forEach((key, v) {
-              if(key.startsWith("_")) return ;
-              attrs.write(getType(v,set,name));
-              attrs.write(" ");
-              attrs.write(key);
-              attrs.writeln(";");
-              attrs.write("    ");
-          });
-          String  className=name[0].toUpperCase()+name.substring(1);
-          var dist=format(template,[name,className,className,attrs.toString(),
-                                    className,className,className]);
-          var _import=set.join(";\r\n");
-          _import+=_import.isEmpty?"":";";
-          dist=dist.replaceFirst("%t",_import );
-          //将生成的模板输出
-          new File("$DIST$name.dart").writeAsStringSync(dist);
-        }
-      });
-    }
-    
-    String changeFirstChar(String str, [bool upper=true] ){
-      return (upper?str[0].toUpperCase():str[0].toLowerCase())+str.substring(1);
-    }
-    
-    //将JSON类型转为对应的dart类型
-     String getType(v,Set<String> set,String current){
-      current=current.toLowerCase();
-      if(v is bool){
-        return "bool";
-      }else if(v is num){
-        return "num";
-      }else if(v is Map){
-        return "Map<String,dynamic>";
-      }else if(v is List){
-        return "List";
-      }else if(v is String){ //处理特殊标志
-        if(v.startsWith("$TAG[]")){
-          var className=changeFirstChar(v.substring(3),false);
-          if(className.toLowerCase()!=current) {
-            set.add('import "$className.dart"');
-          }
-          return "List<${changeFirstChar(className)}>";
-    
-        }else if(v.startsWith(TAG)){
-          var fileName=changeFirstChar(v.substring(1),false);
-          if(fileName.toLowerCase()!=current) {
-            set.add('import "$fileName.dart"');
-          }
-          return changeFirstChar(fileName);
-        }
-        return "String";
-      }else{
-        return "String";
-      }
+   
+   -   If the JSON file name starts with an underscore "_", the JSON file is ignored.
+   -   Complex JSON objects tend to be nested, and we can manually specify the nested objects through a special flag (example later).
+   
+   The script is written by Dart, and the source code is as follows:
+   
+``` dart 
+   import 'dart:convert';
+   import 'dart:io';
+   import 'package:path/path.dart' as path;
+   const TAG="\$";
+   const SRC="./json"; //JSON 目录
+   const DIST="lib/models/"; //输出model目录
+   
+   void walk() { //遍历JSON目录生成模板
+     var src = new Directory(SRC);
+     var list = src.listSync();
+     var template=new File("./template.dart").readAsStringSync();
+     File file;
+     list.forEach((f) {
+       if (FileSystemEntity.isFileSync(f.path)) {
+         file = new File(f.path);
+         var paths=path.basename(f.path).split(".");
+         String name=paths.first;
+         if(paths.last.toLowerCase()!="json"||name.startsWith("_")) return ;
+         if(name.startsWith("_")) return;
+         //下面生成模板
+         var map = json.decode(file.readAsStringSync());
+         //为了避免重复导入相同的包，我们用Set来保存生成的import语句。
+         var set= new Set<String>();
+         StringBuffer attrs= new StringBuffer();
+         (map as Map<String, dynamic>).forEach((key, v) {
+             if(key.startsWith("_")) return ;
+             attrs.write(getType(v,set,name));
+             attrs.write(" ");
+             attrs.write(key);
+             attrs.writeln(";");
+             attrs.write("    ");
+         });
+         String  className=name[0].toUpperCase()+name.substring(1);
+         var dist=format(template,[name,className,className,attrs.toString(),
+                                   className,className,className]);
+         var _import=set.join(";\r\n");
+         _import+=_import.isEmpty?"":";";
+         dist=dist.replaceFirst("%t",_import );
+         //将生成的模板输出
+         new File("$DIST$name.dart").writeAsStringSync(dist);
+       }
+     });
+   }
+   
+   String changeFirstChar(String str, [bool upper=true] ){
+     return (upper?str[0].toUpperCase():str[0].toLowerCase())+str.substring(1);
+   }
+   
+   //将JSON类型转为对应的dart类型
+    String getType(v,Set<String> set,String current){
+     current=current.toLowerCase();
+     if(v is bool){
+       return "bool";
+     }else if(v is num){
+       return "num";
+     }else if(v is Map){
+       return "Map<String,dynamic>";
+     }else if(v is List){
+       return "List";
+     }else if(v is String){ //处理特殊标志
+       if(v.startsWith("$TAG[]")){
+         var className=changeFirstChar(v.substring(3),false);
+         if(className.toLowerCase()!=current) {
+           set.add('import "$className.dart"');
+         }
+         return "List<${changeFirstChar(className)}>";
+   
+       }else if(v.startsWith(TAG)){
+         var fileName=changeFirstChar(v.substring(1),false);
+         if(fileName.toLowerCase()!=current) {
+           set.add('import "$fileName.dart"');
+         }
+         return changeFirstChar(fileName);
+       }
+       return "String";
+     }else{
+       return "String";
      }
-    
-    //替换模板占位符
-    String format(String fmt, List<Object> params) {
-      int matchIndex = 0;
-      String replace(Match m) {
-        if (matchIndex < params.length) {
-          switch (m[0]) {
-            case "%s":
-              return params[matchIndex++].toString();
-          }
-        } else {
-          throw new Exception("Missing parameter for string format");
-        }
-        throw new Exception("Invalid format string: " + m[0].toString());
-      }
-      return fmt.replaceAllMapped("%s", replace);
     }
-    
-    void main(){
-      walk();
-    }
-    
-    ```
-    
+   
+   //替换模板占位符
+   String format(String fmt, List<Object> params) {
+     int matchIndex = 0;
+     String replace(Match m) {
+       if (matchIndex < params.length) {
+         switch (m[0]) {
+           case "%s":
+             return params[matchIndex++].toString();
+         }
+       } else {
+         throw new Exception("Missing parameter for string format");
+       }
+       throw new Exception("Invalid format string: " + m[0].toString());
+     }
+     return fmt.replaceAllMapped("%s", replace);
+   }
+   
+   void main(){
+     walk();
+   }
+   
+```
+   
 3.  Write a shell (mo.sh) to link the generated template and the generated model:
-    
-    ```
-    dart mo.dart
-    flutter packages pub run build_runner build --delete-conflicting-outputs
-    
-    ```
-    
+   
+``` dart 
+   dart mo.dart
+   flutter packages pub run build_runner build --delete-conflicting-outputs
+   
+```
+   
 
 So far, our script is written. We create a json directory in the root directory, then move user.json into it, and then create a models directory in the lib directory to save the final generated Model class. Now we only need one command to generate the Model class:
 
-```
+``` dart 
 ./mo.sh
 
 ```
@@ -328,75 +328,75 @@ After running, everything will be executed automatically, now it's much better, 
 
 We define a person.json content to be modified as:
 
-```
+``` dart 
 {
-  "name": "John Smith",
-  "email": "john@example.com",
-  "mother":{
-    "name": "Alice",
-    "email":"alice@example.com"
-  },
-  "friends":[
-    {
-      "name": "Jack",
-      "email":"Jack@example.com"
-    },
-    {
-      "name": "Nancy",
-      "email":"Nancy@example.com"
-    }
-  ]
+ "name": "John Smith",
+ "email": "john@example.com",
+ "mother":{
+   "name": "Alice",
+   "email":"alice@example.com"
+ },
+ "friends":[
+   {
+     "name": "Jack",
+     "email":"Jack@example.com"
+   },
+   {
+     "name": "Nancy",
+     "email":"Nancy@example.com"
+   }
+ ]
 }
 
 ```
 
 Each Person has `name`, `email`, `mother`and `friends`four fields, as `mother`is a Person, a friend is more Person (array), so we expect to generate the Model is the following:
 
-```
+``` dart 
 import 'package:json_annotation/json_annotation.dart';
 part 'person.g.dart';
 
 @JsonSerializable()
 class Person {
-    Person();
+   Person();
 
-    String name;
-    String email;
-    Person mother;
-    List<Person> friends;
+   String name;
+   String email;
+   Person mother;
+   List<Person> friends;
 
-    factory Person.fromJson(Map<String,dynamic> json) => _$PersonFromJson(json);
-    Map<String, dynamic> toJson() => _$PersonToJson(this);
+   factory Person.fromJson(Map<String,dynamic> json) => _$PersonFromJson(json);
+   Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 
 ```
 
 At this time, we only need to simply modify the JSON, add some special flags, and re-run mo.sh:
 
-```
+``` dart 
 {
-  "name": "John Smith",
-  "email": "john@example.com",
-  "mother":"$person",
-  "friends":"$[]person"
+ "name": "John Smith",
+ "email": "john@example.com",
+ "mother":"$person",
+ "friends":"$[]person"
 }
 
 ```
 
 We use the dollar sign "$" as the special identifier (if it conflicts with the content, you can modify the `TAG`constants in mo.dart , custom identifiers), the script will first convert the corresponding field to the corresponding object after encountering the special identifier Or an array of objects. The array of objects needs to add the array symbol "[]" after the identifier, and the symbol is followed by the specific type name, in this case it is person. Other types Similarly, we added to the User to add a Person type of `boss`field:
 
-```
+``` dart 
 {
-  "name": "John Smith",
-  "email": "john@example.com",
-  "boss":"$person"
+ "name": "John Smith",
+ "email": "john@example.com",
+ "boss":"$person"
 }
 
 ```
 
 Re-run mo.sh, the generated user.dart is as follows:
 
-```
+``` dart 
 import 'package:json_annotation/json_annotation.dart';
 import "person.dart";
 part 'user.g.dart';
@@ -404,14 +404,14 @@ part 'user.g.dart';
 @JsonSerializable()
 
 class User {
-    User();
+   User();
 
-    String name;
-    String email;
-    Person boss;
+   String name;
+   String email;
+   Person boss;
 
-    factory User.fromJson(Map<String,dynamic> json) => _$UserFromJson(json);
-    Map<String, dynamic> toJson() => _$UserToJson(this);
+   factory User.fromJson(Map<String,dynamic> json) => _$UserFromJson(json);
+   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
 ```

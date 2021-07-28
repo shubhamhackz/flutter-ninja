@@ -14,23 +14,23 @@ In `RenderBox`, there is a `size`property to save the width and height of the co
 
 In the layout phase, the parent node will call the `layout()`method of the child node . Let's take a look at the general implementation `RenderObject`of the `layout()`method (deleted some irrelevant code and exception capture):
 
-```
+``` dart 
 void layout(Constraints constraints, { bool parentUsesSize = false }) {
+  ...
+  RenderObject relayoutBoundary; 
+   if (!parentUsesSize || sizedByParent || constraints.isTight 
+       || parent is! RenderObject) {
+     relayoutBoundary = this;
+   } else {
+     final RenderObject parent = this.parent;
+     relayoutBoundary = parent._relayoutBoundary;
+   }
    ...
-   RenderObject relayoutBoundary; 
-    if (!parentUsesSize || sizedByParent || constraints.isTight 
-        || parent is! RenderObject) {
-      relayoutBoundary = this;
-    } else {
-      final RenderObject parent = this.parent;
-      relayoutBoundary = parent._relayoutBoundary;
-    }
-    ...
-    if (sizedByParent) {
-        performResize();
-    }
-    performLayout();
-    ...
+   if (sizedByParent) {
+       performResize();
+   }
+   performLayout();
+   ...
 }
 
 ```
@@ -41,20 +41,20 @@ It can be seen that the `layout`method needs to pass in two parameters, the firs
 
 `layout()`A `relayoutBoundary`variable is defined in the above source code , what is it `relayoutBoundary`? In front of the introduction `Element`, we talked about when a `Element`mark is dirty will re-build, then `RenderObject`will be re-layout, by calling us `markNeedsBuild()`to mark `Element`as dirty is. In `RenderObject`there is a similar `markNeedsLayout()`method, it will `RenderObject`layout the status is marked as dirty, so in the next frame will be re-layout, we look at `RenderObject`the `markNeedsLayout()`part of the source code:
 
-```
+``` dart 
 void markNeedsLayout() {
-  ...
-  assert(_relayoutBoundary != null);
-  if (_relayoutBoundary != this) {
-    markParentNeedsLayout();
-  } else {
-    _needsLayout = true;
-    if (owner != null) {
-      ...
-      owner._nodesNeedingLayout.add(this);
-      owner.requestVisualUpdate();
-    }
-  }
+ ...
+ assert(_relayoutBoundary != null);
+ if (_relayoutBoundary != this) {
+   markParentNeedsLayout();
+ } else {
+   _needsLayout = true;
+   if (owner != null) {
+     ...
+     owner._nodesNeedingLayout.add(this);
+     owner.requestVisualUpdate();
+   }
+ }
 }
 
 ```
@@ -73,28 +73,28 @@ In the `performLayout()`method in addition to completing the layout itself, it m
 
 When the layout is over, the position of each node (the offset relative to the parent node) has been determined, `RenderObject`and the final drawing can be performed according to the position information. But in the layout process, how to save the location information of the node? For most `RenderBox`subclasses, if the subclass has only one child node, the child node offset is generally the same `Offset.zero`. If there are multiple child nodes, the offset of each child node may be different. The offset data of the child node in the parent node is saved by `RenderObject`the `parentData`attribute. In `RenderBox`, its `parentData`property is an `BoxParentData`object by default , and the property can only be set by the `setupParentData()`method of the parent node :
 
-```
+``` dart 
 abstract class RenderBox extends RenderObject {
-  @override
-  void setupParentData(covariant RenderObject child) {
-    if (child.parentData is! BoxParentData)
-      child.parentData = BoxParentData();
-  }
-  ...
+ @override
+ void setupParentData(covariant RenderObject child) {
+   if (child.parentData is! BoxParentData)
+     child.parentData = BoxParentData();
+ }
+ ...
 }
 
 ```
 
 `BoxParentData`It is defined as follows:
 
-```
+``` dart 
 /// Parentdata 会被RenderBox和它的子类使用.
 class BoxParentData extends ParentData {
-  /// offset表示在子节点在父节点坐标系中的绘制偏移  
-  Offset offset = Offset.zero;
+ /// offset表示在子节点在父节点坐标系中的绘制偏移  
+ Offset offset = Offset.zero;
 
-  @override
-  String toString() => 'offset=$offset';
+ @override
+ String toString() => 'offset=$offset';
 }
 
 ```
@@ -107,7 +107,7 @@ Of course, `ParentData`not only it can be used to store the offset information, 
 
 `RenderObject`You can use `paint()`methods to complete the specific drawing logic. The process is similar to the layout process. Subclasses can implement `paint()`methods to complete their own drawing logic. The `paint()`signature is as follows:
 
-```
+``` dart 
 void paint(PaintingContext context, Offset offset) { }
 
 ```
@@ -116,54 +116,54 @@ After `context.canvas`you can get the `Canvas`object, you can call the `Canvas`A
 
 If the node has child nodes, in addition to completing its own drawing logic, it also calls the drawing method of the child nodes. Let's take the `RenderFlex`object as an example:
 
-```
+``` dart 
 @override
 void paint(PaintingContext context, Offset offset) {
 
-  // 如果子元素未超出当前边界，则绘制子元素  
-  if (_overflow <= 0.0) {
-    defaultPaint(context, offset);
-    return;
-  }
+ // 如果子元素未超出当前边界，则绘制子元素  
+ if (_overflow <= 0.0) {
+   defaultPaint(context, offset);
+   return;
+ }
 
-  // 如果size为空，则无需绘制
-  if (size.isEmpty)
-    return;
+ // 如果size为空，则无需绘制
+ if (size.isEmpty)
+   return;
 
-  // 剪裁掉溢出边界的部分
-  context.pushClipRect(needsCompositing, offset, Offset.zero & size, defaultPaint);
+ // 剪裁掉溢出边界的部分
+ context.pushClipRect(needsCompositing, offset, Offset.zero & size, defaultPaint);
 
-  assert(() {
-    final String debugOverflowHints = '...'; //溢出提示内容，省略
-    // 绘制溢出部分的错误提示样式
-    Rect overflowChildRect;
-    switch (_direction) {
-      case Axis.horizontal:
-        overflowChildRect = Rect.fromLTWH(0.0, 0.0, size.width + _overflow, 0.0);
-        break;
-      case Axis.vertical:
-        overflowChildRect = Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow);
-        break;
-    }  
-    paintOverflowIndicator(context, offset, Offset.zero & size,
-                           overflowChildRect, overflowHints: debugOverflowHints);
-    return true;
-  }());
+ assert(() {
+   final String debugOverflowHints = '...'; //溢出提示内容，省略
+   // 绘制溢出部分的错误提示样式
+   Rect overflowChildRect;
+   switch (_direction) {
+     case Axis.horizontal:
+       overflowChildRect = Rect.fromLTWH(0.0, 0.0, size.width + _overflow, 0.0);
+       break;
+     case Axis.vertical:
+       overflowChildRect = Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow);
+       break;
+   }  
+   paintOverflowIndicator(context, offset, Offset.zero & size,
+                          overflowChildRect, overflowHints: debugOverflowHints);
+   return true;
+ }());
 }
 
 ```
 
 The code is very simple, first determine whether there is overflow, if not, call `defaultPaint(context, offset)`to complete the drawing, the source code of this method is as follows:
 
-```
+``` dart 
 void defaultPaint(PaintingContext context, Offset offset) {
-  ChildType child = firstChild;
-  while (child != null) {
-    final ParentDataType childParentData = child.parentData;
-    //绘制子节点， 
-    context.paintChild(child, childParentData.offset + offset);
-    child = childParentData.nextSibling;
-  }
+ ChildType child = firstChild;
+ while (child != null) {
+   final ParentDataType childParentData = child.parentData;
+   //绘制子节点， 
+   context.paintChild(child, childParentData.offset + offset);
+   child = childParentData.nextSibling;
+ }
 }
 
 ```
@@ -178,75 +178,75 @@ When the size of the content to be drawn overflows the current space, will be ex
 
 We have already `CustomPaint`introduced it in the section, `RepaintBoundary`and now we have a deeper understanding. And `RelayoutBoundary`similar `RepaintBoundary`are used in determining the boundaries redrawn, and `RelayoutBoundary`the difference is, the border drawn by the need for the developer `RepaintBoundary`components themselves specify, such as:
 
-```
+``` dart 
 CustomPaint(
-  size: Size(300, 300), //指定画布大小
-  painter: MyPainter(),
-  child: RepaintBoundary(
-    child: Container(...),
-  ),
+ size: Size(300, 300), //指定画布大小
+ painter: MyPainter(),
+ child: RepaintBoundary(
+   child: Container(...),
+ ),
 ),
 
 ```
 
 Let’s take a look at `RepaintBoundary`the principle. `RenderObject`There is an `isRepaintBoundary`attribute that determines whether the `RenderObject`redraw is independent of its parent element. If the attribute value is `true`, it will be drawn independently, otherwise it will be drawn together. How is independent drawing achieved? The answer is in the `paintChild()`source code:
 
-```
+``` dart 
 void paintChild(RenderObject child, Offset offset) {
-  ...
-  if (child.isRepaintBoundary) {
-    stopRecordingIfNeeded();
-    _compositeChild(child, offset);
-  } else {
-    child._paintWithContext(this, offset);
-  }
-  ...
+ ...
+ if (child.isRepaintBoundary) {
+   stopRecordingIfNeeded();
+   _compositeChild(child, offset);
+ } else {
+   child._paintWithContext(this, offset);
+ }
+ ...
 }
 
 ```
 
 We can see that, when drawing a child node, if `child.isRepaintBoundary`is `true`is invoked `_compositeChild()`method, `_compositeChild()`source code is as follows:
 
-```
+``` dart 
 void _compositeChild(RenderObject child, Offset offset) {
-  // 给子节点创建一个layer ，然后再上面绘制子节点 
-  if (child._needsPaint) {
-    repaintCompositedChild(child, debugAlsoPaintedParent: true);
-  } else {
-    ...
-  }
-  assert(child._layer != null);
-  child._layer.offset = offset;
-  appendLayer(child._layer);
+ // 给子节点创建一个layer ，然后再上面绘制子节点 
+ if (child._needsPaint) {
+   repaintCompositedChild(child, debugAlsoPaintedParent: true);
+ } else {
+   ...
+ }
+ assert(child._layer != null);
+ child._layer.offset = offset;
+ appendLayer(child._layer);
 }
 
 ```
 
 Obviously, independent drawing is done by drawing on different layers. Therefore, it is obvious that the correct use of `isRepaintBoundary`attributes can improve drawing efficiency and avoid unnecessary redrawing. The specific principle is: similar to triggering rebuild and layout, `RenderObject`a `markNeedsPaint()`method is also provided . The source code is as follows:
 
-```
+``` dart 
 void markNeedsPaint() {
- ...
-  //如果RenderObject.isRepaintBoundary 为true,则该RenderObject拥有layer，直接绘制  
-  if (isRepaintBoundary) {
-    ...
-    if (owner != null) {
-      //找到最近的layer，绘制  
-      owner._nodesNeedingPaint.add(this);
-      owner.requestVisualUpdate();
-    }
-  } else if (parent is RenderObject) {
-    // 没有自己的layer, 会和一个祖先节点共用一个layer  
-    assert(_layer == null);
-    final RenderObject parent = this.parent;
-    // 向父级递归查找  
-    parent.markNeedsPaint();
-    assert(parent == this.parent);
-  } else {
-    // 如果直到根节点也没找到一个Layer，那么便需要绘制自身，因为没有其它节点可以绘制根节点。  
-    if (owner != null)
-      owner.requestVisualUpdate();
-  }
+...
+ //如果RenderObject.isRepaintBoundary 为true,则该RenderObject拥有layer，直接绘制  
+ if (isRepaintBoundary) {
+   ...
+   if (owner != null) {
+     //找到最近的layer，绘制  
+     owner._nodesNeedingPaint.add(this);
+     owner.requestVisualUpdate();
+   }
+ } else if (parent is RenderObject) {
+   // 没有自己的layer, 会和一个祖先节点共用一个layer  
+   assert(_layer == null);
+   final RenderObject parent = this.parent;
+   // 向父级递归查找  
+   parent.markNeedsPaint();
+   assert(parent == this.parent);
+ } else {
+   // 如果直到根节点也没找到一个Layer，那么便需要绘制自身，因为没有其它节点可以绘制根节点。  
+   if (owner != null)
+     owner.requestVisualUpdate();
+ }
 }
 
 ```
@@ -255,13 +255,13 @@ As can be seen, when you call `markNeedsPaint()`upon method, will from current `
 
 There is another question, through `RepaintBoundary`how to set the `isRepaintBoundary`properties? In fact, if used `RepaintBoundary`, its corresponding `RenderRepaintBoundary`will be automatically `isRepaintBoundary`set `true`to:
 
-```
+``` dart 
 class RenderRepaintBoundary extends RenderProxyBox {
-  /// Creates a repaint boundary around [child].
-  RenderRepaintBoundary({ RenderBox child }) : super(child);
+ /// Creates a repaint boundary around [child].
+ RenderRepaintBoundary({ RenderBox child }) : super(child);
 
-  @override
-  bool get isRepaintBoundary => true;
+ @override
+ bool get isRepaintBoundary => true;
 }
 
 ```
@@ -272,35 +272,35 @@ We have already talked about the Flutter event mechanism and hit test process in
 
 Whether an object can respond to an event depends on its return to the hit test. When a user event occurs, the `RenderView`hit test will start from the root node ( ). The following is `RenderView`the `hitTest()`source code:
 
-```
+``` dart 
 bool hitTest(HitTestResult result, { Offset position }) {
-  if (child != null)
-    child.hitTest(result, position: position); //递归子RenderBox进行命中测试
-  result.add(HitTestEntry(this)); //将测试结果添加到result中
-  return true;
+ if (child != null)
+   child.hitTest(result, position: position); //递归子RenderBox进行命中测试
+ result.add(HitTestEntry(this)); //将测试结果添加到result中
+ return true;
 }
 
 ```
 
 Let's look at the `RenderBox`default `hitTest()`implementation:
 
-```
+``` dart 
 bool hitTest(HitTestResult result, { @required Offset position }) {
-  ...  
-  if (_size.contains(position)) {
-    if (hitTestChildren(result, position: position) || hitTestSelf(position)) {
-      result.add(BoxHitTestEntry(this, position));
-      return true;
-    }
-  }
-  return false;
+ ...  
+ if (_size.contains(position)) {
+   if (hitTestChildren(result, position: position) || hitTestSelf(position)) {
+     result.add(BoxHitTestEntry(this, position));
+     return true;
+   }
+ }
+ return false;
 }
 
 ```
 
 We see that two methods `hitTestSelf()`and `hitTestChildren()`two are called in the default implementation. The default implementation of these two methods is as follows:
 
-```
+``` dart 
 
 @protected
 bool hitTestSelf(Offset position) => false;

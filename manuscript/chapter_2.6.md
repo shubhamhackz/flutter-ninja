@@ -24,66 +24,66 @@ Dart can be `try/catch/finally`used to capture code block exceptions. This is si
 
 The Flutter framework captures exceptions in many key methods for us. Here is an example. When our layout is out of bounds or out of specification, Flutter will automatically pop up an error interface. This is because Flutter has added exception capture when executing the build method. The final source code is as follows:
 
-```
+``` dart 
 @override
 void performRebuild() {
+...
+ try {
+   //执行build方法  
+   built = build();
+ } catch (e, stack) {
+   // 有异常时则弹出错误提示  
+   built = ErrorWidget.builder(_debugReportException('building $this', e, stack));
+ } 
  ...
-  try {
-    //执行build方法  
-    built = build();
-  } catch (e, stack) {
-    // 有异常时则弹出错误提示  
-    built = ErrorWidget.builder(_debugReportException('building $this', e, stack));
-  } 
-  ...
 }
 
 ```
 
 As you can see, when an exception occurs, Flutter's default processing method is to pop an ErrorWidget, but what should we do if we want to catch the exception and report it to the alarm platform? Let's `_debugReportException()`take a look at the method:
 
-```
+``` dart 
 FlutterErrorDetails _debugReportException(
-  String context,
-  dynamic exception,
-  StackTrace stack, {
-  InformationCollector informationCollector
+ String context,
+ dynamic exception,
+ StackTrace stack, {
+ InformationCollector informationCollector
 }) {
-  //构建错误详情对象  
-  final FlutterErrorDetails details = FlutterErrorDetails(
-    exception: exception,
-    stack: stack,
-    library: 'widgets library',
-    context: context,
-    informationCollector: informationCollector,
-  );
-  //报告错误 
-  FlutterError.reportError(details);
-  return details;
+ //构建错误详情对象  
+ final FlutterErrorDetails details = FlutterErrorDetails(
+   exception: exception,
+   stack: stack,
+   library: 'widgets library',
+   context: context,
+   informationCollector: informationCollector,
+ );
+ //报告错误 
+ FlutterError.reportError(details);
+ return details;
 }
 
 ```
 
 We found that the error was `FlutterError.reportError`reported through the method, continue to track:
 
-```
+``` dart 
 
 static void reportError(FlutterErrorDetails details) {
-  ...
-  if (onError != null)
-    onError(details); //调用了onError回调
+ ...
+ if (onError != null)
+   onError(details); //调用了onError回调
 }
 
 ```
 
 We found that it `onError`is `FlutterError`a static property, which has a default processing method `dumpErrorToConsole`, which is clear here. If we want to report exceptions ourselves, we only need to provide a custom error handling callback, such as:
 
-```
+``` dart 
 void main() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    reportError(details);
-  };
- ...
+ FlutterError.onError = (FlutterErrorDetails details) {
+   reportError(details);
+ };
+...
 }
 
 ```
@@ -94,103 +94,103 @@ So that we can handle the exceptions that Flutter caught for us, let's see how t
 
 In Flutter, there are some exceptions that Flutter did not catch for us, such as calling empty object method exceptions and exceptions in Future. In Dart, there are two types of exceptions: synchronous exceptions and asynchronous exceptions. Synchronous exceptions can be `try/catch`caught, while asynchronous exceptions are more troublesome. For example, the following code cannot catch `Future`exceptions:
 
-```
+``` dart 
 try{
-    Future.delayed(Duration(seconds: 1)).then((e) => Future.error("xxx"));
+   Future.delayed(Duration(seconds: 1)).then((e) => Future.error("xxx"));
 }catch (e){
-    print(e)
+   print(e)
 }
 
 ```
 
 There is a `runZoned(...)`method in Dart that can assign a Zone to the execution object. Zone represents the scope of a code execution environment. For ease of understanding, readers can compare Zone to a code execution sandbox. Different sandboxes are isolated. The sandbox can capture, intercept or modify some code behaviors, such as in Zone. The behavior of log output, Timer creation, and micro task scheduling can be captured, and Zone can also capture all unhandled exceptions. Let's look at the `runZoned(...)`method definition below :
 
-```
+``` dart 
 R runZoned<R>(R body(), {
-    Map zoneValues, 
-    ZoneSpecification zoneSpecification,
-    Function onError,
+   Map zoneValues, 
+   ZoneSpecification zoneSpecification,
+   Function onError,
 })
 
 ```
 
 -   `zoneValues`: Zone's private data can be obtained through examples `zone[key]`, which can be understood as the private data of each "sandbox".
-    
+   
 -   `zoneSpecification`: Some configuration of Zone, you can customize some code behaviors, such as intercepting log output behaviors, for example:
-    
-    The following is `print`the behavior of intercepting all call output logs in the application .
-    
-    ```
-    main() {
-      runZoned(() => runApp(MyApp()), zoneSpecification: new ZoneSpecification(
-          print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
-            parent.print(zone, "Intercepted: $line");
-          }),
-      );
-    }
-    
-    ```
-    
-    In this way, all `print`the behaviors of calling methods in our APP to output logs will be intercepted. In this way, we can also record logs in the application. When the application triggers an uncaught exception, the exception information and log will be reported uniformly. ZoneSpecification can also customize some other behaviors, and readers can view the API documentation.
-    
+   
+   The following is `print`the behavior of intercepting all call output logs in the application .
+   
+``` dart 
+   main() {
+     runZoned(() => runApp(MyApp()), zoneSpecification: new ZoneSpecification(
+         print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+           parent.print(zone, "Intercepted: $line");
+         }),
+     );
+   }
+   
+```
+   
+   In this way, all `print`the behaviors of calling methods in our APP to output logs will be intercepted. In this way, we can also record logs in the application. When the application triggers an uncaught exception, the exception information and log will be reported uniformly. ZoneSpecification can also customize some other behaviors, and readers can view the API documentation.
+   
 -   `onError`: Uncaught exception handling callback in Zone. If the developer provides an onError callback or `ZoneSpecification.handleUncaughtError`specifies an error handling callback, then this zone will become an error-zone. An uncaught exception occurs in the error-zone (regardless of synchronous or asynchronous ) Will call the callback provided by the developer, such as:
-    
-    ```
-    runZoned(() {
-        runApp(MyApp());
-    }, onError: (Object obj, StackTrace stack) {
-        var details=makeDetails(obj,stack);
-        reportError(details);
-    });
-    
-    ```
-    
-    In this way, combined with the above, `FlutterError.onError`we can catch all the errors in our Flutter application! It should be noted that errors that occur within the error-zone will not cross the boundary of the current error-zone. If you want to capture exceptions across the error-zone boundary, you can capture them through a common "source" zone, such as:
-    
-    ```
-    var future = new Future.value(499);
-    runZoned(() {
-        var future2 = future.then((_) { throw "error in first error-zone"; });
-        runZoned(() {
-            var future3 = future2.catchError((e) { print("Never reached!"); });
-        }, onError: (e) { print("unused error handler"); });
-    }, onError: (e) { print("catches error of first error-zone."); });
-    
-    ```
-    
+   
+``` dart 
+   runZoned(() {
+       runApp(MyApp());
+   }, onError: (Object obj, StackTrace stack) {
+       var details=makeDetails(obj,stack);
+       reportError(details);
+   });
+   
+```
+   
+   In this way, combined with the above, `FlutterError.onError`we can catch all the errors in our Flutter application! It should be noted that errors that occur within the error-zone will not cross the boundary of the current error-zone. If you want to capture exceptions across the error-zone boundary, you can capture them through a common "source" zone, such as:
+   
+``` dart 
+   var future = new Future.value(499);
+   runZoned(() {
+       var future2 = future.then((_) { throw "error in first error-zone"; });
+       runZoned(() {
+           var future3 = future2.catchError((e) { print("Never reached!"); });
+       }, onError: (e) { print("unused error handler"); });
+   }, onError: (e) { print("catches error of first error-zone."); });
+   
+```
+   
 
 ### to sum up
 
 Our final exception capture and reporting code is roughly as follows:
 
-```
+``` dart 
 void collectLog(String line){
-    ... //收集日志
+   ... //收集日志
 }
 void reportErrorAndLog(FlutterErrorDetails details){
-    ... //上报错误和日志逻辑
+   ... //上报错误和日志逻辑
 }
 
 FlutterErrorDetails makeDetails(Object obj, StackTrace stack){
-    ...// 构建错误信息
+   ...// 构建错误信息
 }
 
 void main() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    reportErrorAndLog(details);
-  };
-  runZoned(
-    () => runApp(MyApp()),
-    zoneSpecification: ZoneSpecification(
-      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
-        collectLog(line); // 收集日志
-      },
-    ),
-    onError: (Object obj, StackTrace stack) {
-      var details = makeDetails(obj, stack);
-      reportErrorAndLog(details);
-    },
-  );
+ FlutterError.onError = (FlutterErrorDetails details) {
+   reportErrorAndLog(details);
+ };
+ runZoned(
+   () => runApp(MyApp()),
+   zoneSpecification: ZoneSpecification(
+     print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+       collectLog(line); // 收集日志
+     },
+   ),
+   onError: (Object obj, StackTrace stack) {
+     var details = makeDetails(obj, stack);
+     reportErrorAndLog(details);
+   },
+ );
 }
 
 ```

@@ -6,11 +6,11 @@ The Flutter APP installation package will contain two parts: code and assets. As
 
 Like package management, Flutter also uses [`pubspec.yaml`](https://www.dartlang.org/tools/pub/pubspec)files to manage the resources required by the application, for example:
 
-```
+``` dart 
 flutter:
-  assets:
-    - assets/my_icon.png
-    - assets/background.png
+ assets:
+   - assets/my_icon.png
+   - assets/background.png
 
 ```
 
@@ -32,10 +32,10 @@ For example, if the following files are in the application directory:
 
 Then the `pubspec.yaml`file only needs to include:
 
-```
+``` dart 
 flutter:
-  assets:
-    - graphics/background.png
+ assets:
+   - graphics/background.png
 
 ```
 
@@ -54,12 +54,12 @@ Your app can [`AssetBundle`](https://docs.flutter.io/flutter/services/AssetBundl
 
 Generally, you can `DefaultAssetBundle.of()`load assets (such as JSON files) indirectly while the application is running, and `AssetBundle`you can `rootBundle`load these assets directly outside of the widget context or when other handles are not available , for example:
 
-```
+``` dart 
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 
 Future<String> loadAsset() async {
-  return await rootBundle.loadString('assets/config.json');
+ return await rootBundle.loadString('assets/config.json');
 }
 
 ```
@@ -95,24 +95,24 @@ If `Image`the width and height of the rendered image are not specified on the wi
 
 To load pictures, you can use [`AssetImage`](https://docs.flutter.io/flutter/painting/AssetImage-class.html)the class. For example, we can load the background image from the asset declaration above:
 
-```
+``` dart 
 Widget build(BuildContext context) {
-  return new DecoratedBox(
-    decoration: new BoxDecoration(
-      image: new DecorationImage(
-        image: new AssetImage('graphics/background.png'),
-      ),
-    ),
-  );
+ return new DecoratedBox(
+   decoration: new BoxDecoration(
+     image: new DecorationImage(
+       image: new AssetImage('graphics/background.png'),
+     ),
+   ),
+ );
 }
 
 ```
 
 Note that it `AssetImage`is not a widget, it is actually one `ImageProvider`. Sometimes you may expect to get a widget that displays pictures directly, then you can use `Image.asset()`methods such as:
 
-```
+``` dart 
 Widget build(BuildContext context) {
-  return Image.asset('graphics/background.png');
+ return Image.asset('graphics/background.png');
 }
 
 ```
@@ -133,14 +133,14 @@ For example, suppose your application depends on a package named "my_icons", whi
 
 Then load the image, use:
 
-```
- new AssetImage('icons/heart.png', package: 'my_icons')
+``` dart 
+new AssetImage('icons/heart.png', package: 'my_icons')
 
 ```
 
 or
 
-```
+``` dart 
 new Image.asset('icons/heart.png', package: 'my_icons')
 
 ```
@@ -159,10 +159,10 @@ Packages can also choose `lib/`to include `pubspec.yaml`resources in their folde
 
 To include the first image, it must be `pubspec.yaml`declared in the assets section:
 
-```
+``` dart 
 flutter:
-  assets:
-    - packages/fancy_backgrounds/backgrounds/background1.png
+ assets:
+   - packages/fancy_backgrounds/backgrounds/background1.png
 
 ```
 
@@ -177,19 +177,19 @@ The above resources are all in the flutter application. These resources can only
 The way to update the startup icon of the Flutter application is the same as that of updating the startup icon in the native Android or iOS application.
 
 -   Android
-    
-    In the root directory of the Flutter project, navigate to the `.../android/app/src/main/res`directory, which contains various resource folders (for example, the `mipmap-hdpi`placeholder image "ic_launcher.png" is already included, see Figure 2-8). Just follow the instructions in the [Android Developer Guide](https://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html#size) , replace it with the required resources, and follow the recommended icon size standards for each screen density (dpi).
-    
-    ![Figure 2-8](https://pcdn.flutterchina.club/imgs/2-8.png)
-    
-    > **Note:** If you rename a .png file, you must also at your `AndroidManifest.xml`'s label update name attribute.`<application>``android:icon`
-    
+   
+   In the root directory of the Flutter project, navigate to the `.../android/app/src/main/res`directory, which contains various resource folders (for example, the `mipmap-hdpi`placeholder image "ic_launcher.png" is already included, see Figure 2-8). Just follow the instructions in the [Android Developer Guide](https://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html#size) , replace it with the required resources, and follow the recommended icon size standards for each screen density (dpi).
+   
+   ![Figure 2-8](https://pcdn.flutterchina.club/imgs/2-8.png)
+   
+   > **Note:** If you rename a .png file, you must also at your `AndroidManifest.xml`'s label update name attribute.`<application>``android:icon`
+   
 -   iOS
-    
-    In the root directory of the Flutter project, navigate to `.../ios/Runner`. The directory `Assets.xcassets/AppIcon.appiconset`already contains placeholder pictures (see Figure 2-9), just replace them with pictures of appropriate size and keep the original file name.
-    
-    ![Figure 2-9](https://pcdn.flutterchina.club/imgs/2-9.png)
-    
+   
+   In the root directory of the Flutter project, navigate to `.../ios/Runner`. The directory `Assets.xcassets/AppIcon.appiconset`already contains placeholder pictures (see Figure 2-9), just replace them with pictures of appropriate size and keep the original file name.
+   
+   ![Figure 2-9](https://pcdn.flutterchina.club/imgs/2-9.png)
+   
 
 #### Update start page
 

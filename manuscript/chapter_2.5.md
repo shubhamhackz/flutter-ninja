@@ -18,10 +18,10 @@ When using Dart Observatory (or another Dart debugger, such as the debugger in I
 
 debugger()The statement takes an optional whenparameter, which you can specify to break only when certain conditions are true, as shown below:
 
-```
+``` dart 
 [void someFunction(double offset) {
-  debugger(when: offset > 30.0);
-  // ...
+ debugger(when: offset > 30.0);
+ // ...
 }](url)
 ```
 # print, debugPrint,flutter logs
@@ -46,35 +46,35 @@ To dump the state of the Widgets tree, calldebugDumpApp() (opens new window). As
 
 For example, this application:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-    new MaterialApp(
-      home: new AppHome(),
-    ),
-  );
+ runApp(
+   new MaterialApp(
+     home: new AppHome(),
+   ),
+ );
 }
 
 class AppHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Material(
-      child: new Center(
-        child: new FlatButton(
-          onPressed: () {
-            debugDumpApp();
-          },
-          child: new Text('Dump App'),
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return new Material(
+     child: new Center(
+       child: new FlatButton(
+         onPressed: () {
+           debugDumpApp();
+         },
+         child: new Text('Dump App'),
+       ),
+     ),
+   );
+ }
 }
 ```
 …Will output something like this (the exact details will vary according to the version of the framework, the size of the device, etc.):
-```
+``` dart 
 I/flutter ( 6559): WidgetsFlutterBinding - CHECKED MODE
 I/flutter ( 6559): RenderObjectToWidgetAdapter<RenderBox>([GlobalObjectKey RenderView(497039273)]; renderObject: RenderView)
 I/flutter ( 6559): └MaterialApp(state: _MaterialAppState(1009803148))
@@ -103,7 +103,7 @@ If you are trying to debug a layout issue, the Widget tree may not be detailed e
 To call debugDumpRenderTree(), you need to add import'package:flutter/rendering.dart';to your source file.
 
 The output of the above small example is as follows:
-```
+``` dart 
 I/flutter ( 6559): RenderView
 I/flutter ( 6559):  │ debug mode enabled - android
 I/flutter ( 6559):  │ window size: Size(1080.0, 1794.0) (in physical pixels)
@@ -129,7 +129,7 @@ If you write your own rendering object, you can overridedebugFillProperties() (o
 # Layer tree
 Readers can understand that the rendering tree can be layered, and the final drawing needs to be combined with different layers, and Layer is the layer that needs to be combined when drawing, if you try to debug the composition problem, you can usedebugDumpLayerTree() (opens new window). For the above example, it will output:
 
-```
+``` dart 
 I/flutter : TransformLayer
 I/flutter :  │ creator: [root]
 I/flutter :  │ offset: Offset(0.0, 0.0)
@@ -158,7 +158,7 @@ You can also calldebugDumpSemanticsTree() (opens new window)Get a dump of the se
 
 For the above example, it will output:
 
-```
+``` dart 
 I/flutter : SemanticsNode(0; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
 I/flutter :  ├SemanticsNode(1; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
 I/flutter :  │ └SemanticsNode(2; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4); canBeTapped)
@@ -169,7 +169,7 @@ I/flutter :    └SemanticsNode(4; Rect.fromLTRB(0.0, 0.0, 82.0, 36.0); canBeTap
 To find out where the start/end event occurred relative to the frame, you can switchdebugPrintBeginFrameBanner (opens new window)anddebugPrintEndFrameBanner (opens new window)Boolean to print the beginning and end of the frame to the console.
 
 E.g:
-```
+``` dart 
 I/flutter : ▄▄▄▄▄▄▄▄ Frame 12         30s 437.086ms ▄▄▄▄▄▄▄▄
 I/flutter : Debug print: Am I performing this work more than once per frame?
 I/flutter : Debug print: Am I performing this work more than once per frame?
@@ -198,7 +198,7 @@ To understand why your application is causing re-layout or re-drawing, you can s
 
 # Statistic application startup time
 To collect detailed information about the time it takes for a Flutter application to start, you can flutter runuse trace-startupand profileoptions at runtime .
-```
+``` dart 
 $ flutter run --trace-startup --profile
 ```
 The trace output is saved start_up_info.jsonin the build directory in the Flutter project directory. The output lists the time taken from the start of the application to these trace events (captured in microseconds):
@@ -208,17 +208,17 @@ When showing the first frame of the app.
 When initializing the Flutter framework.
 When the Flutter framework is initialized.
 like :
-```
+``` dart 
 {
-  "engineEnterTimestampMicros": 96025565262,
-  "timeToFirstFrameMicros": 2171978,
-  "timeToFrameworkInitMicros": 514585,
-  "timeAfterFrameworkInitMicros": 1657393
+ "engineEnterTimestampMicros": 96025565262,
+ "timeToFirstFrameMicros": 2171978,
+ "timeToFrameworkInitMicros": 514585,
+ "timeAfterFrameworkInitMicros": 1657393
 }
 ```
 # Track Dart code performance
 To perform custom performance tracking and measure the wall/CPU time of any code segment in Dart (similar to using systrace on Android (opens new window)). Use dart:developerof Timeline (opens new window)Tools to include the code block you want to test, for example:
-```
+``` dart 
 Timeline.startSync('interesting function');
 // iWonderHowLongThisTakes();
 Timeline.finishSync();

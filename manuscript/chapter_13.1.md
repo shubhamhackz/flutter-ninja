@@ -12,32 +12,32 @@ Note that "localized values ​​and resources" refer to the different resource
 
 By default, the components in the Flutter SDK only provide U.S. English localized resources (mainly text). To add support for other languages, the application must add a package dependency called "flutter_localizations", and then need `MaterialApp`to do some configuration in it. To use the `flutter_localizations`package, you first need to add dependencies to the `pubspec.yaml`file:
 
-```
+``` dart 
 dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
+ flutter:
+   sdk: flutter
+ flutter_localizations:
+   sdk: flutter
 
 ```
 
 Next, download the `flutter_localizations`library, and then specify `MaterialApp`the `localizationsDelegates`sum `supportedLocales`:
 
-```
+``` dart 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 new MaterialApp(
- localizationsDelegates: [
-   // 本地化的代理类
-   GlobalMaterialLocalizations.delegate,
-   GlobalWidgetsLocalizations.delegate,
+localizationsDelegates: [
+  // 本地化的代理类
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+],
+supportedLocales: [
+   const Locale('en', 'US'), // 美国英语
+   const Locale('zh', 'CN'), // 中文简体
+   //其它Locales
  ],
- supportedLocales: [
-    const Locale('en', 'US'), // 美国英语
-    const Locale('zh', 'CN'), // 中文简体
-    //其它Locales
-  ],
-  // ...
+ // ...
 )
 
 ```
@@ -52,14 +52,14 @@ new MaterialApp(
 
 [`Locale`](https://docs.flutter.io/flutter/dart-ui/Locale-class.html)The class is used to identify the user's locale. It includes two flags, language and country, such as:
 
-```
+``` dart 
 const Locale('zh', 'CN') // 中文简体
 
 ```
 
 We can always get the current locale of the application in the following ways:
 
-```
+``` dart 
 Locale myLocale = Localizations.localeOf(context);
 
 ```
@@ -72,32 +72,32 @@ When we change the system language setting, the Localizations component in the A
 
 We can monitor the locale change event through `localeResolutionCallback`or `localeListResolutionCallback`callback, let’s take a look at `localeResolutionCallback`the callback function signature:
 
-```
+``` dart 
 Locale Function(Locale locale, Iterable<Locale> supportedLocales)
 
 ```
 
 -   The parameter `locale`value is the current current system language setting. This locale is the current locale of the system when the application starts or the user dynamically changes the system language setting. When the developer manually specifies the locale of the APP, then this locale parameter represents the locale specified by the developer, and the system locale will be ignored at this time, such as:
-    
-    ```
-    MaterialApp(
-     ...
-     locale: const Locale('en', 'US'), //手动指定locale
-     ...
-    )
-    
-    ```
-    
-    In the above example, the application locale is manually designated as American English. Even if the current language of the device is simplified Chinese, the locale in the application will still be American English. If it `locale`is `null`, it means that Flutter has not been able to obtain the locale information of the device, so we `locale`must first empty it before using it.
-    
+   
+``` dart 
+   MaterialApp(
+    ...
+    locale: const Locale('en', 'US'), //手动指定locale
+    ...
+   )
+   
+```
+   
+   In the above example, the application locale is manually designated as American English. Even if the current language of the device is simplified Chinese, the locale in the application will still be American English. If it `locale`is `null`, it means that Flutter has not been able to obtain the locale information of the device, so we `locale`must first empty it before using it.
+   
 -   `supportedLocales`The list of locales supported for the current application is `supportedLocales`registered by the developer through attributes in MaterialApp .
-    
+   
 -   The return value is one `Locale`, which `Locale`is ultimately used by the Flutter APP `Locale`. Usually a default is returned when the locale is not supported `Locale`.
-    
+   
 
 `localeListResolutionCallback`The `localeResolutionCallback`only difference is in the first parameter type. The former receives a `Locale`list, while the latter receives a single `Locale`.
 
-```
+``` dart 
 Locale Function(List<Locale> locales, Iterable<Locale> supportedLocales)
 
 ```
@@ -116,16 +116,16 @@ The localization value is loaded from `Localizations`the [LocalizationsDelegates
 
 In large applications, different modules or packages may be bundled with their own localized values. This is why the `Localizations`management object table is used . To use an object produced by one `LocalizationsDelegate`of the `load`methods, you can specify a `BuildContext`and object type to find it. For example, the localized strings of the Material component library are defined by the [MaterialLocalizations](https://docs.flutter.io/flutter/material/MaterialLocalizations-class.html) class, and the instances of this class are created by the [MaterialApp](https://docs.flutter.io/flutter/material/MaterialApp-class.html) class `LocalizationDelegate`. They can be obtained as follows:
 
-```
+``` dart 
 Localizations.of<MaterialLocalizations>(context, MaterialLocalizations);
 
 ```
 
 This special `Localizations.of()`expression will be used often, so the MaterialLocalizations class provides a convenience method:
 
-```
+``` dart 
 static MaterialLocalizations of(BuildContext context) {
-  return Localizations.of<MaterialLocalizations>(context, MaterialLocalizations);
+ return Localizations.of<MaterialLocalizations>(context, MaterialLocalizations);
 }
 
 // 可以直接调用便捷方法

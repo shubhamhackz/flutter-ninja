@@ -17,86 +17,86 @@ Once your Flutter application has a file location reference, you can use the [da
 Let's take the counter as an example to realize that the number of clicks can be restored after the application exits and restarts. Here, we use files to save data:
 
 1.  Introduce the PathProvider plug-in; `pubspec.yaml`add the following statement in the file:
-    
-    ```
-    path_provider: ^0.4.1
-    
-    ```
-    
-    After adding, execute to `flutter packages get`get it, the version number may change over time, readers can use the latest version.
-    
+   
+``` dart 
+   path_provider: ^0.4.1
+   
+```
+   
+   After adding, execute to `flutter packages get`get it, the version number may change over time, readers can use the latest version.
+   
 2.  achieve:
-    
-    ```
-    import 'dart:io';
-    import 'dart:async';
-    import 'package:flutter/material.dart';
-    import 'package:path_provider/path_provider.dart';
-    
-    class FileOperationRoute extends StatefulWidget {
-      FileOperationRoute({Key key}) : super(key: key);
-    
-      @override
-      _FileOperationRouteState createState() => new _FileOperationRouteState();
-    }
-    
-    class _FileOperationRouteState extends State<FileOperationRoute> {
-      int _counter;
-    
-      @override
-      void initState() {
-        super.initState();
-        //从文件读取点击次数
-        _readCounter().then((int value) {
-          setState(() {
-            _counter = value;
-          });
-        });
-      }
-    
-      Future<File> _getLocalFile() async {
-        // 获取应用目录
-        String dir = (await getApplicationDocumentsDirectory()).path;
-        return new File('$dir/counter.txt');
-      }
-    
-      Future<int> _readCounter() async {
-        try {
-          File file = await _getLocalFile();
-          // 读取点击次数（以字符串）
-          String contents = await file.readAsString();
-          return int.parse(contents);
-        } on FileSystemException {
-          return 0;
-        }
-      }
-    
-      Future<Null> _incrementCounter() async {
-        setState(() {
-          _counter++;
-        });
-        // 将点击次数以字符串类型写到文件中
-        await (await _getLocalFile()).writeAsString('$_counter');
-      }
-    
-      @override
-      Widget build(BuildContext context) {
-        return new Scaffold(
-          appBar: new AppBar(title: new Text('文件操作')),
-          body: new Center(
-            child: new Text('点击了 $_counter 次'),
-          ),
-          floatingActionButton: new FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: new Icon(Icons.add),
-          ),
-        );
-      }
-    }
-    
-    ```
-    
-    The above code is relatively simple and will not be repeated. It should be noted that this example is only for demonstrating file reading and writing. In actual development, if you want to store some simple data, it will be easier to use the shared_preferences plugin.
-    
-    > Note that the API of the Dart IO library to manipulate files is very rich, but this book is not an introduction to the Dart language, so it will not be explained in detail. Readers can learn by themselves if they want.
+   
+``` dart 
+   import 'dart:io';
+   import 'dart:async';
+   import 'package:flutter/material.dart';
+   import 'package:path_provider/path_provider.dart';
+   
+   class FileOperationRoute extends StatefulWidget {
+     FileOperationRoute({Key key}) : super(key: key);
+   
+     @override
+     _FileOperationRouteState createState() => new _FileOperationRouteState();
+   }
+   
+   class _FileOperationRouteState extends State<FileOperationRoute> {
+     int _counter;
+   
+     @override
+     void initState() {
+       super.initState();
+       //从文件读取点击次数
+       _readCounter().then((int value) {
+         setState(() {
+           _counter = value;
+         });
+       });
+     }
+   
+     Future<File> _getLocalFile() async {
+       // 获取应用目录
+       String dir = (await getApplicationDocumentsDirectory()).path;
+       return new File('$dir/counter.txt');
+     }
+   
+     Future<int> _readCounter() async {
+       try {
+         File file = await _getLocalFile();
+         // 读取点击次数（以字符串）
+         String contents = await file.readAsString();
+         return int.parse(contents);
+       } on FileSystemException {
+         return 0;
+       }
+     }
+   
+     Future<Null> _incrementCounter() async {
+       setState(() {
+         _counter++;
+       });
+       // 将点击次数以字符串类型写到文件中
+       await (await _getLocalFile()).writeAsString('$_counter');
+     }
+   
+     @override
+     Widget build(BuildContext context) {
+       return new Scaffold(
+         appBar: new AppBar(title: new Text('文件操作')),
+         body: new Center(
+           child: new Text('点击了 $_counter 次'),
+         ),
+         floatingActionButton: new FloatingActionButton(
+           onPressed: _incrementCounter,
+           tooltip: 'Increment',
+           child: new Icon(Icons.add),
+         ),
+       );
+     }
+   }
+   
+```
+   
+   The above code is relatively simple and will not be repeated. It should be noted that this example is only for demonstrating file reading and writing. In actual development, if you want to store some simple data, it will be easier to use the shared_preferences plugin.
+   
+   > Note that the API of the Dart IO library to manipulate files is very rich, but this book is not an introduction to the Dart language, so it will not be explained in detail. Readers can learn by themselves if they want.

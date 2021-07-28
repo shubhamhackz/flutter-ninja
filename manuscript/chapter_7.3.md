@@ -4,17 +4,17 @@ In Flutter development, state management is an eternal topic. The general princi
 
 Define the event:
 
-```
+``` dart 
 enum Event{
-  login,
-  ... //省略其它事件
+ login,
+ ... //省略其它事件
 }
 
 ```
 
 The login page code is roughly as follows:
 
-```
+``` dart 
 // 登录状态改变后发布状态改变事件
 bus.emit(Event.login);
 
@@ -22,23 +22,23 @@ bus.emit(Event.login);
 
 Pages that depend on login status:
 
-```
+``` dart 
 void onLoginChanged(e){
-  //登录状态变化处理逻辑
+ //登录状态变化处理逻辑
 }
 
 @override
 void initState() {
-  //订阅登录状态改变事件
-  bus.on(Event.login,onLogin);
-  super.initState();
+ //订阅登录状态改变事件
+ bus.on(Event.login,onLogin);
+ super.initState();
 }
 
 @override
 void dispose() {
-  //取消订阅
-  bus.off(Event.login,onLogin);
-  super.dispose();
+ //取消订阅
+ bus.off(Event.login,onLogin);
+ super.dispose();
 }
 
 ```
@@ -56,19 +56,19 @@ In order to strengthen the reader's understanding, we do not directly look at th
 
 First of all, we need to save the data `InheritedWidget`that needs to be shared . Because the specific business data type is unpredictable, for versatility, we use generics and define a generic `InheritedProvider`class, which inherits from `InheritedWidget`:
 
-```
+``` dart 
 // 一个通用的InheritedWidget，保存任需要跨组件共享的状态
 class InheritedProvider<T> extends InheritedWidget {
-  InheritedProvider({@required this.data, Widget child}) : super(child: child);
+ InheritedProvider({@required this.data, Widget child}) : super(child: child);
 
-  //共享状态使用泛型
-  final T data;
+ //共享状态使用泛型
+ final T data;
 
-  @override
-  bool updateShouldNotify(InheritedProvider<T> old) {
-    //在此简单返回true，则每次更新都会调用依赖其的子孙节点的`didChangeDependencies`。
-    return true;
-  }
+ @override
+ bool updateShouldNotify(InheritedProvider<T> old) {
+   //在此简单返回true，则每次更新都会调用依赖其的子孙节点的`didChangeDependencies`。
+   return true;
+ }
 }
 
 ```
@@ -80,26 +80,26 @@ There is a place to save the data, then what we need to do next is to rebuild wh
 
 The first problem is actually very easy to solve. Of course, we can use the eventBus introduced before for event notification, but in order to be closer to Flutter development, we use the `ChangeNotifier`class provided in the Flutter SDK , which inherits from `Listenable`and implements a Flutter-style release The subscriber-subscriber model `ChangeNotifier`is roughly defined as follows:
 
-```
+``` dart 
 class ChangeNotifier implements Listenable {
-  List listeners=[];
-  @override
-  void addListener(VoidCallback listener) {
-     //添加监听器
-     listeners.add(listener);
-  }
-  @override
-  void removeListener(VoidCallback listener) {
-    //移除监听器
-    listeners.remove(listener);
-  }
+ List listeners=[];
+ @override
+ void addListener(VoidCallback listener) {
+    //添加监听器
+    listeners.add(listener);
+ }
+ @override
+ void removeListener(VoidCallback listener) {
+   //移除监听器
+   listeners.remove(listener);
+ }
 
-  void notifyListeners() {
-    //通知所有监听器，触发监听器回调 
-    listeners.forEach((item)=>item());
-  }
+ void notifyListeners() {
+   //通知所有监听器，触发监听器回调 
+   listeners.forEach((item)=>item());
+ }
 
-  ... //省略无关代码
+ ... //省略无关代码
 }
 
 ```
@@ -108,71 +108,71 @@ We can call `addListener()`and `removeListener()`to add, remove listener (subscr
 
 Now, we put the state to be shared in a Model class, and then let it inherit from `ChangeNotifier`, so that when the shared state changes, we only need to call `notifyListeners()`to notify the subscriber, and then the subscriber will rebuild `InheritedProvider`, which is also the second The answer! Next we will implement this subscriber class:
 
-```
+``` dart 
 
 class ChangeNotifierProvider<T extends ChangeNotifier> extends StatefulWidget {
-  ChangeNotifierProvider({
-    Key key,
-    this.data,
-    this.child,
-  });
+ ChangeNotifierProvider({
+   Key key,
+   this.data,
+   this.child,
+ });
 
-  final Widget child;
-  final T data;
+ final Widget child;
+ final T data;
 
-  //定义一个便捷方法，方便子树中的widget获取共享数据
-  static T of<T>(BuildContext context) {
-    final type = _typeOf<InheritedProvider<T>>();
-    final provider =  context.dependOnInheritedWidgetOfExactType<InheritedProvider<T>>();
-    return provider.data;
-  }
+ //定义一个便捷方法，方便子树中的widget获取共享数据
+ static T of<T>(BuildContext context) {
+   final type = _typeOf<InheritedProvider<T>>();
+   final provider =  context.dependOnInheritedWidgetOfExactType<InheritedProvider<T>>();
+   return provider.data;
+ }
 
-  @override
-  _ChangeNotifierProviderState<T> createState() => _ChangeNotifierProviderState<T>();
+ @override
+ _ChangeNotifierProviderState<T> createState() => _ChangeNotifierProviderState<T>();
 }
 
 ```
 
 This class inherits `StatefulWidget`, and then defines a `of()`static method for subclasses to easily obtain `InheritedProvider`the shared state (model) stored in the Widget tree . Below we implement the corresponding `_ChangeNotifierProviderState`class of this class:
 
-```
+``` dart 
 class _ChangeNotifierProviderState<T extends ChangeNotifier> extends State<ChangeNotifierProvider<T>> {
-  void update() {
-    //如果数据发生变化（model类调用了notifyListeners），重新构建InheritedProvider
-    setState(() => {});
-  }
+ void update() {
+   //如果数据发生变化（model类调用了notifyListeners），重新构建InheritedProvider
+   setState(() => {});
+ }
 
-  @override
-  void didUpdateWidget(ChangeNotifierProvider<T> oldWidget) {
-    //当Provider更新时，如果新旧数据不"=="，则解绑旧数据监听，同时添加新数据监听
-    if (widget.data != oldWidget.data) {
-      oldWidget.data.removeListener(update);
-      widget.data.addListener(update);
-    }
-    super.didUpdateWidget(oldWidget);
-  }
+ @override
+ void didUpdateWidget(ChangeNotifierProvider<T> oldWidget) {
+   //当Provider更新时，如果新旧数据不"=="，则解绑旧数据监听，同时添加新数据监听
+   if (widget.data != oldWidget.data) {
+     oldWidget.data.removeListener(update);
+     widget.data.addListener(update);
+   }
+   super.didUpdateWidget(oldWidget);
+ }
 
-  @override
-  void initState() {
-    // 给model添加监听器
-    widget.data.addListener(update);
-    super.initState();
-  }
+ @override
+ void initState() {
+   // 给model添加监听器
+   widget.data.addListener(update);
+   super.initState();
+ }
 
-  @override
-  void dispose() {
-    // 移除model的监听器
-    widget.data.removeListener(update);
-    super.dispose();
-  }
+ @override
+ void dispose() {
+   // 移除model的监听器
+   widget.data.removeListener(update);
+   super.dispose();
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    return InheritedProvider<T>(
-      data: widget.data,
-      child: widget.child,
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return InheritedProvider<T>(
+     data: widget.data,
+     child: widget.child,
+   );
+ }
 }
 
 ```
@@ -189,77 +189,77 @@ We need to implement a function that displays the total price of all items in th
 
 Define a `Item`class to represent product information:
 
-```
+``` dart 
 class Item {
-  Item(this.price, this.count);
-  double price; //商品单价
-  int count; // 商品份数
-  //... 省略其它属性
+ Item(this.price, this.count);
+ double price; //商品单价
+ int count; // 商品份数
+ //... 省略其它属性
 }
 
 ```
 
 Define a `CartModel`class that saves product data in the shopping cart :
 
-```
+``` dart 
 class CartModel extends ChangeNotifier {
-  // 用于保存购物车中商品列表
-  final List<Item> _items = [];
+ // 用于保存购物车中商品列表
+ final List<Item> _items = [];
 
-  // 禁止改变购物车里的商品信息
-  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+ // 禁止改变购物车里的商品信息
+ UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
 
-  // 购物车中商品的总价
-  double get totalPrice =>
-      _items.fold(0, (value, item) => value + item.count * item.price);
+ // 购物车中商品的总价
+ double get totalPrice =>
+     _items.fold(0, (value, item) => value + item.count * item.price);
 
-  // 将 [item] 添加到购物车。这是唯一一种能从外部改变购物车的方法。
-  void add(Item item) {
-    _items.add(item);
-    // 通知监听器（订阅者），重新构建InheritedProvider， 更新状态。
-    notifyListeners();
-  }
+ // 将 [item] 添加到购物车。这是唯一一种能从外部改变购物车的方法。
+ void add(Item item) {
+   _items.add(item);
+   // 通知监听器（订阅者），重新构建InheritedProvider， 更新状态。
+   notifyListeners();
+ }
 }
 
 ```
 
 `CartModel`The model class to be shared across components. Finally, we build a sample page:
 
-```
+``` dart 
 class ProviderRoute extends StatefulWidget {
-  @override
-  _ProviderRouteState createState() => _ProviderRouteState();
+ @override
+ _ProviderRouteState createState() => _ProviderRouteState();
 }
 
 class _ProviderRouteState extends State<ProviderRoute> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ChangeNotifierProvider<CartModel>(
-        data: CartModel(),
-        child: Builder(builder: (context) {
-          return Column(
-            children: <Widget>[
-              Builder(builder: (context){
-                var cart=ChangeNotifierProvider.of<CartModel>(context);
-                return Text("总价: ${cart.totalPrice}");
-              }),
-              Builder(builder: (context){
-                print("RaisedButton build"); //在后面优化部分会用到
-                return RaisedButton(
-                  child: Text("添加商品"),
-                  onPressed: () {
-                    //给购物车中添加商品，添加后总价会更新
-                    ChangeNotifierProvider.of<CartModel>(context).add(Item(20.0, 1));
-                  },
-                );
-              }),
-            ],
-          );
-        }),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Center(
+     child: ChangeNotifierProvider<CartModel>(
+       data: CartModel(),
+       child: Builder(builder: (context) {
+         return Column(
+           children: <Widget>[
+             Builder(builder: (context){
+               var cart=ChangeNotifierProvider.of<CartModel>(context);
+               return Text("总价: ${cart.totalPrice}");
+             }),
+             Builder(builder: (context){
+               print("RaisedButton build"); //在后面优化部分会用到
+               return RaisedButton(
+                 child: Text("添加商品"),
+                 onPressed: () {
+                   //给购物车中添加商品，添加后总价会更新
+                   ChangeNotifierProvider.of<CartModel>(context).add(Item(20.0, 1));
+                 },
+               );
+             }),
+           ],
+         );
+       }),
+     ),
+   );
+ }
 }
 
 ```
@@ -290,10 +290,10 @@ What we have achieved above `ChangeNotifierProvider`is that there are two obviou
 
 Let's first look at the code that builds the text that displays the total price:
 
-```
+``` dart 
 Builder(builder: (context){
-  var cart=ChangeNotifierProvider.of<CartModel>(context);
-  return Text("总价: ${cart.totalPrice}");
+ var cart=ChangeNotifierProvider.of<CartModel>(context);
+ return Text("总价: ${cart.totalPrice}");
 })
 
 ```
@@ -305,36 +305,36 @@ This code has two points that can be optimized:
 
 In order to optimize these two problems, we can encapsulate a `Consumer`Widget as follows:
 
-```
+``` dart 
 // 这是一个便捷类，会获得当前context和指定数据类型的Provider
 class Consumer<T> extends StatelessWidget {
-  Consumer({
-    Key key,
-    @required this.builder,
-    this.child,
-  })  : assert(builder != null),
-        super(key: key);
+ Consumer({
+   Key key,
+   @required this.builder,
+   this.child,
+ })  : assert(builder != null),
+       super(key: key);
 
-  final Widget child;
+ final Widget child;
 
-  final Widget Function(BuildContext context, T value) builder;
+ final Widget Function(BuildContext context, T value) builder;
 
-  @override
-  Widget build(BuildContext context) {
-    return builder(
-      context,
-      ChangeNotifierProvider.of<T>(context), //自动获取Model
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return builder(
+     context,
+     ChangeNotifierProvider.of<T>(context), //自动获取Model
+   );
+ }
 }
 
 ```
 
 `Consumer`The implementation is very simple. It `ChangeNotifierProvider.of`obtains the corresponding Model by specifying template parameters and then automatically calling it internally , and `Consumer`the name itself also has exact semantics (consumer). Now the above code block can be optimized as follows:
 
-```
+``` dart 
 Consumer<CartModel>(
-  builder: (context, cart)=> Text("总价: ${cart.totalPrice}");
+ builder: (context, cart)=> Text("总价: ${cart.totalPrice}");
 )
 
 ```
@@ -345,15 +345,15 @@ Isn't it elegant!
 
 The above code also has a performance problem, just where the code for "add button" is built:
 
-```
+``` dart 
 Builder(builder: (context) {
-  print("RaisedButton build"); // 构建时输出日志
-  return RaisedButton(
-    child: Text("添加商品"),
-    onPressed: () {
-      ChangeNotifierProvider.of<CartModel>(context).add(Item(20.0, 1));
-    },
-  );
+ print("RaisedButton build"); // 构建时输出日志
+ return RaisedButton(
+   child: Text("添加商品"),
+   onPressed: () {
+     ChangeNotifierProvider.of<CartModel>(context).add(Item(20.0, 1));
+   },
+ );
 }
 
 ```
@@ -362,40 +362,40 @@ After we click the "Add Product" button, since the total price of the shopping c
 
 The cause of the problem is clear, so how can we avoid this unnecessary refactoring? Since the button is rebuilt because the button has `InheritedWidget`established a dependency relationship, then we only need to break or remove this dependency relationship. So how to remove `InheritedWidget`the dependency of the button and ? Our previous section `InheritedWidget`when already talked about: Call `dependOnInheritedWidgetOfExactType()`and `getElementForInheritedWidgetOfExactType()`the difference is that the former will register dependencies, and the latter will not. So we only need to change `ChangeNotifierProvider.of`the implementation to the following:
 
-```
- //添加一个listen参数，表示是否建立依赖关系
-  static T of<T>(BuildContext context, {bool listen = true}) {
-    final type = _typeOf<InheritedProvider<T>>();
-    final provider = listen
-        ? context.dependOnInheritedWidgetOfExactType<InheritedProvider<T>>()
-        : context.getElementForInheritedWidgetOfExactType<InheritedProvider<T>>()?.widget
-            as InheritedProvider<T>;
-    return provider.data;
-  }
+``` dart 
+//添加一个listen参数，表示是否建立依赖关系
+ static T of<T>(BuildContext context, {bool listen = true}) {
+   final type = _typeOf<InheritedProvider<T>>();
+   final provider = listen
+       ? context.dependOnInheritedWidgetOfExactType<InheritedProvider<T>>()
+       : context.getElementForInheritedWidgetOfExactType<InheritedProvider<T>>()?.widget
+           as InheritedProvider<T>;
+   return provider.data;
+ }
 
 ```
 
 Then we change the calling part of the code to:
 
-```
+``` dart 
 Column(
-    children: <Widget>[
-      Consumer<CartModel>(
-        builder: (BuildContext context, cart) =>Text("总价: ${cart.totalPrice}"),
-      ),
-      Builder(builder: (context) {
-        print("RaisedButton build");
-        return RaisedButton(
-          child: Text("添加商品"),
-          onPressed: () {
-            // listen 设为false，不建立依赖关系
-            ChangeNotifierProvider.of<CartModel>(context, listen: false)
-                .add(Item(20.0, 1));
-          },
-        );
-      })
-    ],
-  )
+   children: <Widget>[
+     Consumer<CartModel>(
+       builder: (BuildContext context, cart) =>Text("总价: ${cart.totalPrice}"),
+     ),
+     Builder(builder: (context) {
+       print("RaisedButton build");
+       return RaisedButton(
+         child: Text("添加商品"),
+         onPressed: () {
+           // listen 设为false，不建立依赖关系
+           ChangeNotifierProvider.of<CartModel>(context, listen: false)
+               .add(Item(20.0, 1));
+         },
+       );
+     })
+   ],
+ )
 
 ```
 

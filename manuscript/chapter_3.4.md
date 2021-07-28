@@ -15,10 +15,10 @@ Material component library offers a variety of components such as buttons `Raise
 
 It `RaisedButton`is very simple to use , such as:
 
-```
+``` dart 
 RaisedButton(
-  child: Text("normal"),
-  onPressed: () {},
+ child: Text("normal"),
+ onPressed: () {},
 );
 
 ```
@@ -31,10 +31,10 @@ RaisedButton(
 
 Using FlatButton is also very simple, the code is as follows:
 
-```
+``` dart 
 FlatButton(
-  child: Text("normal"),
-  onPressed: () {},
+ child: Text("normal"),
+ onPressed: () {},
 )
 
 ```
@@ -47,10 +47,10 @@ FlatButton(
 
 The use is `OutlineButton`also very simple, the code is as follows:
 
-```
+``` dart 
 OutlineButton(
-  child: Text("normal"),
-  onPressed: () {},
+ child: Text("normal"),
+ onPressed: () {},
 )
 
 ```
@@ -63,10 +63,10 @@ OutlineButton(
 
 code show as below:
 
-```
+``` dart 
 IconButton(
-  icon: Icon(Icons.thumb_up),
-  onPressed: () {},
+ icon: Icon(Icons.thumb_up),
+ onPressed: () {},
 )
 
 ```
@@ -79,21 +79,21 @@ IconButton(
 
 code show as below:
 
-```
+``` dart 
 RaisedButton.icon(
-  icon: Icon(Icons.send),
-  label: Text("发送"),
-  onPressed: _onPressed,
+ icon: Icon(Icons.send),
+ label: Text("发送"),
+ onPressed: _onPressed,
 ),
 OutlineButton.icon(
-  icon: Icon(Icons.add),
-  label: Text("添加"),
-  onPressed: _onPressed,
+ icon: Icon(Icons.add),
+ label: Text("添加"),
+ onPressed: _onPressed,
 ),
 FlatButton.icon(
-  icon: Icon(Icons.info),
-  label: Text("详情"),
-  onPressed: _onPressed,
+ icon: Icon(Icons.info),
+ label: Text("详情"),
+ onPressed: _onPressed,
 ),
 
 ```
@@ -102,20 +102,20 @@ FlatButton.icon(
 
 The appearance of the button can be defined by its properties. Different button properties are similar. Let's take FlatButton as an example to introduce the common button properties. For detailed information, please refer to the API documentation.
 
-```
+``` dart 
 const FlatButton({
-  ...  
-  @required this.onPressed, //按钮点击回调
-  this.textColor, //按钮文字颜色
-  this.disabledTextColor, //按钮禁用时的文字颜色
-  this.color, //按钮背景颜色
-  this.disabledColor,//按钮禁用时的背景颜色
-  this.highlightColor, //按钮按下时的背景颜色
-  this.splashColor, //点击时，水波动画中水波的颜色
-  this.colorBrightness,//按钮主题，默认是浅色主题 
-  this.padding, //按钮的填充
-  this.shape, //外形
-  @required this.child, //按钮的内容
+ ...  
+ @required this.onPressed, //按钮点击回调
+ this.textColor, //按钮文字颜色
+ this.disabledTextColor, //按钮禁用时的文字颜色
+ this.color, //按钮背景颜色
+ this.disabledColor,//按钮禁用时的背景颜色
+ this.highlightColor, //按钮按下时的背景颜色
+ this.splashColor, //点击时，水波动画中水波的颜色
+ this.colorBrightness,//按钮主题，默认是浅色主题 
+ this.padding, //按钮的填充
+ this.shape, //外形
+ @required this.child, //按钮的内容
 })
 
 ```
@@ -130,15 +130,15 @@ Define a button with a blue background and rounded corners on both sides. The ef
 
 code show as below:
 
-```
+``` dart 
 FlatButton(
-  color: Colors.blue,
-  highlightColor: Colors.blue[700],
-  colorBrightness: Brightness.dark,
-  splashColor: Colors.grey,
-  child: Text("Submit"),
-  shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-  onPressed: () {},
+ color: Colors.blue,
+ highlightColor: Colors.blue[700],
+ colorBrightness: Brightness.dark,
+ splashColor: Colors.grey,
+ child: Text("Submit"),
+ shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+ onPressed: () {},
 )
 
 ```
@@ -153,13 +153,13 @@ Observant readers may find that this button has no shadow (and after clicking it
 
 Is it textured? The reason for this is that `RaisedButton`there is a shadow configuration by default:
 
-```
+``` dart 
 const RaisedButton({
-  ...
-  this.elevation = 2.0, //正常状态下的阴影
-  this.highlightElevation = 8.0,//按下时的阴影
-  this.disabledElevation = 0.0,// 禁用时的阴影
-  ...
+ ...
+ this.elevation = 2.0, //正常状态下的阴影
+ this.highlightElevation = 8.0,//按下时的阴影
+ this.disabledElevation = 0.0,// 禁用时的阴影
+ ...
 }
 
 ```
