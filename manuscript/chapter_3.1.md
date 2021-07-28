@@ -19,30 +19,30 @@ Readers should keep these two points in mind.
 
 Let's first look at the declaration of the Widget class:
 
-```
+``` dart 
 @immutable
 abstract class Widget extends DiagnosticableTree {
-  const Widget({ this.key });
-  final Key key;
+ const Widget({ this.key });
+ final Key key;
 
-  @protected
-  Element createElement();
+ @protected
+ Element createElement();
 
-  @override
-  String toStringShort() {
-    return key == null ? '$runtimeType' : '$runtimeType-$key';
-  }
+ @override
+ String toStringShort() {
+   return key == null ? '$runtimeType' : '$runtimeType-$key';
+ }
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.defaultDiagnosticsTreeStyle = DiagnosticsTreeStyle.dense;
-  }
+ @override
+ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+   super.debugFillProperties(properties);
+   properties.defaultDiagnosticsTreeStyle = DiagnosticsTreeStyle.dense;
+ }
 
-  static bool canUpdate(Widget oldWidget, Widget newWidget) {
-    return oldWidget.runtimeType == newWidget.runtimeType
-        && oldWidget.key == newWidget.key;
-  }
+ static bool canUpdate(Widget oldWidget, Widget newWidget) {
+   return oldWidget.runtimeType == newWidget.runtimeType
+       && oldWidget.key == newWidget.key;
+ }
 }
 
 ```
@@ -61,7 +61,7 @@ In addition, the `Widget`class itself is an abstract class, the core of which is
 
 In the previous section, we have introduced a simple `StatelessWidget`, `StatelessWidget`relatively simple, it inherits from `Widget`class, override the `createElement()`method:
 
-```
+``` dart 
 @override
 StatelessElement createElement() => new StatelessElement(this);
 
@@ -71,26 +71,26 @@ StatelessElement createElement() => new StatelessElement(this);
 
 `StatelessWidget`Used in scenarios that do not need to maintain state, it usually `build`constructs the UI by nesting other Widgets in the method, and recursively constructs its nested Widgets during the construction process. Let's look at a simple example:
 
-```
+``` dart 
 class Echo extends StatelessWidget {
-  const Echo({
-    Key key,  
-    @required this.text,
-    this.backgroundColor:Colors.grey,
-  }):super(key:key);
+ const Echo({
+   Key key,  
+   @required this.text,
+   this.backgroundColor:Colors.grey,
+ }):super(key:key);
 
-  final String text;
-  final Color backgroundColor;
+ final String text;
+ final Color backgroundColor;
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        color: backgroundColor,
-        child: Text(text),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Center(
+     child: Container(
+       color: backgroundColor,
+       child: Text(text),
+     ),
+   );
+ }
 }
 
 ```
@@ -101,9 +101,9 @@ The above code implements a `Echo`widget that echoes a string .
 
 Then we can use it as follows:
 
-```
+``` dart 
 Widget build(BuildContext context) {
-  return Echo(text: "hello world");
+ return Echo(text: "hello world");
 }
 
 ```
@@ -116,24 +116,24 @@ The effect after running is shown in Figure 3-1:
 
 `build`The method has a `context`parameter, which is `BuildContext`an instance of the class, which represents the context of the current widget in the widget tree. Each widget corresponds to a context object (because each widget is a node on the widget tree). In fact, it `context`is a handle for performing "related operations" on the position of the current widget in the widget tree. For example, it provides methods for traversing the widget tree from the current widget upwards and finding the parent widget according to the widget type. The following is an example of getting the parent widget in the subtree:
 
-```
+``` dart 
 class ContextRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Context测试"),
-      ),
-      body: Container(
-        child: Builder(builder: (context) {
-          // 在Widget树中向上查找最近的父级`Scaffold` widget
-          Scaffold scaffold = context.findAncestorWidgetOfExactType<Scaffold>();
-          // 直接返回 AppBar的title， 此处实际上是Text("Context测试")
-          return (scaffold.appBar as AppBar).title;
-        }),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     appBar: AppBar(
+       title: Text("Context测试"),
+     ),
+     body: Container(
+       child: Builder(builder: (context) {
+         // 在Widget树中向上查找最近的父级`Scaffold` widget
+         Scaffold scaffold = context.findAncestorWidgetOfExactType<Scaffold>();
+         // 直接返回 AppBar的title， 此处实际上是Text("Context测试")
+         return (scaffold.appBar as AppBar).title;
+       }),
+     ),
+   );
+ }
 }
 
 ```
@@ -150,25 +150,25 @@ It is the `StatelessWidget`same, `StatefulWidget`but also inherits from the `Wid
 
 Below we look at `StatefulWidget`the class definition:
 
-```
+``` dart 
 abstract class StatefulWidget extends Widget {
-  const StatefulWidget({ Key key }) : super(key: key);
+ const StatefulWidget({ Key key }) : super(key: key);
 
-  @override
-  StatefulElement createElement() => new StatefulElement(this);
+ @override
+ StatefulElement createElement() => new StatefulElement(this);
 
-  @protected
-  State createState();
+ @protected
+ State createState();
 }
 
 ```
 
 -   `StatefulElement`Indirectly inherited from the `Element`class, corresponding to StatefulWidget (as its configuration data). `StatefulElement`It may be called multiple times `createState()`to create a State object.
-    
+   
 -   `createState()`Used to create the state related to the Stateful widget, which may be called multiple times during the life cycle of the Stateful widget. For example, when a Stateful widget is inserted into multiple positions of the widget tree at the same time, the Flutter framework will call this method to generate an independent State instance for each position. In fact, it is essentially a `StatefulElement`corresponding State instance.
-    
-    > The concept of "tree" often appears in this book. It may mean different meanings in different scenarios. When talking about "widget tree", it can refer to the widget structure tree, but because there is a corresponding relationship between widget and Element (one to many ), in some scenarios (in Flutter's SDK documentation) it also means "UI tree". In the stateful widget, the State object also `StatefulElement`has a corresponding relationship (one-to-one), so in the Flutter SDK documentation, you can often see "remove the State object from the tree" or "insert the State object into the tree". description of. In fact, no matter what kind of description, its meaning is to describe "a tree of node elements that constitute a user interface". Readers do not have to worry about these concepts. The various "trees" that appear in the book, if not specifically stated, readers can abstractly think of it as "a tree of node elements that constitute the user interface".
-    
+   
+   > The concept of "tree" often appears in this book. It may mean different meanings in different scenarios. When talking about "widget tree", it can refer to the widget structure tree, but because there is a corresponding relationship between widget and Element (one to many ), in some scenarios (in Flutter's SDK documentation) it also means "UI tree". In the stateful widget, the State object also `StatefulElement`has a corresponding relationship (one-to-one), so in the Flutter SDK documentation, you can often see "remove the State object from the tree" or "insert the State object into the tree". description of. In fact, no matter what kind of description, its meaning is to describe "a tree of node elements that constitute a user interface". Readers do not have to worry about these concepts. The various "trees" that appear in the book, if not specifically stated, readers can abstractly think of it as "a tree of node elements that constitute the user interface".
+   
 
 ## 3.1.6 State
 
@@ -180,87 +180,87 @@ A StatefulWidget class corresponds to a State class. State represents the state 
 There are two common attributes in State:
 
 1.  `widget`, Which represents the widget instance associated with the State instance, which is dynamically set by the Flutter framework. Note that this association is not permanent, because in the application life cycle, the widget instance of a node on the UI tree may change when it is rebuilt, but the State instance will only be created the first time it is inserted into the tree When rebuilding, if the widget is modified, the Flutter framework will dynamically set State.widget as a new widget instance.
-    
+   
 2.  `context`. The BuildContext corresponding to StatefulWidget is the same as the BuildContext of StatelessWidget.
-    
+   
 
 #### State life cycle
 
 Understanding the life cycle of State is very important for flutter development. In order to deepen the reader's impression, in this section we use an example to demonstrate the life cycle of State. In the next example, we implement a counter widget, click on it to increase the counter by 1. Since we want to save the value state of the counter, we should inherit StatefulWidget, the code is as follows:
 
-```
+``` dart 
 class CounterWidget extends StatefulWidget {
-  const CounterWidget({
-    Key key,
-    this.initValue: 0
-  });
+ const CounterWidget({
+   Key key,
+   this.initValue: 0
+ });
 
-  final int initValue;
+ final int initValue;
 
-  @override
-  _CounterWidgetState createState() => new _CounterWidgetState();
+ @override
+ _CounterWidgetState createState() => new _CounterWidgetState();
 }
 
 ```
 
 `CounterWidget`Receive an `initValue`integer parameter, which represents the initial value of the counter. Let's take a look at the State code:
 
-```
+``` dart 
 class _CounterWidgetState extends State<CounterWidget> {  
-  int _counter;
+ int _counter;
 
-  @override
-  void initState() {
-    super.initState();
-    //初始化状态  
-    _counter=widget.initValue;
-    print("initState");
-  }
+ @override
+ void initState() {
+   super.initState();
+   //初始化状态  
+   _counter=widget.initValue;
+   print("initState");
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    print("build");
-    return Scaffold(
-      body: Center(
-        child: FlatButton(
-          child: Text('$_counter'),
-          //点击后计数器自增
-          onPressed:()=>setState(()=> ++_counter,
-          ),
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   print("build");
+   return Scaffold(
+     body: Center(
+       child: FlatButton(
+         child: Text('$_counter'),
+         //点击后计数器自增
+         onPressed:()=>setState(()=> ++_counter,
+         ),
+       ),
+     ),
+   );
+ }
 
-  @override
-  void didUpdateWidget(CounterWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print("didUpdateWidget");
-  }
+ @override
+ void didUpdateWidget(CounterWidget oldWidget) {
+   super.didUpdateWidget(oldWidget);
+   print("didUpdateWidget");
+ }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-    print("deactive");
-  }
+ @override
+ void deactivate() {
+   super.deactivate();
+   print("deactive");
+ }
 
-  @override
-  void dispose() {
-    super.dispose();
-    print("dispose");
-  }
+ @override
+ void dispose() {
+   super.dispose();
+   print("dispose");
+ }
 
-  @override
-  void reassemble() {
-    super.reassemble();
-    print("reassemble");
-  }
+ @override
+ void reassemble() {
+   super.reassemble();
+   print("reassemble");
+ }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print("didChangeDependencies");
-  }
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+   print("didChangeDependencies");
+ }
 
 }
 
@@ -268,16 +268,16 @@ class _CounterWidgetState extends State<CounterWidget> {
 
 Next, we create a new route, in the new route, we only display one `CounterWidget`:
 
-```
+``` dart 
 Widget build(BuildContext context) {
-  return CounterWidget();
+ return CounterWidget();
 }
 
 ```
 
 We run the application and open the routing page. After the new routing page is opened, a number 0 will appear in the center of the screen, and the console log output:
 
-```
+``` dart 
 I/flutter ( 5436): initState
 I/flutter ( 5436): didChangeDependencies
 I/flutter ( 5436): build
@@ -288,7 +288,7 @@ As you can see, the first `initState`method will be called when the StatefulWidg
 
 Then we click the ⚡️ button to reload, the console output log is as follows:
 
-```
+``` dart 
 I/flutter ( 5436): reassemble
 I/flutter ( 5436): didUpdateWidget
 I/flutter ( 5436): build
@@ -299,19 +299,19 @@ It can be seen that both `initState`and `didChangeDependencies`are not called at
 
 Next, we remove from the widget tree `CounterWidget`and change the routing `build`method to:
 
-```
+``` dart 
 Widget build(BuildContext context) {
-  //移除计数器 
-  //return CounterWidget();
-  //随便返回一个Text()
-  return Text("xxx");
+ //移除计数器 
+ //return CounterWidget();
+ //随便返回一个Text()
+ return Text("xxx");
 }
 
 ```
 
 Then hot reload, the log is as follows:
 
-```
+``` dart 
 I/flutter ( 5436): reassemble
 I/flutter ( 5436): deactive
 I/flutter ( 5436): dispose
@@ -325,12 +325,12 @@ Let's take a look at each callback function:
 -   `initState`: It will be called when the Widget is inserted into the Widget tree for the first time. For each State object, the Flutter framework will only call this callback once. Therefore, some one-time operations are usually performed in this callback, such as state initialization and subscription. Tree event notification, etc. Cannot be called in this callback `BuildContext.dependOnInheritedWidgetOfExactType`(this method is used to get the closest parent to the current widget on the Widget tree `InheritFromWidget`, `InheritedWidget`we will introduce it in a later chapter), because after the initialization is completed, the Widget tree `InheritFromWidget`may also change , So the correct approach should be to call it in the `build（）`method or `didChangeDependencies()`.
 -   `didChangeDependencies()`: When the object changes dependent State is invoked; for example: before `build()`containing one `InheritedWidget`, then after `build()`the `InheritedWidget`change, then the time `InheritedWidget`of the child widget `didChangeDependencies()`callback will be called. A typical scenario is that when the system language Locale or application theme changes, the Flutter framework will notify the widget to call this callback.
 -   `build()`: Readers of this callback should be quite familiar by now. It is mainly used to build Widget subtrees and will be called in the following scenarios:
-    
-    1.  After the call `initState()`.
-    2.  After the call `didUpdateWidget()`.
-    3.  After the call `setState()`.
-    4.  After the call `didChangeDependencies()`.
-    5.  After the State object is removed from one position in the tree (deactivate is called), it is reinserted into another position in the tree.
+   
+   1.  After the call `initState()`.
+   2.  After the call `didUpdateWidget()`.
+   3.  After the call `setState()`.
+   4.  After the call `didChangeDependencies()`.
+   5.  After the State object is removed from one position in the tree (deactivate is called), it is reinserted into another position in the tree.
 -   `reassemble()`: This callback is specially provided for development and debugging, and will be called during hot reload. This callback will never be called in Release mode.
 -   `didUpdateWidget()`: When the widget is rebuilt, the Flutter framework will call `Widget.canUpdate`to detect the new and old nodes in the same position in the Widget tree, and then determine whether it needs to be updated, and call this callback if it `Widget.canUpdate`returns `true`. As mentioned before, `Widget.canUpdate`it will return true when the key and runtimeType of the old and new widgets are equal at the same time, which means it `didUpdateWidget()`will be called when the key and runtimeType of the old and new widgets are equal at the same time .
 -   `deactivate()`: When the State object is removed from the tree, this callback is called. In some scenarios, the Flutter framework will reinsert the State object into the tree, such as when the subtree containing the State object moves from one position of the tree to another position (which can be implemented through GlobalKey). If it is not reinserted into the tree after removal, the `dispose()`method will be called immediately .
@@ -347,40 +347,40 @@ The life cycle of StatefulWidget is shown in Figure 3-2:
 Now, we answer the question raised before, why is the `build()`method placed in State (and not `StatefulWidget`)? This is mainly to improve the flexibility of development. If you put the `build()`method in `StatefulWidget`, there will be two problems:
 
 -   State access is inconvenient.
-    
-    Imagine if we `StatefulWidget`have a lot of states, and each state change has to call the `build`method, because the state is stored in the State, if the `build`method is `StatefulWidget`in, then the `build`method and state are in two classes, then read during construction The state will be very inconvenient! Imagine if you really put the `build`method in the StatefulWidget, since the process of building the user interface needs to rely on State, the `build`method will have to add a `State`parameter, which is probably as follows:
-    
-    ```
-      Widget build(BuildContext context, State state){
-          //state.counter
-          ...
-      }
-    
-    ```
-    
-    In this case, all the states of State can only be declared as public states, so that the state can be accessed outside the State class! However, after setting the status to public, the status will no longer be private, which will cause the modification of the status to become uncontrollable. But if the `build()`method is placed in the State, the construction process can not only directly access the state, but also does not need to disclose the private state, which is very convenient.
-    
+   
+   Imagine if we `StatefulWidget`have a lot of states, and each state change has to call the `build`method, because the state is stored in the State, if the `build`method is `StatefulWidget`in, then the `build`method and state are in two classes, then read during construction The state will be very inconvenient! Imagine if you really put the `build`method in the StatefulWidget, since the process of building the user interface needs to rely on State, the `build`method will have to add a `State`parameter, which is probably as follows:
+   
+``` dart 
+     Widget build(BuildContext context, State state){
+         //state.counter
+         ...
+     }
+   
+```
+   
+   In this case, all the states of State can only be declared as public states, so that the state can be accessed outside the State class! However, after setting the status to public, the status will no longer be private, which will cause the modification of the status to become uncontrollable. But if the `build()`method is placed in the State, the construction process can not only directly access the state, but also does not need to disclose the private state, which is very convenient.
+   
 -   `StatefulWidget`Inconvenient inheritance .
-    
-    For example, there is a base class for animation widget in Flutter `AnimatedWidget`, which inherits from the `StatefulWidget`class. `AnimatedWidget`An abstract method is introduced in `build(BuildContext context)`, and all `AnimatedWidget`the animation widgets inherited from it must implement this `build`method. Now imagine that if `StatefulWidget`there is already a `build`method in the class , as mentioned above, the `build`method needs to receive a state object, which means that it `AnimatedWidget`must provide its own State object (denoted as _animatedWidgetState) to its subclasses, because The subclass needs `build`to call the method of the parent class in its `build`method, the code may be as follows:
-    
-    ```
-    class MyAnimationWidget extends AnimatedWidget{
-        @override
-        Widget build(BuildContext context, State state){
-          //由于子类要用到AnimatedWidget的状态对象_animatedWidgetState，
-          //所以AnimatedWidget必须通过某种方式将其状态对象_animatedWidgetState
-          //暴露给其子类   
-          super.build(context, _animatedWidgetState)
-        }
-    }
-    
-    ```
-    
-    This is obviously unreasonable, because
-    
-    1.  `AnimatedWidget`The state object is `AnimatedWidget`an internal implementation detail and should not be exposed to the outside.
-    2.  If you want to expose the state of the parent class to the subclass, then there must be a transfer mechanism, and this set of transfer mechanism is meaningless, because the transfer of the state between the parent and the child has nothing to do with the logic of the subclass itself.
+   
+   For example, there is a base class for animation widget in Flutter `AnimatedWidget`, which inherits from the `StatefulWidget`class. `AnimatedWidget`An abstract method is introduced in `build(BuildContext context)`, and all `AnimatedWidget`the animation widgets inherited from it must implement this `build`method. Now imagine that if `StatefulWidget`there is already a `build`method in the class , as mentioned above, the `build`method needs to receive a state object, which means that it `AnimatedWidget`must provide its own State object (denoted as _animatedWidgetState) to its subclasses, because The subclass needs `build`to call the method of the parent class in its `build`method, the code may be as follows:
+   
+``` dart 
+   class MyAnimationWidget extends AnimatedWidget{
+       @override
+       Widget build(BuildContext context, State state){
+         //由于子类要用到AnimatedWidget的状态对象_animatedWidgetState，
+         //所以AnimatedWidget必须通过某种方式将其状态对象_animatedWidgetState
+         //暴露给其子类   
+         super.build(context, _animatedWidgetState)
+       }
+   }
+   
+```
+   
+   This is obviously unreasonable, because
+   
+   1.  `AnimatedWidget`The state object is `AnimatedWidget`an internal implementation detail and should not be exposed to the outside.
+   2.  If you want to expose the state of the parent class to the subclass, then there must be a transfer mechanism, and this set of transfer mechanism is meaningless, because the transfer of the state between the parent and the child has nothing to do with the logic of the subclass itself.
 
 In summary, we can find that `StatefulWidget`putting the `build`method in the State can bring great flexibility to development.
 
@@ -392,28 +392,28 @@ Since the specific logic of StatefulWidget is in its State, many times, we need 
 
 `context`The object has a `findAncestorStateOfType()`method, which can look up the State object corresponding to the specified type of StatefulWidget from the current node along the widget tree. The following is an example of opening SnackBar:
 
-```
+``` dart 
 Scaffold(
-  appBar: AppBar(
-    title: Text("子树中获取State对象"),
-  ),
-  body: Center(
-    child: Builder(builder: (context) {
-      return RaisedButton(
-        onPressed: () {
-          // 查找父级最近的Scaffold对应的ScaffoldState对象
-          ScaffoldState _state = context.findAncestorStateOfType<ScaffoldState>();
-          //调用ScaffoldState的showSnackBar来弹出SnackBar
-          _state.showSnackBar(
-            SnackBar(
-              content: Text("我是SnackBar"),
-            ),
-          );
-        },
-        child: Text("显示SnackBar"),
-      );
-    }),
-  ),
+ appBar: AppBar(
+   title: Text("子树中获取State对象"),
+ ),
+ body: Center(
+   child: Builder(builder: (context) {
+     return RaisedButton(
+       onPressed: () {
+         // 查找父级最近的Scaffold对应的ScaffoldState对象
+         ScaffoldState _state = context.findAncestorStateOfType<ScaffoldState>();
+         //调用ScaffoldState的showSnackBar来弹出SnackBar
+         _state.showSnackBar(
+           SnackBar(
+             content: Text("我是SnackBar"),
+           ),
+         );
+       },
+       child: Text("显示SnackBar"),
+     );
+   }),
+ ),
 );
 
 ```
@@ -424,14 +424,14 @@ After the above example runs, click "Show SnackBar", the effect is shown in Figu
 
 Generally speaking, if the state of StatefulWidget is private (should not be exposed to the outside), then our code should not directly obtain its State object; if the state of StatefulWidget is to be exposed (usually there are some component operations Method), we can go directly to get its State object. However `context.findAncestorStateOfType`, the method of obtaining the state of StatefulWidget is universal. We cannot specify whether the state of StatefulWidget is private at the grammatical level, so there is a default convention in Flutter development: if the state of StatefulWidget is to be exposed, it should be StatefulWidget provides a `of`static method to obtain its State object, and developers can directly obtain it through this method; if State does not want to be exposed, no `of`method is provided . This convention can be seen everywhere in the Flutter SDK. Therefore, the above example `Scaffold`also provides a `of`method, we can actually call it directly:
 
-```
+``` dart 
 ...//省略无关代码
 // 直接通过of静态方法来获取ScaffoldState 
 ScaffoldState _state=Scaffold.of(context); 
 _state.showSnackBar(
-  SnackBar(
-    content: Text("我是SnackBar"),
-  ),
+ SnackBar(
+   content: Text("我是SnackBar"),
+ ),
 );
 
 ```
@@ -441,25 +441,25 @@ _state.showSnackBar(
 Flutter also has a general `State`method of obtaining objects-through GlobalKey! There are two steps:
 
 1.  `StatefulWidget`Add to the target `GlobalKey`.
-    
-    ```
-    //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
-    static GlobalKey<ScaffoldState> _globalKey= GlobalKey();
-    ...
-    Scaffold(
-        key: _globalKey , //设置key
-        ...  
-    )
-    
-    ```
-    
+   
+``` dart 
+   //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
+   static GlobalKey<ScaffoldState> _globalKey= GlobalKey();
+   ...
+   Scaffold(
+       key: _globalKey , //设置key
+       ...  
+   )
+   
+```
+   
 2.  `GlobalKey`Get `State`objects through
-    
-    ```
-    _globalKey.currentState.openDrawer()
-    
-    ```
-    
+   
+``` dart 
+   _globalKey.currentState.openDrawer()
+   
+```
+   
 
 GlobalKey is a mechanism provided by Flutter to reference elements in the entire APP. If a widget is set `GlobalKey`, then we can `globalKey.currentWidget`obtain the `globalKey.currentElement`element object corresponding to the widget by obtaining the widget object, and if the current widget is `StatefulWidget`, we can `globalKey.currentState`obtain the state object corresponding to the widget through .
 
@@ -469,7 +469,7 @@ GlobalKey is a mechanism provided by Flutter to reference elements in the entire
 
 Flutter provides a set of rich and powerful basic components. On top of the basic component library, Flutter provides a set of Material style (Android default visual style) and a set of Cupertino style (iOS visual style) component library. To use the basic component library, you need to first import:
 
-```
+``` dart 
 import 'package:flutter/widgets.dart';
 
 ```
@@ -487,7 +487,7 @@ Below we introduce the commonly used components.
 
 Flutter provides a rich set of Material components, which can help us build applications that follow Material Design specifications. The Material application [`MaterialApp`](https://docs.flutter.io/flutter/material/MaterialApp-class.html)starts with a component, which creates some necessary components at the root of the application, such as `Theme`components, which are used to configure the theme of the application. Whether to use [`MaterialApp`](https://docs.flutter.io/flutter/material/MaterialApp-class.html)it is completely optional, but it is a good practice to use it. In the previous examples, we have used a plurality Material components, such as: `Scaffold`, `AppBar`, `FlatButton`and the like. To use the Material component, you need to introduce it first:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 ```
@@ -496,26 +496,26 @@ import 'package:flutter/material.dart';
 
 Flutter also provides a rich set of Cupertino-style components. Although it is not as rich as Material components, it is still being improved. It is worth mentioning that there are some components in the Material component library that can switch the performance style according to the actual operating platform. For example `MaterialPageRoute`, when switching the route, if it is the Android system, it will use the Android system default page switching animation (from bottom to top) ); If it is an iOS system, it will use the default page switching animation of the iOS system (from right to left). Since there is no example of Cupertino component in the previous example, let's implement a simple Cupertino component style page:
 
-```
+``` dart 
 //导入cupertino widget库
 import 'package:flutter/cupertino.dart';
 
 class CupertinoTestRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text("Cupertino Demo"),
-      ),
-      child: Center(
-        child: CupertinoButton(
-            color: CupertinoColors.activeBlue,
-            child: Text("Press"),
-            onPressed: () {}
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return CupertinoPageScaffold(
+     navigationBar: CupertinoNavigationBar(
+       middle: Text("Cupertino Demo"),
+     ),
+     child: Center(
+       child: CupertinoButton(
+           color: CupertinoColors.activeBlue,
+           child: Text("Press"),
+           onPressed: () {}
+       ),
+     ),
+   );
+ }
 }
 
 ```

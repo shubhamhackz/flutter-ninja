@@ -2,40 +2,40 @@
 
 The Material component library provides Material style radio switches `Switch`and check boxes `Checkbox`. Although they are inherited from `StatefulWidget`, they do not save the current selected state. The selected state is managed by the parent component. When `Switch`or `Checkbox`when clicked, will trigger their `onChanged`callback, we can handle selected to change the logic in this callback. Let's look at a simple example:
 
-```
+``` dart 
 class SwitchAndCheckBoxTestRoute extends StatefulWidget {
-  @override
-  _SwitchAndCheckBoxTestRouteState createState() => new _SwitchAndCheckBoxTestRouteState();
+ @override
+ _SwitchAndCheckBoxTestRouteState createState() => new _SwitchAndCheckBoxTestRouteState();
 }
 
 class _SwitchAndCheckBoxTestRouteState extends State<SwitchAndCheckBoxTestRoute> {
-  bool _switchSelected=true; //维护单选开关状态
-  bool _checkboxSelected=true;//维护复选框状态
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Switch(
-          value: _switchSelected,//当前状态
-          onChanged:(value){
-            //重新构建页面  
-            setState(() {
-              _switchSelected=value;
-            });
-          },
-        ),
-        Checkbox(
-          value: _checkboxSelected,
-          activeColor: Colors.red, //选中时的颜色
-          onChanged:(value){
-            setState(() {
-              _checkboxSelected=value;
-            });
-          } ,
-        )
-      ],
-    );
-  }
+ bool _switchSelected=true; //维护单选开关状态
+ bool _checkboxSelected=true;//维护复选框状态
+ @override
+ Widget build(BuildContext context) {
+   return Column(
+     children: <Widget>[
+       Switch(
+         value: _switchSelected,//当前状态
+         onChanged:(value){
+           //重新构建页面  
+           setState(() {
+             _switchSelected=value;
+           });
+         },
+       ),
+       Checkbox(
+         value: _checkboxSelected,
+         activeColor: Colors.red, //选中时的颜色
+         onChanged:(value){
+           setState(() {
+             _checkboxSelected=value;
+           });
+         } ,
+       )
+     ],
+   );
+ }
 }
 
 ```

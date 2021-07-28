@@ -4,18 +4,18 @@
 
 `Text`Used to display simple style text, it contains some attributes that control the display style of the text. A simple example is as follows:
 
-```
+``` dart 
 Text("Hello world",
-  textAlign: TextAlign.left,
+ textAlign: TextAlign.left,
 );
 
 Text("Hello world! I'm Jack. "*4,
-  maxLines: 1,
-  overflow: TextOverflow.ellipsis,
+ maxLines: 1,
+ overflow: TextOverflow.ellipsis,
 );
 
 Text("Hello world",
-  textScaleFactor: 1.5,
+ textScaleFactor: 1.5,
 );
 
 ```
@@ -25,18 +25,18 @@ The running effect is shown in Figure 3-5:
 ![image-20180829103242552](https://pcdn.flutterchina.club/imgs/3-5.png)
 
 -   `textAlign`: The alignment of the text; you can choose left, right or center. Note that the frame of reference for alignment is the Text widget itself. Although the center alignment is specified in this example, because the width of the text content is less than one line, the width of the text is equal to the length of the text content, then it is meaningless to specify the alignment at this time, only specify this attribute when the width of the text is greater than the length of the text content It makes sense. Below we specify a longer string:
-    
-    ```
-    Text("Hello world "*6,  //字符串重复六次
-      textAlign: TextAlign.center,
-    )；
-    
-    ```
-    
-    The running effect is shown in Figure 3-6:
-    
-    ![image-20180829104807535](https://pcdn.flutterchina.club/imgs/3-6.png)
-    
+   
+``` dart 
+   Text("Hello world "*6,  //字符串重复六次
+     textAlign: TextAlign.center,
+   )；
+   
+```
+   
+   The running effect is shown in Figure 3-6:
+   
+   ![image-20180829104807535](https://pcdn.flutterchina.club/imgs/3-6.png)
+   
 
 ​ If the string content exceeds one line, the Text width is equal to the screen width, and the second line of text will be displayed in the center.
 
@@ -47,17 +47,17 @@ The running effect is shown in Figure 3-5:
 
 `TextStyle`Used to specify the style of text display such as color, font, thickness, background, etc. Let's look at an example:
 
-```
+``` dart 
 Text("Hello world",
-  style: TextStyle(
-    color: Colors.blue,
-    fontSize: 18.0,
-    height: 1.2,  
-    fontFamily: "Courier",
-    background: new Paint()..color=Colors.yellow,
-    decoration:TextDecoration.underline,
-    decorationStyle: TextDecorationStyle.dashed
-  ),
+ style: TextStyle(
+   color: Colors.blue,
+   fontSize: 18.0,
+   height: 1.2,  
+   fontFamily: "Courier",
+   background: new Paint()..color=Colors.yellow,
+   decoration:TextDecoration.underline,
+   decorationStyle: TextDecorationStyle.dashed
+ ),
 );
 
 ```
@@ -69,24 +69,24 @@ The effect is shown in Figure 3-7:
 This example only shows part of the properties of TextStyle. It also has some other properties. The property names are basically self-explanatory. I won't repeat them here. Readers can refer to the SDK documentation. It is worth noting that:
 
 -   `height`: This attribute is used to specify the row height, but it is not an absolute value, but a factor. The specific row height is equal to `fontSize`* `height`.
-    
+   
 -   `fontFamily` : Because different platforms support different font sets by default, you must first test it on different platforms when manually specifying fonts.
-    
+   
 -   `fontSize`: `textScaleFactor`Both this attribute and Text are used to control the font size. But there are two main differences:
-    
-    -   `fontSize`The font size can be specified precisely, but `textScaleFactor`can only be controlled by the zoom ratio.
-    -   `textScaleFactor`It is mainly used for global adjustment of the Flutter application font when the system font size setting changes, but it `fontSize`is usually used for single text, and the font size will not follow the system font size change.
+   
+   -   `fontSize`The font size can be specified precisely, but `textScaleFactor`can only be controlled by the zoom ratio.
+   -   `textScaleFactor`It is mainly used for global adjustment of the Flutter application font when the system font size setting changes, but it `fontSize`is usually used for single text, and the font size will not follow the system font size change.
 
 ### 3.3.3 TextSpan
 
 In the above example, all the text content of Text can only be in the same style. If we need to display different parts of a Text content in different styles, then we can use `TextSpan`it. It represents a "fragment" of text. Let's look at the definition of TextSpan:
 
-```
+``` dart 
 const TextSpan({
-  TextStyle style, 
-  Sting text,
-  List<TextSpan> children,
-  GestureRecognizer recognizer,
+ TextStyle style, 
+ Sting text,
+ List<TextSpan> children,
+ GestureRecognizer recognizer,
 });
 
 ```
@@ -97,20 +97,20 @@ Wherein `style`and `text`attribute represents the style and content of the text 
 
 Source code:
 
-```
+``` dart 
 Text.rich(TextSpan(
-    children: [
-     TextSpan(
-       text: "Home: "
-     ),
-     TextSpan(
-       text: "https://flutterchina.club",
-       style: TextStyle(
-         color: Colors.blue
-       ),  
-       recognizer: _tapRecognizer
-     ),
-    ]
+   children: [
+    TextSpan(
+      text: "Home: "
+    ),
+    TextSpan(
+      text: "https://flutterchina.club",
+      style: TextStyle(
+        color: Colors.blue
+      ),  
+      recognizer: _tapRecognizer
+    ),
+   ]
 ))
 
 ```
@@ -122,27 +122,27 @@ Text.rich(TextSpan(
 
 In the Widget tree, the style of the text can be inherited by default (the default style set by the parent in the Widget tree can be used when the subclass text component does not specify a specific style). Therefore, if you set it at a certain node of the Widget tree A default text style, then all text in the node's subtree will use this style by default, which `DefaultTextStyle`is used to set the default text style. Let's look at an example:
 
-```
+``` dart 
 DefaultTextStyle(
-  //1.设置文本默认样式  
-  style: TextStyle(
-    color:Colors.red,
-    fontSize: 20.0,
-  ),
-  textAlign: TextAlign.start,
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text("hello world"),
-      Text("I am Jack"),
-      Text("I am Jack",
-        style: TextStyle(
-          inherit: false, //2.不继承默认样式
-          color: Colors.grey
-        ),
-      ),
-    ],
-  ),
+ //1.设置文本默认样式  
+ style: TextStyle(
+   color:Colors.red,
+   fontSize: 20.0,
+ ),
+ textAlign: TextAlign.start,
+ child: Column(
+   crossAxisAlignment: CrossAxisAlignment.start,
+   children: <Widget>[
+     Text("hello world"),
+     Text("I am Jack"),
+     Text("I am Jack",
+       style: TextStyle(
+         inherit: false, //2.不继承默认样式
+         color: Colors.grey
+       ),
+     ),
+   ],
+ ),
 );
 
 ```
@@ -161,34 +161,34 @@ Using fonts in Flutter is done in two steps. `pubspec.yaml`Declare them in the f
 
 To pack the font file into the application, as with other resources, `pubspec.yaml`declare it in the first . Then copy the font file to `pubspec.yaml`the location specified in. Such as:
 
-```
+``` dart 
 flutter:
-  fonts:
-    - family: Raleway
-      fonts:
-        - asset: assets/fonts/Raleway-Regular.ttf
-        - asset: assets/fonts/Raleway-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Raleway-SemiBold.ttf
-          weight: 600
-    - family: AbrilFatface
-      fonts:
-        - asset: assets/fonts/abrilfatface/AbrilFatface-Regular.ttf
+ fonts:
+   - family: Raleway
+     fonts:
+       - asset: assets/fonts/Raleway-Regular.ttf
+       - asset: assets/fonts/Raleway-Medium.ttf
+         weight: 500
+       - asset: assets/fonts/Raleway-SemiBold.ttf
+         weight: 600
+   - family: AbrilFatface
+     fonts:
+       - asset: assets/fonts/abrilfatface/AbrilFatface-Regular.ttf
 
 ```
 
 #### Use font
 
-```
+``` dart 
 // 声明文本样式
 const textStyle = const TextStyle(
-  fontFamily: 'Raleway',
+ fontFamily: 'Raleway',
 );
 
 // 使用文本样式
 var buttonText = const Text(
-  "Use the font for this text",
-  style: textStyle,
+ "Use the font for this text",
+ style: textStyle,
 );
 
 ```
@@ -197,10 +197,10 @@ var buttonText = const Text(
 
 To use the font defined in the Package, **parameters** **must be provided`package`** . For example, suppose the font declaration above is in a `my_package`package. Then the process of creating TextStyle is as follows:
 
-```
+``` dart 
 const textStyle = const TextStyle(
-  fontFamily: 'Raleway',
-  package: 'my_package', //指定包名
+ fontFamily: 'Raleway',
+ package: 'my_package', //指定包名
 );
 
 ```
@@ -209,21 +209,21 @@ If you use its own defined font in the package, you should also specify the `pac
 
 A package can also only provide font files without needing to be declared in pubspec.yaml. These files should be stored in the package `lib/`folder. Font files are not automatically bound to the application, and the application can selectively use these fonts when declaring fonts. Suppose there is a font file in a package named my_package:
 
-```
+``` dart 
 lib/fonts/Raleway-Medium.ttf
 
 ```
 
 Then, the application can declare a font, as shown in the following example:
 
-```
- flutter:
-   fonts:
-     - family: Raleway
-       fonts:
-         - asset: assets/fonts/Raleway-Regular.ttf
-         - asset: packages/my_package/fonts/Raleway-Medium.ttf
-           weight: 500
+``` dart 
+flutter:
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: assets/fonts/Raleway-Regular.ttf
+        - asset: packages/my_package/fonts/Raleway-Medium.ttf
+          weight: 500
 
 ```
 
@@ -231,9 +231,9 @@ Then, the application can declare a font, as shown in the following example:
 
 In this case, since the application defines the font locally, it is not necessary to specify the `package`parameter when creating the TextStyle :
 
-```
+``` dart 
 const textStyle = const TextStyle(
-  fontFamily: 'Raleway',
+ fontFamily: 'Raleway',
 );
 
 ```

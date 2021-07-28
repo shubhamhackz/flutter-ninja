@@ -6,11 +6,11 @@ In the previous sections, we introduced Flutter commonly used in scrollable comp
 
 `ScrollController`The constructor is as follows:
 
-```
+``` dart 
 ScrollController({
-  double initialScrollOffset = 0.0, //初始滚动位置
-  this.keepScrollOffset = true,//是否保存滚动位置
-  ...
+ double initialScrollOffset = 0.0, //初始滚动位置
+ this.keepScrollOffset = true,//是否保存滚动位置
+ ...
 })
 
 ```
@@ -26,7 +26,7 @@ We introduce the `ScrollController`commonly used properties and methods:
 
 `ScrollController`Indirectly inherited from `Listenable`, we can `ScrollController`monitor scroll events based on, such as:
 
-```
+``` dart 
 controller.addListener(()=>print(controller.offset))
 
 ```
@@ -35,70 +35,70 @@ controller.addListener(()=>print(controller.offset))
 
 We create one `ListView`, when the scroll position changes, we first print out the current scroll position, and then determine whether the current position exceeds 1000 pixels, if it exceeds, a "back to top" button will be displayed in the lower right corner of the screen. This button can be clicked The ListView returns to its original position; if it does not exceed 1000 pixels, the "back to top" button is hidden. code show as below:
 
-```
+``` dart 
 
 class ScrollControllerTestRoute extends StatefulWidget {
-  @override
-  ScrollControllerTestRouteState createState() {
-    return new ScrollControllerTestRouteState();
-  }
+ @override
+ ScrollControllerTestRouteState createState() {
+   return new ScrollControllerTestRouteState();
+ }
 }
 
 class ScrollControllerTestRouteState extends State<ScrollControllerTestRoute> {
-  ScrollController _controller = new ScrollController();
-  bool showToTopBtn = false; //是否显示“返回到顶部”按钮
+ ScrollController _controller = new ScrollController();
+ bool showToTopBtn = false; //是否显示“返回到顶部”按钮
 
-  @override
-  void initState() {
-    super.initState();
-    //监听滚动事件，打印滚动位置
-    _controller.addListener(() {
-      print(_controller.offset); //打印滚动位置
-      if (_controller.offset < 1000 && showToTopBtn) {
-        setState(() {
-          showToTopBtn = false;
-        });
-      } else if (_controller.offset >= 1000 && showToTopBtn == false) {
-        setState(() {
-          showToTopBtn = true;
-        });
-      }
-    });
-  }
+ @override
+ void initState() {
+   super.initState();
+   //监听滚动事件，打印滚动位置
+   _controller.addListener(() {
+     print(_controller.offset); //打印滚动位置
+     if (_controller.offset < 1000 && showToTopBtn) {
+       setState(() {
+         showToTopBtn = false;
+       });
+     } else if (_controller.offset >= 1000 && showToTopBtn == false) {
+       setState(() {
+         showToTopBtn = true;
+       });
+     }
+   });
+ }
 
-  @override
-  void dispose() {
-    //为了避免内存泄露，需要调用_controller.dispose
-    _controller.dispose();
-    super.dispose();
-  }
+ @override
+ void dispose() {
+   //为了避免内存泄露，需要调用_controller.dispose
+   _controller.dispose();
+   super.dispose();
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("滚动控制")),
-      body: Scrollbar(
-        child: ListView.builder(
-            itemCount: 100,
-            itemExtent: 50.0, //列表项高度固定时，显式指定高度是一个好习惯(性能消耗小)
-            controller: _controller,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text("$index"),);
-            }
-        ),
-      ),
-      floatingActionButton: !showToTopBtn ? null : FloatingActionButton(
-          child: Icon(Icons.arrow_upward),
-          onPressed: () {
-            //返回到顶部时执行动画
-            _controller.animateTo(.0,
-                duration: Duration(milliseconds: 200),
-                curve: Curves.ease
-            );
-          }
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     appBar: AppBar(title: Text("滚动控制")),
+     body: Scrollbar(
+       child: ListView.builder(
+           itemCount: 100,
+           itemExtent: 50.0, //列表项高度固定时，显式指定高度是一个好习惯(性能消耗小)
+           controller: _controller,
+           itemBuilder: (context, index) {
+             return ListTile(title: Text("$index"),);
+           }
+       ),
+     ),
+     floatingActionButton: !showToTopBtn ? null : FloatingActionButton(
+         child: Icon(Icons.arrow_upward),
+         onPressed: () {
+           //返回到顶部时执行动画
+           _controller.animateTo(.0,
+               duration: Duration(milliseconds: 200),
+               curve: Curves.ease
+           );
+         }
+     ),
+   );
+ }
 }
 
 ```
@@ -117,7 +117,7 @@ Every time rolling over, scrollable component will scroll position `offset`store
 
 When a route contains multiple scrollable components, if you find that the scroll position cannot be restored correctly after some jump or switching operations, then you can `PageStorageKey`track the positions of different scrollable components separately by explicitly specifying it. Such as:
 
-```
+``` dart 
 ListView(key: PageStorageKey(1), ... );
 ...
 ListView(key: PageStorageKey(2), ... );
@@ -132,14 +132,14 @@ Different `PageStorageKey`, different values ​​are required so that the scro
 
 ScrollPosition is used to save the scroll position of the scrollable component. An `ScrollController`object can be used by multiple scrollable components at the same time, and an object `ScrollController`will be created for each scrollable component `ScrollPosition`. These are `ScrollPosition`stored in `ScrollController`the `positions`properties ( ). It is the object that actually saves the sliding position information, just a convenient attribute:`List<ScrollPosition>``ScrollPosition``offset`
 
-```
+``` dart 
 double get offset => position.pixels;
 
 ```
 
 A `ScrollController`While the components may correspond to a plurality of rolling, but there are some operations, such as reading scroll position `offset`, one is required! But we can still read the scroll position through other methods in one-to-many situations. For example, if one `ScrollController`is used by two scrollable components at the same time, then we can read their scroll positions separately by the following methods:
 
-```
+``` dart 
 ...
 controller.positions.elementAt(0).pixels
 controller.positions.elementAt(1).pixels
@@ -157,11 +157,11 @@ We can `controller.positions.length`determine the `controller`use of several scr
 
 Let's introduce `ScrollController`three other methods:
 
-```
+``` dart 
 ScrollPosition createScrollPosition(
-    ScrollPhysics physics,
-    ScrollContext context,
-    ScrollPosition oldPosition);
+   ScrollPhysics physics,
+   ScrollContext context,
+   ScrollPosition oldPosition);
 void attach(ScrollPosition position) ;
 void detach(ScrollPosition position) ;
 
@@ -186,54 +186,54 @@ Scrollable components will send `ScrollNotification`type notifications when scro
 
 Below, we monitor `ListView`the scroll notification, and then display the current scroll progress percentage:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 class ScrollNotificationTestRoute extends StatefulWidget {
-  @override
-  _ScrollNotificationTestRouteState createState() =>
-      new _ScrollNotificationTestRouteState();
+ @override
+ _ScrollNotificationTestRouteState createState() =>
+     new _ScrollNotificationTestRouteState();
 }
 
 class _ScrollNotificationTestRouteState
-    extends State<ScrollNotificationTestRoute> {
-  String _progress = "0%"; //保存进度百分比
+   extends State<ScrollNotificationTestRoute> {
+ String _progress = "0%"; //保存进度百分比
 
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar( //进度条
-      // 监听滚动通知
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification notification) {
-          double progress = notification.metrics.pixels /
-              notification.metrics.maxScrollExtent;
-          //重新构建
-          setState(() {
-            _progress = "${(progress * 100).toInt()}%";
-          });
-          print("BottomEdge: ${notification.metrics.extentAfter == 0}");
-          //return true; //放开此行注释后，进度条将失效
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            ListView.builder(
-                itemCount: 100,
-                itemExtent: 50.0,
-                itemBuilder: (context, index) {
-                  return ListTile(title: Text("$index"));
-                }
-            ),
-            CircleAvatar(  //显示进度百分比
-              radius: 30.0,
-              child: Text(_progress),
-              backgroundColor: Colors.black54,
-            )
-          ],
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Scrollbar( //进度条
+     // 监听滚动通知
+     child: NotificationListener<ScrollNotification>(
+       onNotification: (ScrollNotification notification) {
+         double progress = notification.metrics.pixels /
+             notification.metrics.maxScrollExtent;
+         //重新构建
+         setState(() {
+           _progress = "${(progress * 100).toInt()}%";
+         });
+         print("BottomEdge: ${notification.metrics.extentAfter == 0}");
+         //return true; //放开此行注释后，进度条将失效
+       },
+       child: Stack(
+         alignment: Alignment.center,
+         children: <Widget>[
+           ListView.builder(
+               itemCount: 100,
+               itemExtent: 50.0,
+               itemBuilder: (context, index) {
+                 return ListTile(title: Text("$index"));
+               }
+           ),
+           CircleAvatar(  //显示进度百分比
+             radius: 30.0,
+             child: Text(_progress),
+             backgroundColor: Colors.black54,
+           )
+         ],
+       ),
+     ),
+   );
+ }
 }
 
 ```

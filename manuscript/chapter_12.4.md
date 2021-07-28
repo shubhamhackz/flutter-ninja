@@ -11,7 +11,7 @@ First open the Android part of your Flutter app in Android Studio:
 
 Next, `onCreate`create a MethodChannel and set one in it `MethodCallHandler`. Make sure to use the same name as the channel name used in the Flutter client.
 
-```
+``` dart 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -19,19 +19,19 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 public class MainActivity extends FlutterActivity {
-    private static final String CHANNEL = "samples.flutter.io/battery";
+   private static final String CHANNEL = "samples.flutter.io/battery";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
-          new MethodCallHandler() {
-             @Override
-             public void onMethodCall(MethodCall call, Result result) {
-                 // TODO
-             }
-          });
-    }
+   @Override
+   public void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+       new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
+         new MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall call, Result result) {
+                // TODO
+            }
+         });
+   }
 }
 
 ```
@@ -40,7 +40,7 @@ Next, we add Java code to use the Android battery API to get the battery level. 
 
 First, add the dependencies that need to be imported.
 
-```
+``` dart 
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -53,40 +53,40 @@ import android.os.Bundle;
 
 Then, add the following new method to the activity class, located below the onCreate method:
 
-```
+``` dart 
 private int getBatteryLevel() {
-  int batteryLevel = -1;
-  if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-    BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
-    batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-  } else {
-    Intent intent = new ContextWrapper(getApplicationContext()).
-        registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-    batteryLevel = (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100) /
-        intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-  }
+ int batteryLevel = -1;
+ if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+   BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+   batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+ } else {
+   Intent intent = new ContextWrapper(getApplicationContext()).
+       registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+   batteryLevel = (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100) /
+       intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+ }
 
-  return batteryLevel;
+ return batteryLevel;
 }
 
 ```
 
 Finally, we complete the `onMethodCall`method we added earlier . We need to process `getBatteryLevel`the call message of the platform method name , so we need to determine whether the called method is the call parameter first `getBatteryLevel`. The implementation of this platform method only needs to call the Android code we wrote in the previous step, and return the response information for success or error through the result parameter. If an undefined API is called, we will also notify the return:
 
-```
+``` dart 
 @Override
 public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.equals("getBatteryLevel")) {
-        int batteryLevel = getBatteryLevel();
+   if (call.method.equals("getBatteryLevel")) {
+       int batteryLevel = getBatteryLevel();
 
-        if (batteryLevel != -1) {
-            result.success(batteryLevel);
-        } else {
-            result.error("UNAVAILABLE", "Battery level not available.", null);
-        }
-    } else {
-        result.notImplemented();
-    }
+       if (batteryLevel != -1) {
+           result.success(batteryLevel);
+       } else {
+           result.error("UNAVAILABLE", "Battery level not available.", null);
+       }
+   } else {
+       result.notImplemented();
+   }
 }
 
 ```
@@ -104,23 +104,23 @@ The steps for using Kotlin and Java are similar. First, open the Android part of
 
 Next, `onCreate`create a MethodChannel and set one in it `MethodCallHandler`. Make sure to use the same channel name as used on the Flutter client.
 
-```
+``` dart 
 import android.os.Bundle
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity() : FlutterActivity() {
-  private val CHANNEL = "samples.flutter.io/battery"
+ private val CHANNEL = "samples.flutter.io/battery"
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    GeneratedPluginRegistrant.registerWith(this)
+ override fun onCreate(savedInstanceState: Bundle?) {
+   super.onCreate(savedInstanceState)
+   GeneratedPluginRegistrant.registerWith(this)
 
-    MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
-      // TODO
-    }
-  }
+   MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
+     // TODO
+   }
+ }
 }
 
 ```
@@ -129,7 +129,7 @@ Next, we add Kotlin code and use the Android battery API to get battery power, w
 
 First, add the dependencies that need to be imported.
 
-```
+``` dart 
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -142,36 +142,36 @@ import android.os.Build.VERSION_CODES
 
 Then, add the following new method to the activity class, located below the onCreate method:
 
-```
-  private fun getBatteryLevel(): Int {
-    val batteryLevel: Int
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-      batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-    } else {
-      val intent = ContextWrapper(applicationContext).registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-      batteryLevel = intent!!.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100 / intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-    }
+``` dart 
+ private fun getBatteryLevel(): Int {
+   val batteryLevel: Int
+   if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+     val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+     batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+   } else {
+     val intent = ContextWrapper(applicationContext).registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+     batteryLevel = intent!!.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100 / intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+   }
 
-    return batteryLevel
-  }
+   return batteryLevel
+ }
 
 ```
 
 Finally, we complete the `onMethodCall`method we added earlier . We need to process `getBatteryLevel`the call message of the platform method name , so we need to determine whether the called method is the call parameter first `getBatteryLevel`. The implementation of this platform method only needs to call the Android code we wrote in the previous step, and return the response information for success or error through the result parameter. If an undefined API is called, we will also notify the return: ​
 
-```
+``` dart 
 MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
-  if (call.method == "getBatteryLevel") {
-     val batteryLevel = getBatteryLevel()
-     if (batteryLevel != -1) {
-       result.success(batteryLevel)
-     } else {
-       result.error("UNAVAILABLE", "Battery level not available.", null)
-     }
-  } else {
-      result.notImplemented()
-  }
+ if (call.method == "getBatteryLevel") {
+    val batteryLevel = getBatteryLevel()
+    if (batteryLevel != -1) {
+      result.success(batteryLevel)
+    } else {
+      result.error("UNAVAILABLE", "Battery level not available.", null)
+    }
+ } else {
+     result.notImplemented()
+ }
 }
 
 ```

@@ -6,43 +6,43 @@ The language and theme in this example APP can be set, and both are achieved thr
 
 The APP language selection page provides three options: Simplified Chinese, American English, and Follow System. We highlight the language currently used by the APP, and add a "check mark" icon at the back to achieve the following:
 
-```
+``` dart 
 class LanguageRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var color = Theme.of(context).primaryColor;
-    var localeModel = Provider.of<LocaleModel>(context);
-    var gm = GmLocalizations.of(context);
-    //构建语言选择项
-    Widget _buildLanguageItem(String lan, value) {
-      return ListTile(
-        title: Text(
-          lan,
-          // 对APP当前语言进行高亮显示
-          style: TextStyle(color: localeModel.locale == value ? color : null),
-        ),
-        trailing:
-            localeModel.locale == value ? Icon(Icons.done, color: color) : null,
-        onTap: () {
-          // 更新locale后MaterialApp会重新build
-          localeModel.locale = value;
-        },
-      );
-    }
+ @override
+ Widget build(BuildContext context) {
+   var color = Theme.of(context).primaryColor;
+   var localeModel = Provider.of<LocaleModel>(context);
+   var gm = GmLocalizations.of(context);
+   //构建语言选择项
+   Widget _buildLanguageItem(String lan, value) {
+     return ListTile(
+       title: Text(
+         lan,
+         // 对APP当前语言进行高亮显示
+         style: TextStyle(color: localeModel.locale == value ? color : null),
+       ),
+       trailing:
+           localeModel.locale == value ? Icon(Icons.done, color: color) : null,
+       onTap: () {
+         // 更新locale后MaterialApp会重新build
+         localeModel.locale = value;
+       },
+     );
+   }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(gm.language),
-      ),
-      body: ListView(
-        children: <Widget>[
-          _buildLanguageItem("中文简体", "zh_CN"),
-          _buildLanguageItem("English", "en_US"),
-          _buildLanguageItem(gm.auto, null),
-        ],
-      ),
-    );
-  }
+   return Scaffold(
+     appBar: AppBar(
+       title: Text(gm.language),
+     ),
+     body: ListView(
+       children: <Widget>[
+         _buildLanguageItem("中文简体", "zh_CN"),
+         _buildLanguageItem("English", "en_US"),
+         _buildLanguageItem(gm.auto, null),
+       ],
+     ),
+   );
+ }
 }
 
 ```
@@ -57,33 +57,33 @@ It takes effect immediately after switching the language.
 
 A complete theme `Theme`includes many options, which `ThemeData`are defined in. For the sake of simplicity in this example, we only configure the theme color. We provide several default predefined theme colors for users to choose, and users will update the theme after clicking a color block. The implementation code of the theme selection page is as follows:
 
-```
+``` dart 
 class ThemeChangeRoute extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(GmLocalizations.of(context).theme),
-      ),
-      body: ListView( //显示主题色块
-        children: Global.themes.map<Widget>((e) {
-          return GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
-              child: Container(
-                color: e,
-                height: 40,
-              ),
-            ),
-            onTap: () {
-              //主题更新后，MaterialApp会重新build
-              Provider.of<ThemeModel>(context).theme = e;
-            },
-          );
-        }).toList(),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     appBar: AppBar(
+       title: Text(GmLocalizations.of(context).theme),
+     ),
+     body: ListView( //显示主题色块
+       children: Global.themes.map<Widget>((e) {
+         return GestureDetector(
+           child: Padding(
+             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+             child: Container(
+               color: e,
+               height: 40,
+             ),
+           ),
+           onTap: () {
+             //主题更新后，MaterialApp会重新build
+             Provider.of<ThemeModel>(context).theme = e;
+           },
+         );
+       }).toList(),
+     ),
+   );
+ }
 }
 
 ```

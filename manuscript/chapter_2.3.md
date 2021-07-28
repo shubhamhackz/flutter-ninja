@@ -6,23 +6,23 @@ An APP often depends on many packages in actual development, and these packages 
 
 YAML is a file format that is intuitive, highly readable and easy to be read by humans. Compared with xml or Json, it has a simple syntax and is very easy to parse, so YAML is often used in configuration files, and Flutter also uses yaml files as its configuration file. The default configuration file of the Flutter project is `pubspec.yaml`, let's look at a simple example:
 
-```
+``` dart 
 name: flutter_in_action
 description: First Flutter application.
 
 version: 1.0.0+1
 
 dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^0.1.2
+ flutter:
+   sdk: flutter
+ cupertino_icons: ^0.1.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+ flutter_test:
+   sdk: flutter
 
 flutter:
-  uses-material-design: true
+ uses-material-design: true
 
 ```
 
@@ -50,115 +50,115 @@ Next, we implement a widget that displays a random string. There is an open sour
 We see that the latest version of the "english_words" package is 3.1.3 and supports flutter. Next:
 
 1.  Add "english_words" (version 3.1.3) to the dependency list as follows:
-    
-    ```
-    dependencies:
-      flutter:
-        sdk: flutter
-    
-      cupertino_icons: ^0.1.0
-      # 新添加的依赖
-      english_words: ^3.1.3
-    
-    ```
-    
+   
+``` dart 
+   dependencies:
+     flutter:
+       sdk: flutter
+   
+     cupertino_icons: ^0.1.0
+     # 新添加的依赖
+     english_words: ^3.1.3
+   
+```
+   
 2.  Download the package. When viewing pubspec.yaml in the editor view of Android Studio (Figure 2-6), click **Packages get in the** upper right corner .
-    
-    ![Figure 2-6](https://pcdn.flutterchina.club/imgs/2-6.png)
-    
-    This will install the dependent packages to your project. We can see the following in the console:
-    
-    ```
-    flutter packages get
-    Running "flutter packages get" in flutter_in_action...
-    Process finished with exit code 0
-    
-    ```
-    
-    We can also locate the current project directory in the console, and then manually run the `flutter packages get`command to download the dependency package. Also, note `dependencies`and `dev_dependencies`distinction, the former dependencies as a part of the source code to compile participation of APP to generate the final installation package. The latter's dependency package is only used as some toolkits in the development stage, mainly used to help us improve the efficiency of development and testing, such as the automated test package of flutter.
-    
+   
+   ![Figure 2-6](https://pcdn.flutterchina.club/imgs/2-6.png)
+   
+   This will install the dependent packages to your project. We can see the following in the console:
+   
+``` dart 
+   flutter packages get
+   Running "flutter packages get" in flutter_in_action...
+   Process finished with exit code 0
+   
+```
+   
+   We can also locate the current project directory in the console, and then manually run the `flutter packages get`command to download the dependency package. Also, note `dependencies`and `dev_dependencies`distinction, the former dependencies as a part of the source code to compile participation of APP to generate the final installation package. The latter's dependency package is only used as some toolkits in the development stage, mainly used to help us improve the efficiency of development and testing, such as the automated test package of flutter.
+   
 3.  Introduce the `english_words`package.
-    
-    ```
-    import 'package:english_words/english_words.dart';
-    
-    ```
-    
-    When typing, Android Studio will automatically provide suggested options for library import. After importing, the line of code will be grayed out, indicating that the imported library has not been used.
-    
+   
+``` dart 
+   import 'package:english_words/english_words.dart';
+   
+```
+   
+   When typing, Android Studio will automatically provide suggested options for library import. After importing, the line of code will be grayed out, indicating that the imported library has not been used.
+   
 4.  Use `english_words`packages to generate random strings.
-    
-    ```
-    class RandomWordsWidget extends StatelessWidget {
-      @override
-      Widget build(BuildContext context) {
-       // 生成随机字符串
-        final wordPair = new WordPair.random();
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: new Text(wordPair.toString()),
-        );
-      }
-    }
-    
-    ```
-    
-    We will `RandomWordsWidget`add to `_MyHomePageState.build`the `Column`child widget in.
-    
-    ```
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        ... //省略无关代码
-        RandomWordsWidget(),
-      ],
-    )
-    
-    ```
-    
+   
+``` dart 
+   class RandomWordsWidget extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+      // 生成随机字符串
+       final wordPair = new WordPair.random();
+       return Padding(
+         padding: const EdgeInsets.all(8.0),
+         child: new Text(wordPair.toString()),
+       );
+     }
+   }
+   
+```
+   
+   We will `RandomWordsWidget`add to `_MyHomePageState.build`the `Column`child widget in.
+   
+``` dart 
+   Column(
+     mainAxisAlignment: MainAxisAlignment.center,
+     children: <Widget>[
+       ... //省略无关代码
+       RandomWordsWidget(),
+     ],
+   )
+   
+```
+   
 5.  If the application is running, please use the hot reload button (⚡️ icon) to update the running application. Each time you click hot reload or save a project, a different word pair is randomly selected in the running application. This is because the word pair in the `build`internal method generated. Each time the hot update, the `build`method will be executed, and the running effect is shown in Figure 2-7.
-    
-    ![Figure 2-7](https://pcdn.flutterchina.club/imgs/2-7.png)
-    
+   
+   ![Figure 2-7](https://pcdn.flutterchina.club/imgs/2-7.png)
+   
 
 ## Other ways of dependence
 
 The dependency method described above is dependent on the Pub repository. But we can also rely on local packages and git repositories.
 
 -   Depend on local package
-    
-    If we are developing a package locally and the package name is pkg1, we can rely on it in the following ways:
-    
-    ```
-    dependencies:
-        pkg1:
-            path: ../../code/pkg1
-    
-    ```
-    
-    The path can be relative or absolute.
-    
+   
+   If we are developing a package locally and the package name is pkg1, we can rely on it in the following ways:
+   
+``` dart 
+   dependencies:
+       pkg1:
+           path: ../../code/pkg1
+   
+```
+   
+   The path can be relative or absolute.
+   
 -   Rely on Git: You can also rely on packages stored in Git repositories. If the package is located in the root directory of the repository, use the following syntax
-    
-    ```
-    dependencies:
-      pkg1:
-        git:
-          url: git://github.com/xxx/pkg1.git
-    
-    ```
-    
-    The above assumes that the package is located in the root directory of the Git repository. If this is not the case, you can use the path parameter to specify the relative position, for example:
-    
-    ```
-    dependencies:
-      package1:
-        git:
-          url: git://github.com/flutter/packages.git
-          path: packages/package1
-    
-    ```
-    
+   
+``` dart 
+   dependencies:
+     pkg1:
+       git:
+         url: git://github.com/xxx/pkg1.git
+   
+```
+   
+   The above assumes that the package is located in the root directory of the Git repository. If this is not the case, you can use the path parameter to specify the relative position, for example:
+   
+``` dart 
+   dependencies:
+     package1:
+       git:
+         url: git://github.com/flutter/packages.git
+         path: packages/package1
+   
+```
+   
 
 The above-mentioned dependency methods are commonly used in Flutter development, but there are some other dependency methods. Readers can check the complete content by themselves: [https://www.dartlang.org/tools/pub/dependencies](https://www.dartlang.org/tools/pub/dependencies) .
 

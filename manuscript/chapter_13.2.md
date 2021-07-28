@@ -6,21 +6,21 @@ I talked about how the Material component library supports internationalization.
 
 We already know `Localizations`that the main implementation in the class provides localized values, such as text:
 
-```
+``` dart 
 //Locale资源类
 class DemoLocalizations {
-  DemoLocalizations(this.isZh);
-  //是否为中文
-  bool isZh = false;
-  //为了使用方便，我们定义一个静态方法
-  static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
-  }
-  //Locale相关值，title为应用标题
-  String get title {
-    return isZh ? "Flutter应用" : "Flutter APP";
-  }
-  //... 其它的值  
+ DemoLocalizations(this.isZh);
+ //是否为中文
+ bool isZh = false;
+ //为了使用方便，我们定义一个静态方法
+ static DemoLocalizations of(BuildContext context) {
+   return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
+ }
+ //Locale相关值，title为应用标题
+ String get title {
+   return isZh ? "Flutter应用" : "Flutter APP";
+ }
+ //... 其它的值  
 }
 
 ```
@@ -31,26 +31,26 @@ class DemoLocalizations {
 
 The responsibility of the Delegate class is to load new Locale resources when the Locale changes, so it has a `load`method. The Delegate class needs to inherit from the `LocalizationsDelegate`class and implement the corresponding interface. Examples are as follows:
 
-```
+``` dart 
 //Locale代理类
 class DemoLocalizationsDelegate extends LocalizationsDelegate<DemoLocalizations> {
-  const DemoLocalizationsDelegate();
+ const DemoLocalizationsDelegate();
 
-  //是否支持某个Local
-  @override
-  bool isSupported(Locale locale) => ['en', 'zh'].contains(locale.languageCode);
+ //是否支持某个Local
+ @override
+ bool isSupported(Locale locale) => ['en', 'zh'].contains(locale.languageCode);
 
-  // Flutter会调用此类加载相应的Locale资源类
-  @override
-  Future<DemoLocalizations> load(Locale locale) {
-    print("$locale");
-    return SynchronousFuture<DemoLocalizations>(
-        DemoLocalizations(locale.languageCode == "zh")
-    );
-  }
+ // Flutter会调用此类加载相应的Locale资源类
+ @override
+ Future<DemoLocalizations> load(Locale locale) {
+   print("$locale");
+   return SynchronousFuture<DemoLocalizations>(
+       DemoLocalizations(locale.languageCode == "zh")
+   );
+ }
 
-  @override
-  bool shouldReload(DemoLocalizationsDelegate old) => false;
+ @override
+ bool shouldReload(DemoLocalizationsDelegate old) => false;
 }
 
 ```
@@ -63,27 +63,27 @@ As in the previous section, we now need to register the `DemoLocalizationsDelega
 
 Just `localizationsDelegates`add our Delegate instance to the list of MaterialApp or WidgetsApp to complete the registration:
 
-```
+``` dart 
 localizationsDelegates: [
- // 本地化的代理类
- GlobalMaterialLocalizations.delegate,
- GlobalWidgetsLocalizations.delegate,
- // 注册我们的Delegate
- DemoLocalizationsDelegate()
+// 本地化的代理类
+GlobalMaterialLocalizations.delegate,
+GlobalWidgetsLocalizations.delegate,
+// 注册我们的Delegate
+DemoLocalizationsDelegate()
 ],
 
 ```
 
 Next we can use the Locale value in the Widget:
 
-```
+``` dart 
 return Scaffold(
-  appBar: AppBar(
-    //使用Locale title  
-    title: Text(DemoLocalizations.of(context).title),
-  ),
-  ... //省略无关代码
- ）
+ appBar: AppBar(
+   //使用Locale title  
+   title: Text(DemoLocalizations.of(context).title),
+ ),
+ ... //省略无关代码
+）
 
 ```
 

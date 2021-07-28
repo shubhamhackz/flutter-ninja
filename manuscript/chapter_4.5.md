@@ -4,13 +4,13 @@ The stacked layout is similar to the absolute positioning in the Web and the Fra
 
 ### Stack
 
-```
+``` dart 
 Stack({
-  this.alignment = AlignmentDirectional.topStart,
-  this.textDirection,
-  this.fit = StackFit.loose,
-  this.overflow = Overflow.clip,
-  List<Widget> children = const <Widget>[],
+ this.alignment = AlignmentDirectional.topStart,
+ this.textDirection,
+ this.fit = StackFit.loose,
+ this.overflow = Overflow.clip,
+ List<Widget> children = const <Widget>[],
 })
 
 ```
@@ -22,16 +22,16 @@ Stack({
 
 ### Positioned
 
-```
+``` dart 
 const Positioned({
-  Key key,
-  this.left, 
-  this.top,
-  this.right,
-  this.bottom,
-  this.width,
-  this.height,
-  @required Widget child,
+ Key key,
+ this.left, 
+ this.top,
+ this.right,
+ this.bottom,
+ this.width,
+ this.height,
+ @required Widget child,
 })
 
 ```
@@ -42,26 +42,26 @@ const Positioned({
 
 In the following example, we `Text`demonstrate the characteristics of `Stack`and `Positioned`by positioning several components :
 
-```
+``` dart 
 //通过ConstrainedBox来确保Stack占满屏幕
 ConstrainedBox(
-  constraints: BoxConstraints.expand(),
-  child: Stack(
-    alignment:Alignment.center , //指定未定位或部分定位widget的对齐方式
-    children: <Widget>[
-      Container(child: Text("Hello world",style: TextStyle(color: Colors.white)),
-        color: Colors.red,
-      ),
-      Positioned(
-        left: 18.0,
-        child: Text("I am Jack"),
-      ),
-      Positioned(
-        top: 18.0,
-        child: Text("Your friend"),
-      )        
-    ],
-  ),
+ constraints: BoxConstraints.expand(),
+ child: Stack(
+   alignment:Alignment.center , //指定未定位或部分定位widget的对齐方式
+   children: <Widget>[
+     Container(child: Text("Hello world",style: TextStyle(color: Colors.white)),
+       color: Colors.red,
+     ),
+     Positioned(
+       left: 18.0,
+       child: Text("I am Jack"),
+     ),
+     Positioned(
+       top: 18.0,
+       child: Text("Your friend"),
+     )        
+   ],
+ ),
 );
 
 ```
@@ -74,23 +74,23 @@ Since the first child text component `Text("Hello world")`does not specify a pos
 
 We `Stack`assign an `fit`attribute to the above example , and then adjust the order of the three sub-text components:
 
-```
+``` dart 
 Stack(
-  alignment:Alignment.center ,
-  fit: StackFit.expand, //未定位widget占满Stack整个空间
-  children: <Widget>[
-    Positioned(
-      left: 18.0,
-      child: Text("I am Jack"),
-    ),
-    Container(child: Text("Hello world",style: TextStyle(color: Colors.white)),
-      color: Colors.red,
-    ),
-    Positioned(
-      top: 18.0,
-      child: Text("Your friend"),
-    )
-  ],
+ alignment:Alignment.center ,
+ fit: StackFit.expand, //未定位widget占满Stack整个空间
+ children: <Widget>[
+   Positioned(
+     left: 18.0,
+     child: Text("I am Jack"),
+   ),
+   Container(child: Text("Hello world",style: TextStyle(color: Colors.white)),
+     color: Colors.red,
+   ),
+   Positioned(
+     top: 18.0,
+     child: Text("Your friend"),
+   )
+ ],
 ),
 
 ```

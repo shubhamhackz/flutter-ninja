@@ -10,15 +10,15 @@ For linear layout, there are main axis and vertical axis. If the layout is along
 
 Row can arrange its child widgets in the horizontal direction. It is defined as follows:
 
-```
+``` dart 
 Row({
-  ...  
-  TextDirection textDirection,    
-  MainAxisSize mainAxisSize = MainAxisSize.max,    
-  MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
-  VerticalDirection verticalDirection = VerticalDirection.down,  
-  CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-  List<Widget> children = const <Widget>[],
+ ...  
+ TextDirection textDirection,    
+ MainAxisSize mainAxisSize = MainAxisSize.max,    
+ MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+ VerticalDirection verticalDirection = VerticalDirection.down,  
+ CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+ List<Widget> children = const <Widget>[],
 })
 
 ```
@@ -34,43 +34,43 @@ Row({
 
 Please read the following code, first imagine the result of the operation:
 
-```
+``` dart 
 Column(
-  //测试Row对齐方式，排除Column默认居中对齐的干扰
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: <Widget>[
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(" hello world "),
-        Text(" I am Jack "),
-      ],
-    ),
-    Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(" hello world "),
-        Text(" I am Jack "),
-      ],
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      textDirection: TextDirection.rtl,
-      children: <Widget>[
-        Text(" hello world "),
-        Text(" I am Jack "),
-      ],
-    ),
-    Row(
-      crossAxisAlignment: CrossAxisAlignment.start,  
-      verticalDirection: VerticalDirection.up,
-      children: <Widget>[
-        Text(" hello world ", style: TextStyle(fontSize: 30.0),),
-        Text(" I am Jack "),
-      ],
-    ),
-  ],
+ //测试Row对齐方式，排除Column默认居中对齐的干扰
+ crossAxisAlignment: CrossAxisAlignment.start,
+ children: <Widget>[
+   Row(
+     mainAxisAlignment: MainAxisAlignment.center,
+     children: <Widget>[
+       Text(" hello world "),
+       Text(" I am Jack "),
+     ],
+   ),
+   Row(
+     mainAxisSize: MainAxisSize.min,
+     mainAxisAlignment: MainAxisAlignment.center,
+     children: <Widget>[
+       Text(" hello world "),
+       Text(" I am Jack "),
+     ],
+   ),
+   Row(
+     mainAxisAlignment: MainAxisAlignment.end,
+     textDirection: TextDirection.rtl,
+     children: <Widget>[
+       Text(" hello world "),
+       Text(" I am Jack "),
+     ],
+   ),
+   Row(
+     crossAxisAlignment: CrossAxisAlignment.start,  
+     verticalDirection: VerticalDirection.up,
+     children: <Widget>[
+       Text(" hello world ", style: TextStyle(fontSize: 30.0),),
+       Text(" I am Jack "),
+     ],
+   ),
+ ],
 );
 
 ```
@@ -85,20 +85,20 @@ Explanation: The first one `Row`is very simple, the default is center alignment;
 
 `Column`Its sub-components can be arranged in the vertical direction. The parameters are the `Row`same. The difference is that the layout direction is vertical, and the main axis is the opposite. Readers can `Row`understand it by analogy . Let's look at an example:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 class CenterColumnRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text("hi"),
-        Text("world"),
-      ],
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Column(
+     crossAxisAlignment: CrossAxisAlignment.center,
+     children: <Widget>[
+       Text("hi"),
+       Text("world"),
+     ],
+   );
+ }
 }
 
 ```
@@ -115,52 +115,52 @@ Explanation:
 **In fact, the `Row`sum `Column`will only take up as much space as possible in the main axis direction, and the length of the vertical axis depends on the length of their largest child element** . If we want the two text controls in this example to be aligned in the middle of the entire phone screen, we have two methods:
 
 -   The `Column`width is specified as the screen width; this is very simple, we can `ConstrainedBox`or `SizedBox`(we will introduce two devoted Widget in later chapters) to forcibly change the width restrictions, such as:
-    
-    ```
-    ConstrainedBox(
-      constraints: BoxConstraints(minWidth: double.infinity), 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text("hi"),
-          Text("world"),
-        ],
-      ),
-    );
-    
-    ```
-    
-    Set `minWidth`to `double.infinity`make the width take up as much space as possible.
-    
+   
+``` dart 
+   ConstrainedBox(
+     constraints: BoxConstraints(minWidth: double.infinity), 
+     child: Column(
+       crossAxisAlignment: CrossAxisAlignment.center,
+       children: <Widget>[
+         Text("hi"),
+         Text("world"),
+       ],
+     ),
+   );
+   
+```
+   
+   Set `minWidth`to `double.infinity`make the width take up as much space as possible.
+   
 -   Use `Center`Widget; we will introduce it in later chapters.
-    
+   
 
 ### Special cases
 
 If `Row`nested inside `Row`, or `Column`inside another nested `Column`, only the outermost `Row`or `Column`take up as much space inside `Row`or `Column`the space occupied by the actual size, in order to below `Column`as an example:
 
-```
+``` dart 
 Container(
-  color: Colors.green,
-  child: Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max, //有效，外层Colum高度为整个屏幕
-      children: <Widget>[
-        Container(
-          color: Colors.red,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,//无效，内层Colum高度为实际高度  
-            children: <Widget>[
-              Text("hello world "),
-              Text("I am Jack "),
-            ],
-          ),
-        )
-      ],
-    ),
-  ),
+ color: Colors.green,
+ child: Padding(
+   padding: const EdgeInsets.all(16.0),
+   child: Column(
+     crossAxisAlignment: CrossAxisAlignment.start,
+     mainAxisSize: MainAxisSize.max, //有效，外层Colum高度为整个屏幕
+     children: <Widget>[
+       Container(
+         color: Colors.red,
+         child: Column(
+           mainAxisSize: MainAxisSize.max,//无效，内层Colum高度为实际高度  
+           children: <Widget>[
+             Text("hello world "),
+             Text("I am Jack "),
+           ],
+         ),
+       )
+     ],
+   ),
+ ),
 );
 
 ```
@@ -171,18 +171,18 @@ The running effect is shown in Figure 4-3:
 
 If you want the inside to `Column`fill the outside `Column`, you can use `Expanded`components:
 
-```
+``` dart 
 Expanded( 
-  child: Container(
-    color: Colors.red,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center, //垂直方向居中对齐
-      children: <Widget>[
-        Text("hello world "),
-        Text("I am Jack "),
-      ],
-    ),
-  ),
+ child: Container(
+   color: Colors.red,
+   child: Column(
+     mainAxisAlignment: MainAxisAlignment.center, //垂直方向居中对齐
+     children: <Widget>[
+       Text("hello world "),
+       Text("I am Jack "),
+     ],
+   ),
+ ),
 )
 
 ```

@@ -10,25 +10,25 @@ Size constraints limit the type of container to container size, provided Flutter
 
 Let's define one first `redBox`, it is a box with a red background color, without specifying its width and height:
 
-```
+``` dart 
 Widget redBox=DecoratedBox(
-  decoration: BoxDecoration(color: Colors.red),
+ decoration: BoxDecoration(color: Colors.red),
 );
 
 ```
 
 We implement a red container with a minimum height of 50 and a width as large as possible.
 
-```
+``` dart 
 ConstrainedBox(
-  constraints: BoxConstraints(
-    minWidth: double.infinity, //宽度尽可能大
-    minHeight: 50.0 //最小高度为50像素
-  ),
-  child: Container(
-      height: 5.0, 
-      child: redBox 
-  ),
+ constraints: BoxConstraints(
+   minWidth: double.infinity, //宽度尽可能大
+   minHeight: 50.0 //最小高度为50像素
+ ),
+ child: Container(
+     height: 5.0, 
+     child: redBox 
+ ),
 )
 
 ```
@@ -43,12 +43,12 @@ As you can see, although we set the height of the Container to 5 pixels, it ende
 
 BoxConstraints is used to set constraints, and its definition is as follows:
 
-```
+``` dart 
 const BoxConstraints({
-  this.minWidth = 0.0, //最小宽度
-  this.maxWidth = double.infinity, //最大宽度
-  this.minHeight = 0.0, //最小高度
-  this.maxHeight = double.infinity //最大高度
+ this.minWidth = 0.0, //最小宽度
+ this.maxWidth = double.infinity, //最大宽度
+ this.minHeight = 0.0, //最小高度
+ this.maxHeight = double.infinity //最大高度
 })
 
 ```
@@ -59,11 +59,11 @@ BoxConstraints also defines some convenient constructors to quickly generate Box
 
 `SizedBox`Used to specify a fixed width and height for child elements, such as:
 
-```
+``` dart 
 SizedBox(
-  width: 80.0,
-  height: 80.0,
-  child: redBox
+ width: 80.0,
+ height: 80.0,
+ child: redBox
 )
 
 ```
@@ -74,29 +74,29 @@ The running effect is shown in Figure 5-3:
 
 In fact, it `SizedBox`is just `ConstrainedBox`a customization. The above code is equivalent to:
 
-```
+``` dart 
 ConstrainedBox(
-  constraints: BoxConstraints.tightFor(width: 80.0,height: 80.0),
-  child: redBox, 
+ constraints: BoxConstraints.tightFor(width: 80.0,height: 80.0),
+ child: redBox, 
 )
 
 ```
 
 And is `BoxConstraints.tightFor(width: 80.0,height: 80.0)`equivalent to:
 
-```
+``` dart 
 BoxConstraints(minHeight: 80.0,maxHeight: 80.0,minWidth: 80.0,maxWidth: 80.0)
 
 ```
 
 And in fact, `ConstrainedBox`and `SizedBox`are through `RenderConstrainedBox`to rendering, we can see `ConstrainedBox`and `SizedBox`the `createRenderObject()`methods return is a `RenderConstrainedBox`target:
 
-```
+``` dart 
 @override
 RenderConstrainedBox createRenderObject(BuildContext context) {
-  return new RenderConstrainedBox(
-    additionalConstraints: ...,
-  );
+ return new RenderConstrainedBox(
+   additionalConstraints: ...,
+ );
 }
 
 ```
@@ -105,13 +105,13 @@ RenderConstrainedBox createRenderObject(BuildContext context) {
 
 If a component has multiple parent `ConstrainedBox`restrictions, which one will take effect? Let's look at an example:
 
-```
+``` dart 
 ConstrainedBox(
-    constraints: BoxConstraints(minWidth: 60.0, minHeight: 60.0), //父
-    child: ConstrainedBox(
-      constraints: BoxConstraints(minWidth: 90.0, minHeight: 20.0),//子
-      child: redBox,
-    )
+   constraints: BoxConstraints(minWidth: 60.0, minHeight: 60.0), //父
+   child: ConstrainedBox(
+     constraints: BoxConstraints(minWidth: 90.0, minHeight: 20.0),//子
+     child: redBox,
+   )
 )
 
 ```
@@ -122,13 +122,13 @@ We have two fathers and sons above `ConstrainedBox`, and their restriction condi
 
 The final display is wide 90, high 60, that is a child `ConstrainedBox`'s `minWidth`entry into force, which `minHeight`is the parent `ConstrainedBox`to take effect. Based on this example alone, we still can’t sum up any rules. Let’s change the parent-child restrictions in the previous example:
 
-```
+``` dart 
 ConstrainedBox(
-    constraints: BoxConstraints(minWidth: 90.0, minHeight: 20.0),
-    child: ConstrainedBox(
-      constraints: BoxConstraints(minWidth: 60.0, minHeight: 60.0),
-      child: redBox,
-    )
+   constraints: BoxConstraints(minWidth: 90.0, minHeight: 20.0),
+   child: ConstrainedBox(
+     constraints: BoxConstraints(minWidth: 60.0, minHeight: 60.0),
+     child: redBox,
+   )
 )
 
 ```
@@ -147,15 +147,15 @@ Through the above example, we find that when there are multiple restrictions, fo
 
 `UnconstrainedBox`Does not impose any restrictions on the sub-components, it allows its sub-components to be drawn according to their own size. Under normal circumstances, we will rarely use this component directly, but it may be helpful to "remove" multiple restrictions. Let's look at the following code:
 
-```
+``` dart 
 ConstrainedBox(
-    constraints: BoxConstraints(minWidth: 60.0, minHeight: 100.0),  //父
-    child: UnconstrainedBox( //“去除”父级限制
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: 90.0, minHeight: 20.0),//子
-        child: redBox,
-      ),
-    )
+   constraints: BoxConstraints(minWidth: 60.0, minHeight: 100.0),  //父
+   child: UnconstrainedBox( //“去除”父级限制
+     child: ConstrainedBox(
+       constraints: BoxConstraints(minWidth: 90.0, minHeight: 20.0),//子
+       child: redBox,
+     ),
+   )
 )
 
 ```
@@ -170,19 +170,19 @@ So is there any way to completely remove `ConstrainedBox`the restriction of the 
 
 In actual development, when we find that we have used `SizedBox`or `ConstrainedBox`specified the width and height of the child element, but there is still no effect, we can almost conclude that there are already restrictions on the parent element! For example, in the `AppBar`right menu of the (navigation bar) in the Material component library , we use to `SizedBox`specify the size of the loading button. The code is as follows:
 
-```
- AppBar(
-   title: Text(title),
-   actions: <Widget>[
-         SizedBox(
-             width: 20, 
-             height: 20,
-             child: CircularProgressIndicator(
-                 strokeWidth: 3,
-                 valueColor: AlwaysStoppedAnimation(Colors.white70),
-             ),
-         )
-   ],
+``` dart 
+AppBar(
+  title: Text(title),
+  actions: <Widget>[
+        SizedBox(
+            width: 20, 
+            height: 20,
+            child: CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation(Colors.white70),
+            ),
+        )
+  ],
 )
 
 ```
@@ -193,21 +193,21 @@ After the above code runs, the effect is shown in Figure 5-7:
 
 We will find that the size of the loading button on the right has not changed! This is precisely because `AppBar`the `actions`button restrictions have been specified in , so if we want to customize the size of the loading button, we must `UnconstrainedBox`"remove" the restriction of the parent element. The code is as follows:
 
-```
+``` dart 
 AppBar(
-  title: Text(title),
-  actions: <Widget>[
-      UnconstrainedBox(
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-                valueColor: AlwaysStoppedAnimation(Colors.white70),
-              ),
-          ),
-      )
-  ],
+ title: Text(title),
+ actions: <Widget>[
+     UnconstrainedBox(
+           child: SizedBox(
+             width: 20,
+             height: 20,
+             child: CircularProgressIndicator(
+               strokeWidth: 3,
+               valueColor: AlwaysStoppedAnimation(Colors.white70),
+             ),
+         ),
+     )
+ ],
 )
 
 ```

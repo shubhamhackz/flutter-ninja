@@ -51,21 +51,21 @@ In addition to the above mentioned `MethodChannel`, it can also be used [`BasicM
 
 Flutter provides a global variable `defaultTargetPlatform`to obtain the platform information of the current application, which is `defaultTargetPlatform`defined in "platform.dart". Its type is `TargetPlatform`, which is an enumeration class, defined as follows:
 
-```
+``` dart 
 enum TargetPlatform {
-  android,
-  fuchsia,
-  iOS,
+ android,
+ fuchsia,
+ iOS,
 }
 
 ```
 
 It can be seen that Flutter currently only supports these three platforms. We can judge the platform by the following code:
 
-```
+``` dart 
 if(defaultTargetPlatform==TargetPlatform.android){
-  // 是安卓系统，do something
-  ...
+ // 是安卓系统，do something
+ ...
 }
 ...
 
@@ -73,7 +73,7 @@ if(defaultTargetPlatform==TargetPlatform.android){
 
 Because different platforms have their own interaction specifications, some components in the Flutter Material library are adapted to the corresponding platforms, such as the routing component `MaterialPageRoute`, which applies the switching animation of the respective platform specifications in android and ios. What if we want our APP to behave consistently on all platforms, for example, if we want to switch animations on all platforms to follow the same left and right sliding switching style of the ios platform? Flutter provides a mechanism to override the default platform. We can `debugDefaultTargetPlatformOverride`specify the application platform by explicitly specifying the value of the global variable. such as:
 
-```
+``` dart 
 debugDefaultTargetPlatformOverride=TargetPlatform.iOS;
 print(defaultTargetPlatform); // 会输出TargetPlatform.iOS
 

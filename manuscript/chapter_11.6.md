@@ -2,19 +2,19 @@
 
 The Http protocol and WebSocket protocol that we introduced earlier are both application layer protocols. In addition to them, there are many application layer protocols such as SMTP, FTP, etc. The implementation of these application layer protocols is achieved through Socket API. In fact, the native network request API provided in the operating system is standard. In the Socket library of the C language, it mainly provides the basic API for establishing a link and sending data from end to end, while the Socket library in high-level programming languages ​​is actually A wrapper to the socket API of the operating system. Therefore, if we need to customize the protocol or want to directly control and manage the network connection, or we feel that the built-in HttpClient is not easy to use and want to reimplement one, then we need to use Socket. Flutter's Socket API is in the dart:io package. Let's look at an example of using Socket to implement a simple http request. Take the Baidu homepage as an example:
 
-```
+``` dart 
 _request() async{
-  //建立连接
-  var socket=await Socket.connect("baidu.com", 80);
-  //根据http协议，发送请求头
-  socket.writeln("GET / HTTP/1.1");
-  socket.writeln("Host:baidu.com");
-  socket.writeln("Connection:close");
-  socket.writeln();
-  await socket.flush(); //发送
-  //读取返回内容
-  _response =await socket.transform(utf8.decoder).join();
-  await socket.close();
+ //建立连接
+ var socket=await Socket.connect("baidu.com", 80);
+ //根据http协议，发送请求头
+ socket.writeln("GET / HTTP/1.1");
+ socket.writeln("Host:baidu.com");
+ socket.writeln("Connection:close");
+ socket.writeln();
+ await socket.flush(); //发送
+ //读取返回内容
+ _response =await socket.transform(utf8.decoder).join();
+ await socket.close();
 }
 
 ```

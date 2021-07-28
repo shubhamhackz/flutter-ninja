@@ -15,54 +15,54 @@ In Flutter, we can `Image`load and display pictures through components, and `Ima
 #### Load image from asset
 
 1.  Create one in the project root directory `images目录`and copy the picture avatar.png to this directory.
-    
+   
 2.  In `pubspec.yaml`the `flutter`add the following parts:
-    
-    ```
-      assets:
-        - images/avatar.png
-    
-    ```
-    
-    > Note: Since the yaml file is strictly indented, it must be indented strictly in accordance with two spaces per layer. There should be two spaces in front of assets.
-    
+   
+``` dart 
+     assets:
+       - images/avatar.png
+   
+```
+   
+   > Note: Since the yaml file is strictly indented, it must be indented strictly in accordance with two spaces per layer. There should be two spaces in front of assets.
+   
 3.  Load the picture
-    
-    ```
-    Image(
-      image: AssetImage("images/avatar.png"),
-      width: 100.0
-    );
-    
-    ```
-    
-    Image also provides a shortcut constructor `Image.asset`for loading and displaying images from the asset:
-    
-    ```
-    Image.asset("images/avatar.png",
-      width: 100.0,
-    )
-    
-    ```
-    
+   
+``` dart 
+   Image(
+     image: AssetImage("images/avatar.png"),
+     width: 100.0
+   );
+   
+```
+   
+   Image also provides a shortcut constructor `Image.asset`for loading and displaying images from the asset:
+   
+``` dart 
+   Image.asset("images/avatar.png",
+     width: 100.0,
+   )
+   
+```
+   
 
 #### Load pictures from the web
 
-```
+``` dart 
 Image(
-  image: NetworkImage(
-      "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4"),
-  width: 100.0,
+ image: NetworkImage(
+     "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4"),
+ width: 100.0,
 )
 
 ```
 
 Image also provides a shortcut constructor `Image.network`for loading and displaying images from the network:
 
-```
+``` dart 
 Image.network(
-  "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4",
-  width: 100.0,
+ "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4",
+ width: 100.0,
 )
 
 ```
@@ -75,155 +75,155 @@ After running the above two examples, the picture is successfully loaded as show
 
 `Image`A series of parameters are defined when the picture is displayed, through which we can control the display appearance, size, and mixing effect of the picture. Let's take a look at the main parameters of Image:
 
-```
+``` dart 
 const Image({
-  ...
-  this.width, //图片的宽
-  this.height, //图片高度
-  this.color, //图片的混合色值
-  this.colorBlendMode, //混合模式
-  this.fit,//缩放模式
-  this.alignment = Alignment.center, //对齐方式
-  this.repeat = ImageRepeat.noRepeat, //重复方式
-  ...
+ ...
+ this.width, //图片的宽
+ this.height, //图片高度
+ this.color, //图片的混合色值
+ this.colorBlendMode, //混合模式
+ this.fit,//缩放模式
+ this.alignment = Alignment.center, //对齐方式
+ this.repeat = ImageRepeat.noRepeat, //重复方式
+ ...
 })
 
 ```
 
 -   `width`, : `height`For setting image width, height, width and height when not specified, according to the limitations of the current picture is the parent container, its original size as a display, provided only if `width`, `height`the one, the other attribute is by default by Scaling, but you can `fit`specify the adaptation rules through the properties described below .
-    
+   
 -   `fit`: This attribute is used to specify the adaptation mode of the picture when the display space of the picture is different from the size of the picture itself. The adaptation mode is `BoxFit`defined in. It is an enumerated type with the following values:
-    
-    -   `fill`: It will stretch to fill the display space, the aspect ratio of the picture itself will change, and the picture will be deformed.
-    -   `cover`: It will be enlarged according to the aspect ratio of the picture and then centered to fill the display space, the picture will not be deformed, and the part beyond the display space will be cropped.
-    -   `contain`: This is the default adaptation rule of the picture. The picture will be scaled to fit the current display space while the aspect ratio of the picture itself remains unchanged, and the picture will not be deformed.
-    -   `fitWidth`: The width of the picture will be scaled to the width of the display space, the height will be scaled proportionally, and then displayed in the center, the picture will not be deformed, and the part beyond the display space will be cropped.
-    -   `fitHeight`: The height of the picture will be scaled to the height of the display space, the width will be scaled proportionally, and then displayed in the center, the picture will not be deformed, and the part beyond the display space will be cropped.
-    -   `none`: The picture does not have an adaptation strategy and will be displayed in the display space. If the picture is larger than the display space, the display space will only display the middle part of the picture.
-    
-    A picture is worth a thousand words! We apply different `fit`values ​​to an avatar image with the same width and height , and the effect is shown in Figure 3-18:
-    
-    ![Figure 3-18](https://pcdn.flutterchina.club/imgs/3-18.png)
-    
+   
+   -   `fill`: It will stretch to fill the display space, the aspect ratio of the picture itself will change, and the picture will be deformed.
+   -   `cover`: It will be enlarged according to the aspect ratio of the picture and then centered to fill the display space, the picture will not be deformed, and the part beyond the display space will be cropped.
+   -   `contain`: This is the default adaptation rule of the picture. The picture will be scaled to fit the current display space while the aspect ratio of the picture itself remains unchanged, and the picture will not be deformed.
+   -   `fitWidth`: The width of the picture will be scaled to the width of the display space, the height will be scaled proportionally, and then displayed in the center, the picture will not be deformed, and the part beyond the display space will be cropped.
+   -   `fitHeight`: The height of the picture will be scaled to the height of the display space, the width will be scaled proportionally, and then displayed in the center, the picture will not be deformed, and the part beyond the display space will be cropped.
+   -   `none`: The picture does not have an adaptation strategy and will be displayed in the display space. If the picture is larger than the display space, the display space will only display the middle part of the picture.
+   
+   A picture is worth a thousand words! We apply different `fit`values ​​to an avatar image with the same width and height , and the effect is shown in Figure 3-18:
+   
+   ![Figure 3-18](https://pcdn.flutterchina.club/imgs/3-18.png)
+   
 
 -   `color`和`colorBlendMode`: When drawing the picture, you can perform color mixing for each pixel, `color`specify the mixed color, and `colorBlendMode`specify the mixing mode. The following is a simple example:
-    
-    ```
-    Image(
-      image: AssetImage("images/avatar.png"),
-      width: 100.0,
-      color: Colors.blue,
-      colorBlendMode: BlendMode.difference,
-    );
-    
-    ```
-    
+   
+``` dart 
+   Image(
+     image: AssetImage("images/avatar.png"),
+     width: 100.0,
+     color: Colors.blue,
+     colorBlendMode: BlendMode.difference,
+   );
+   
+```
+   
 
 The running effect is shown in Figure 3-19 (color):
 
 ![Figure 3-19](https://pcdn.flutterchina.club/imgs/3-19.png)
 
 -   `repeat`: When the size of the picture itself is smaller than the display space, specify the repetition rule of the picture. A simple example is as follows:
-    
-    ```
-    Image(
-      image: AssetImage("images/avatar.png"),
-      width: 100.0,
-      height: 200.0,
-      repeat: ImageRepeat.repeatY ,
-    )
-    
-    ```
-    
-    The effect after running is shown in Figure 3-20:
-    
-    ![Figure 3-20](https://pcdn.flutterchina.club/imgs/3-20.png)
-    
+   
+``` dart 
+   Image(
+     image: AssetImage("images/avatar.png"),
+     width: 100.0,
+     height: 200.0,
+     repeat: ImageRepeat.repeatY ,
+   )
+   
+```
+   
+   The effect after running is shown in Figure 3-20:
+   
+   ![Figure 3-20](https://pcdn.flutterchina.club/imgs/3-20.png)
+   
 
 The complete sample code is as follows:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 class ImageAndIconRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var img=AssetImage("imgs/avatar.png");
-    return SingleChildScrollView(
-      child: Column(
-        children: <Image>[
-          Image(
-            image: img,
-            height: 50.0,
-            width: 100.0,
-            fit: BoxFit.fill,
-          ),
-          Image(
-            image: img,
-            height: 50,
-            width: 50.0,
-            fit: BoxFit.contain,
-          ),
-          Image(
-            image: img,
-            width: 100.0,
-            height: 50.0,
-            fit: BoxFit.cover,
-          ),
-          Image(
-            image: img,
-            width: 100.0,
-            height: 50.0,
-            fit: BoxFit.fitWidth,
-          ),
-          Image(
-            image: img,
-            width: 100.0,
-            height: 50.0,
-            fit: BoxFit.fitHeight,
-          ),
-          Image(
-            image: img,
-            width: 100.0,
-            height: 50.0,
-            fit: BoxFit.scaleDown,
-          ),
-          Image(
-            image: img,
-            height: 50.0,
-            width: 100.0,
-            fit: BoxFit.none,
-          ),
-          Image(
-            image: img,
-            width: 100.0,
-            color: Colors.blue,
-            colorBlendMode: BlendMode.difference,
-            fit: BoxFit.fill,
-          ),
-          Image(
-            image: img,
-            width: 100.0,
-            height: 200.0,
-            repeat: ImageRepeat.repeatY ,
-          )
-        ].map((e){
-          return Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: SizedBox(
-                  width: 100,
-                  child: e,
-                ),
-              ),
-              Text(e.fit.toString())
-            ],
-          );
-        }).toList()
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   var img=AssetImage("imgs/avatar.png");
+   return SingleChildScrollView(
+     child: Column(
+       children: <Image>[
+         Image(
+           image: img,
+           height: 50.0,
+           width: 100.0,
+           fit: BoxFit.fill,
+         ),
+         Image(
+           image: img,
+           height: 50,
+           width: 50.0,
+           fit: BoxFit.contain,
+         ),
+         Image(
+           image: img,
+           width: 100.0,
+           height: 50.0,
+           fit: BoxFit.cover,
+         ),
+         Image(
+           image: img,
+           width: 100.0,
+           height: 50.0,
+           fit: BoxFit.fitWidth,
+         ),
+         Image(
+           image: img,
+           width: 100.0,
+           height: 50.0,
+           fit: BoxFit.fitHeight,
+         ),
+         Image(
+           image: img,
+           width: 100.0,
+           height: 50.0,
+           fit: BoxFit.scaleDown,
+         ),
+         Image(
+           image: img,
+           height: 50.0,
+           width: 100.0,
+           fit: BoxFit.none,
+         ),
+         Image(
+           image: img,
+           width: 100.0,
+           color: Colors.blue,
+           colorBlendMode: BlendMode.difference,
+           fit: BoxFit.fill,
+         ),
+         Image(
+           image: img,
+           width: 100.0,
+           height: 200.0,
+           repeat: ImageRepeat.repeatY ,
+         )
+       ].map((e){
+         return Row(
+           children: <Widget>[
+             Padding(
+               padding: EdgeInsets.all(16.0),
+               child: SizedBox(
+                 width: 100,
+                 child: e,
+               ),
+             ),
+             Text(e.fit.toString())
+           ],
+         );
+       }).toList()
+     ),
+   );
+ }
 }
 
 ```
@@ -249,9 +249,9 @@ In Flutter development, iconfont has the following advantages over pictures:
 
 Flutter includes a set of Material Design font icons by default `pubspec.yaml`. The configuration in the file is as follows
 
-```
+``` dart 
 flutter:
-  uses-material-design: true
+ uses-material-design: true
 
 ```
 
@@ -259,7 +259,7 @@ All icons of Material Design can be viewed on its official website: [https://mat
 
 Let's look at a simple example:
 
-```
+``` dart 
 String icons = "";
 // accessible: &#xE914; or 0xE914 or E914
 icons += "\uE914";
@@ -269,11 +269,11 @@ icons += " \uE000";
 icons += " \uE90D";
 
 Text(icons,
-  style: TextStyle(
-      fontFamily: "MaterialIcons",
-      fontSize: 24.0,
-      color: Colors.green
-  ),
+ style: TextStyle(
+     fontFamily: "MaterialIcons",
+     fontSize: 24.0,
+     color: Colors.green
+ ),
 );
 
 ```
@@ -284,14 +284,14 @@ The running effect is shown in Figure 3-21:
 
 From this example, we can see that using icons is like using text, but this method requires us to provide the code point of each icon, which is not friendly to developers. Therefore, Flutter encapsulates `IconData`and `Icon`specifically displays font icons. The example can also be implemented as follows:
 
-```
+``` dart 
 Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: <Widget>[
-    Icon(Icons.accessible,color: Colors.green,),
-    Icon(Icons.error,color: Colors.green,),
-    Icon(Icons.fingerprint,color: Colors.green,),
-  ],
+ mainAxisAlignment: MainAxisAlignment.center,
+ children: <Widget>[
+   Icon(Icons.accessible,color: Colors.green,),
+   Icon(Icons.error,color: Colors.green,),
+   Icon(Icons.fingerprint,color: Colors.green,),
+ ],
 )
 
 ```
@@ -305,48 +305,48 @@ We can also use custom font icons. There are a lot of font icon materials on ico
 Suppose we need to use a book icon and WeChat icon in our project, we package and download it and import it:
 
 1.  Import the font icon file; this step is the same as importing the font file, assuming that our font icon file is saved in the project root directory, and the path is "fonts/iconfont.ttf":
-    
-    ```
-    fonts:
-      - family: myIcon  #指定一个字体名
-        fonts:
-          - asset: fonts/iconfont.ttf
-    
-    ```
-    
+   
+``` dart 
+   fonts:
+     - family: myIcon  #指定一个字体名
+       fonts:
+         - asset: fonts/iconfont.ttf
+   
+```
+   
 2.  For ease of use, we define a `MyIcons`class with the `Icons`same function as the class: define all icons in the font file as static variables:
-    
-    ```
-    class MyIcons{
-      // book 图标
-      static const IconData book = const IconData(
-          0xe614, 
-          fontFamily: 'myIcon', 
-          matchTextDirection: true
-      );
-      // 微信图标
-      static const IconData wechat = const IconData(
-          0xec7d,  
-          fontFamily: 'myIcon', 
-          matchTextDirection: true
-      );
-    }
-    
-    ```
-    
+   
+``` dart 
+   class MyIcons{
+     // book 图标
+     static const IconData book = const IconData(
+         0xe614, 
+         fontFamily: 'myIcon', 
+         matchTextDirection: true
+     );
+     // 微信图标
+     static const IconData wechat = const IconData(
+         0xec7d,  
+         fontFamily: 'myIcon', 
+         matchTextDirection: true
+     );
+   }
+   
+```
+   
 3.  use
-    
-    ```
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(MyIcons.book,color: Colors.purple,),
-        Icon(MyIcons.wechat,color: Colors.green,),
-      ],
-    )
-    
-    ```
-    
-    The effect after running is shown in Figure 3-22:
-    
-    ![Figure 3-22](https://pcdn.flutterchina.club/imgs/3-22.png)
+   
+``` dart 
+   Row(
+     mainAxisAlignment: MainAxisAlignment.center,
+     children: <Widget>[
+       Icon(MyIcons.book,color: Colors.purple,),
+       Icon(MyIcons.wechat,color: Colors.green,),
+     ],
+   )
+   
+```
+   
+   The effect after running is shown in Figure 3-22:
+   
+   ![Figure 3-22](https://pcdn.flutterchina.club/imgs/3-22.png)

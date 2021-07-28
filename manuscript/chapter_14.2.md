@@ -23,14 +23,14 @@ After reading the life cycle of the Element, some readers may have questions. Wi
 
 We already know, `StatelessWidget`and `StatefulWidget`the `build`method will pass a `BuildContext`target:
 
-```
+``` dart 
 Widget build(BuildContext context) {}
 
 ```
 
 We also know that in many cases we need to use this to `context`do something, such as:
 
-```
+``` dart 
 Theme.of(context) //获取主题
 Navigator.push(context, route) //入栈新路由
 Localizations.of(context, type) //获取Local
@@ -41,31 +41,31 @@ context.findRenderObject() //查找当前或最近的一个祖先RenderObject
 
 So `BuildContext`what is it? Check its definition and find that it is an abstract interface class:
 
-```
+``` dart 
 abstract class BuildContext {
-    ...
+   ...
 }
 
 ```
 
 So `context`who is the implementation class corresponding to this object? We follow it, find `build`invocation occurs `StatelessWidget`and `StatefulWidget`the corresponding `StatelessElement`and `StatefulElement`the `build`methods for `StatelessElement`example:
 
-```
+``` dart 
 
 class StatelessElement extends ComponentElement {
-  ...
-  @override
-  Widget build() => widget.build(this);
-  ...
+ ...
+ @override
+ Widget build() => widget.build(this);
+ ...
 }
 
 ```
 
 Found `build`that the parameters passed `this`is obvious! This `BuildContext`is it `StatelessElement`. Similarly, we also found `StatefulWidget`the `context`Shi `StatefulElement`. However, `StatelessElement`and `StatefulElement`in itself it does not implement `BuildContext`the interface, continue to follow the code, find that they indirectly inherited from `Element`class, and then view the `Element`class definitions and found that `Element`class really implements `BuildContext`the interface:
 
-```
+``` dart 
 class Element extends DiagnosticableTree implements BuildContext {
-    ...
+   ...
 }
 
 ```
@@ -85,45 +85,45 @@ For question 1, the answer is of course yes, because we said before that the wid
 
 We use pure Element to simulate `StatefulWidget`the function of one. Suppose there is a page with a button. The text of the button is a 9-digit number. Click the button once, and the 9 numbers will be sorted randomly. The code is as follows:
 
-```
+``` dart 
 class HomeView extends ComponentElement{
-  HomeView(Widget widget) : super(widget);
-  String text = "123456789";
+ HomeView(Widget widget) : super(widget);
+ String text = "123456789";
 
-  @override
-  Widget build() {
-    Color primary=Theme.of(this).primaryColor; //1
-    return GestureDetector(
-      child: Center(
-        child: FlatButton(
-          child: Text(text, style: TextStyle(color: primary),),
-          onPressed: () {
-            var t = text.split("")..shuffle();
-            text = t.join();
-            markNeedsBuild(); //点击后将该Element标记为dirty，Element将会rebuild
-          },
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build() {
+   Color primary=Theme.of(this).primaryColor; //1
+   return GestureDetector(
+     child: Center(
+       child: FlatButton(
+         child: Text(text, style: TextStyle(color: primary),),
+         onPressed: () {
+           var t = text.split("")..shuffle();
+           text = t.join();
+           markNeedsBuild(); //点击后将该Element标记为dirty，Element将会rebuild
+         },
+       ),
+     ),
+   );
+ }
 }
 
 ```
 
 -   The above `build`method does not receive parameters, and in that `StatelessWidget`and `StatefulWidget`in `build(BuildContext)`different ways. Just use `BuildContext`the place where you need to use it in the code. For `this`example, the `Theme.of(this)`parameter in code comment 1 can be passed directly `this`, because the current object itself is an `Element`instance.
 -   When `text`there is a change, we can call the `markNeedsBuild()`method to mark the current Element as dirty, and the element marked as dirty will be rebuilt in the next frame. In fact, `State.setState()`the `markNeedsBuild()`method is called internally .
-    
+   
 -   The build method in the above code still returns a widget. This is because there is already a widget layer in the Flutter framework, and the component library is already provided in the form of widgets. If all the components in the Flutter framework are like the example Provided in the `HomeView`same `Element`form, then the return value type of the build method can be used `Element`to build the UI purely .`HomeView``Element`
-    
+   
 
 If we need to run the above code in the existing Flutter framework, we still have to provide an "adapter" widget to `HomeView`integrate into the existing framework. The following `CustomHome`is equivalent to the "adapter":
 
-```
+``` dart 
 class CustomHome extends Widget {
-  @override
-  Element createElement() {
-    return HomeView(this);
-  }
+ @override
+ Element createElement() {
+   return HomeView(this);
+ }
 }
 
 ```

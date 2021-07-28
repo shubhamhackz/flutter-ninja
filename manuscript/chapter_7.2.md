@@ -12,93 +12,93 @@ Let's take a look at the previous `InheritedWidget`version of the "Counter" samp
 
 First, we `InheritedWidget`save the current counter hits in `ShareDataWidget`the `data`attribute through inheritance :
 
-```
+``` dart 
 class ShareDataWidget extends InheritedWidget {
-  ShareDataWidget({
-    @required this.data,
-    Widget child
-  }) :super(child: child);
+ ShareDataWidget({
+   @required this.data,
+   Widget child
+ }) :super(child: child);
 
-  final int data; //需要在子树中共享的数据，保存点击次数
+ final int data; //需要在子树中共享的数据，保存点击次数
 
-  //定义一个便捷方法，方便子树中的widget获取共享数据  
-  static ShareDataWidget of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ShareDataWidget>();
-  }
+ //定义一个便捷方法，方便子树中的widget获取共享数据  
+ static ShareDataWidget of(BuildContext context) {
+   return context.dependOnInheritedWidgetOfExactType<ShareDataWidget>();
+ }
 
-  //该回调决定当data发生变化时，是否通知子树中依赖data的Widget  
-  @override
-  bool updateShouldNotify(ShareDataWidget old) {
-    //如果返回true，则子树中依赖(build函数中有调用)本widget
-    //的子widget的`state.didChangeDependencies`会被调用
-    return old.data != data;
-  }
+ //该回调决定当data发生变化时，是否通知子树中依赖data的Widget  
+ @override
+ bool updateShouldNotify(ShareDataWidget old) {
+   //如果返回true，则子树中依赖(build函数中有调用)本widget
+   //的子widget的`state.didChangeDependencies`会被调用
+   return old.data != data;
+ }
 }
 
 ```
 
 Then we implement a sub-component that references the data `_TestWidget`in its `build`method `ShareDataWidget`. At the same time, `didChangeDependencies()`print the log in its callback:
 
-```
+``` dart 
 class _TestWidget extends StatefulWidget {
-  @override
-  __TestWidgetState createState() => new __TestWidgetState();
+ @override
+ __TestWidgetState createState() => new __TestWidgetState();
 }
 
 class __TestWidgetState extends State<_TestWidget> {
-  @override
-  Widget build(BuildContext context) {
-    //使用InheritedWidget中的共享数据
-    return Text(ShareDataWidget
-        .of(context)
-        .data
-        .toString());
-  }
+ @override
+ Widget build(BuildContext context) {
+   //使用InheritedWidget中的共享数据
+   return Text(ShareDataWidget
+       .of(context)
+       .data
+       .toString());
+ }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    //父或祖先widget中的InheritedWidget改变(updateShouldNotify返回true)时会被调用。
-    //如果build中没有依赖InheritedWidget，则此回调不会被调用。
-    print("Dependencies change");
-  }
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+   //父或祖先widget中的InheritedWidget改变(updateShouldNotify返回true)时会被调用。
+   //如果build中没有依赖InheritedWidget，则此回调不会被调用。
+   print("Dependencies change");
+ }
 }
 
 ```
 
 Finally, we create a button that will `ShareDataWidget`increment its value every time it is clicked :
 
-```
+``` dart 
 class InheritedWidgetTestRoute extends StatefulWidget {
-  @override
-  _InheritedWidgetTestRouteState createState() => new _InheritedWidgetTestRouteState();
+ @override
+ _InheritedWidgetTestRouteState createState() => new _InheritedWidgetTestRouteState();
 }
 
 class _InheritedWidgetTestRouteState extends State<InheritedWidgetTestRoute> {
-  int count = 0;
+ int count = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    return  Center(
-      child: ShareDataWidget( //使用ShareDataWidget
-        data: count,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: _TestWidget(),//子widget中依赖ShareDataWidget
-            ),
-            RaisedButton(
-              child: Text("Increment"),
-              //每点击一次，将count自增，然后重新build,ShareDataWidget的data将被更新  
-              onPressed: () => setState(() => ++count),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return  Center(
+     child: ShareDataWidget( //使用ShareDataWidget
+       data: count,
+       child: Column(
+         mainAxisAlignment: MainAxisAlignment.center,
+         children: <Widget>[
+           Padding(
+             padding: const EdgeInsets.only(bottom: 20.0),
+             child: _TestWidget(),//子widget中依赖ShareDataWidget
+           ),
+           RaisedButton(
+             child: Text("Increment"),
+             //每点击一次，将count自增，然后重新build,ShareDataWidget的data将被更新  
+             onPressed: () => setState(() => ++count),
+           )
+         ],
+       ),
+     ),
+   );
+ }
 }
 
 ```
@@ -109,31 +109,31 @@ The interface after running is shown in Figure 7-1:
 
 Each time you click the button, the counter will increment, and the console will print a log:
 
-```
+``` dart 
 I/flutter ( 8513): Dependencies change
 
 ```
 
 It `didChangeDependencies()`can be called after the dependency changes . However, readers should note that **if the data of ShareDataWidget is not used in the build method of _TestWidget, it `didChangeDependencies()`will not be called because it does not rely on ShareDataWidget** . For example, if we change the `__TestWidgetState`code to the following, it `didChangeDependencies()`will not be called:
 
-```
+``` dart 
 class __TestWidgetState extends State<_TestWidget> {
-  @override
-  Widget build(BuildContext context) {
-    // 使用InheritedWidget中的共享数据
-    //    return Text(ShareDataWidget
-    //        .of(context)
-    //        .data
-    //        .toString());
-     return Text("text");
-  }
+ @override
+ Widget build(BuildContext context) {
+   // 使用InheritedWidget中的共享数据
+   //    return Text(ShareDataWidget
+   //        .of(context)
+   //        .data
+   //        .toString());
+    return Text("text");
+ }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // build方法中没有依赖InheritedWidget，此回调不会被调用。
-    print("Dependencies change");
-  }
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+   // build方法中没有依赖InheritedWidget，此回调不会被调用。
+   print("Dependencies change");
+ }
 }
 
 ```
@@ -150,50 +150,50 @@ Generally speaking, child widgets rarely rewrite this method, because the framew
 
 Now let’s think about it. What if we only want `__TestWidgetState`to reference `ShareDataWidget`data in but don’t want `ShareDataWidget`to call `__TestWidgetState`the `didChangeDependencies()`method when it changes ? In fact, the answer is very simple, we only need to change `ShareDataWidget.of()`the implementation:
 
-```
+``` dart 
 //定义一个便捷方法，方便子树中的widget获取共享数据
 static ShareDataWidget of(BuildContext context) {
-  //return context.dependOnInheritedWidgetOfExactType<ShareDataWidget>();
-  return context.getElementForInheritedWidgetOfExactType<ShareDataWidget>().widget;
+ //return context.dependOnInheritedWidgetOfExactType<ShareDataWidget>();
+ return context.getElementForInheritedWidgetOfExactType<ShareDataWidget>().widget;
 }
 
 ```
 
 The only change is `ShareDataWidget`the way to get the object, the `dependOnInheritedWidgetOfExactType()`method is replaced , then what is the difference between them, let's take a look at the source code of these two methods (the implementation code is in the class, and the relationship between and we will be introduced later):`context.getElementForInheritedWidgetOfExactType<ShareDataWidget>().widget``Element``Context``Element`
 
-```
+``` dart 
 @override
 InheritedElement getElementForInheritedWidgetOfExactType<T extends InheritedWidget>() {
-  assert(_debugCheckStateIsActiveForAncestorLookup());
-  final InheritedElement ancestor = _inheritedWidgets == null ? null : _inheritedWidgets[T];
-  return ancestor;
+ assert(_debugCheckStateIsActiveForAncestorLookup());
+ final InheritedElement ancestor = _inheritedWidgets == null ? null : _inheritedWidgets[T];
+ return ancestor;
 }
 @override
 InheritedWidget dependOnInheritedWidgetOfExactType({ Object aspect }) {
-  assert(_debugCheckStateIsActiveForAncestorLookup());
-  final InheritedElement ancestor = _inheritedWidgets == null ? null : _inheritedWidgets[T];
-  //多出的部分
-  if (ancestor != null) {
-    assert(ancestor is InheritedElement);
-    return dependOnInheritedElement(ancestor, aspect: aspect) as T;
-  }
-  _hadUnsatisfiedDependencies = true;
-  return null;
+ assert(_debugCheckStateIsActiveForAncestorLookup());
+ final InheritedElement ancestor = _inheritedWidgets == null ? null : _inheritedWidgets[T];
+ //多出的部分
+ if (ancestor != null) {
+   assert(ancestor is InheritedElement);
+   return dependOnInheritedElement(ancestor, aspect: aspect) as T;
+ }
+ _hadUnsatisfiedDependencies = true;
+ return null;
 }
 
 ```
 
 We can see that `dependOnInheritedWidgetOfExactType()`more than `getElementForInheritedWidgetOfExactType()`more than a transfer `dependOnInheritedElement`method, `dependOnInheritedElement`source code is as follows:
 
-```
-  @override
-  InheritedWidget dependOnInheritedElement(InheritedElement ancestor, { Object aspect }) {
-    assert(ancestor != null);
-    _dependencies ??= HashSet<InheritedElement>();
-    _dependencies.add(ancestor);
-    ancestor.updateDependencies(this, aspect);
-    return ancestor.widget;
-  }
+``` dart 
+ @override
+ InheritedWidget dependOnInheritedElement(InheritedElement ancestor, { Object aspect }) {
+   assert(ancestor != null);
+   _dependencies ??= HashSet<InheritedElement>();
+   _dependencies.add(ancestor);
+   ancestor.updateDependencies(this, aspect);
+   return ancestor.widget;
+ }
 
 ```
 

@@ -6,13 +6,13 @@ In the previous section, we talked about the `Stack`sum `Positioned`, we can spe
 
 `Align` The component can adjust the position of the sub-component, and can determine its own width and height according to the width and height of the sub-component, defined as follows:
 
-```
+``` dart 
 Align({
-  Key key,
-  this.alignment = Alignment.center,
-  this.widthFactor,
-  this.heightFactor,
-  Widget child,
+ Key key,
+ this.alignment = Alignment.center,
+ this.widthFactor,
+ this.heightFactor,
+ Widget child,
 })
 
 ```
@@ -24,17 +24,17 @@ Align({
 
 Let's first look at a simple example:
 
-```
+``` dart 
 Container(
-  height: 120.0,
-  width: 120.0,
-  color: Colors.blue[50],
-  child: Align(
-    alignment: Alignment.topRight,
-    child: FlutterLogo(
-      size: 60,
-    ),
-  ),
+ height: 120.0,
+ width: 120.0,
+ color: Colors.blue[50],
+ child: Align(
+   alignment: Alignment.topRight,
+   child: FlutterLogo(
+     size: 60,
+   ),
+ ),
 )
 
 ```
@@ -45,14 +45,14 @@ The running effect is shown in Figure 4-11:
 
 `FlutterLogo`It is a component provided by the Flutter SDK, and the content is the trademark of Flutter. In the above example, we explicitly specified the `Container`width and height to be 120. If we do not explicitly specify the width and height, the same effect can be achieved by specifying `widthFactor`and `heightFactor`as 2 at the same time:
 
-```
+``` dart 
 Align(
-  widthFactor: 2,
-  heightFactor: 2,
-  alignment: Alignment.topRight,
-  child: FlutterLogo(
-    size: 60,
-  ),
+ widthFactor: 2,
+ heightFactor: 2,
+ alignment: Alignment.topRight,
+ child: FlutterLogo(
+   size: 60,
+ ),
 ),
 
 ```
@@ -61,7 +61,7 @@ Because `FlutterLogo`the width and height are 60, `Align`the final width and hei
 
 In addition, we `Alignment.topRight`will be `FlutterLogo`positioned in `Container`the upper right corner. That `Alignment.topRight`what is it? Through the source code we can see its definition as follows:
 
-```
+``` dart 
 //右上角
 static const Alignment topRight = Alignment(1.0, -1.0);
 
@@ -73,7 +73,7 @@ You can see that it is just `Alignment`an example, let's introduce it below `Ali
 
 `Alignment`Inherited from `AlignmentGeometry`, represents a point in the rectangular, he has two attributes `x`, and `y`each is offset in the horizontal and vertical directions, `Alignment`is defined as follows:
 
-```
+``` dart 
 Alignment(this.x, this.y)
 
 ```
@@ -82,7 +82,7 @@ Alignment(this.x, this.y)
 
 `Alignment`The **coordinates** can be **converted** to the specific offset coordinates of the sub-element through its **coordinate conversion formula** :
 
-```
+``` dart 
 (Alignment.x*childWidth/2+childWidth/2, Alignment.y*childHeight/2+childHeight/2)
 
 ```
@@ -91,14 +91,14 @@ Among them `childWidth`is the width `childHeight`of the child element and the he
 
 Now let's look at the above example again, we will `Alignment(1.0, -1.0)`bring in the above formula, `FlutterLogo`the actual offset coordinates available are (60, 0). Let's look at another example:
 
-```
- Align(
-  widthFactor: 2,
-  heightFactor: 2,
-  alignment: Alignment(2,0.0),
-  child: FlutterLogo(
-    size: 60,
-  ),
+``` dart 
+Align(
+ widthFactor: 2,
+ heightFactor: 2,
+ alignment: Alignment(2,0.0),
+ child: FlutterLogo(
+   size: 60,
+ ),
 )
 
 ```
@@ -111,24 +111,24 @@ We can first imagine the operating effect: `Alignment(2,0.0)`Bringing into the a
 
 `FractionalOffset`Inherited from `Alignment`it and the `Alignment`only difference is the origin of the coordinate different! `FractionalOffset`The origin of the coordinates is the left vertex of the rectangle, which is consistent with the layout system, so it is easier to understand. `FractionalOffset`The coordinate conversion formula is:
 
-```
+``` dart 
 实际偏移 = (FractionalOffse.x * childWidth, FractionalOffse.y * childHeight)
 
 ```
 
 Let's look at an example:
 
-```
+``` dart 
 Container(
-  height: 120.0,
-  width: 120.0,
-  color: Colors.blue[50],
-  child: Align(
-    alignment: FractionalOffset(0.2, 0.6),
-    child: FlutterLogo(
-      size: 60,
-    ),
-  ),
+ height: 120.0,
+ width: 120.0,
+ color: Colors.blue[50],
+ child: Align(
+   alignment: FractionalOffset(0.2, 0.6),
+   child: FlutterLogo(
+     size: 60,
+   ),
+ ),
 )
 
 ```
@@ -150,10 +150,10 @@ As you can see, `Align`and `Stack`/ `Positioned`can be used to specify the offse
 
 We have used `Center`components to center sub-elements in the examples in the previous chapters , and now we officially introduce it. By looking up the SDK source code, we see that the `Center`components are defined as follows:
 
-```
+``` dart 
 class Center extends Align {
-  const Center({ Key key, double widthFactor, double heightFactor, Widget child })
-    : super(key: key, widthFactor: widthFactor, heightFactor: heightFactor, child: child);
+ const Center({ Key key, double widthFactor, double heightFactor, Widget child })
+   : super(key: key, widthFactor: widthFactor, heightFactor: heightFactor, child: child);
 }
 
 ```
@@ -162,21 +162,21 @@ You can see that it is `Center`inherited from `Align`, and it has `Align`only on
 
 When we talked about above `widthFactor`or `heightFactor`to `null`the component width and height will take up as much space, it needs special attention, we work through an example:
 
-```
+``` dart 
 ...//省略无关代码
 DecoratedBox(
-  decoration: BoxDecoration(color: Colors.red),
-  child: Center(
-    child: Text("xxx"),
-  ),
+ decoration: BoxDecoration(color: Colors.red),
+ child: Center(
+   child: Text("xxx"),
+ ),
 ),
 DecoratedBox(
-  decoration: BoxDecoration(color: Colors.red),
-  child: Center(
-    widthFactor: 1,
-    heightFactor: 1,
-    child: Text("xxx"),
-  ),
+ decoration: BoxDecoration(color: Colors.red),
+ child: Center(
+   widthFactor: 1,
+   heightFactor: 1,
+   child: Text("xxx"),
+ ),
 )
 
 ```

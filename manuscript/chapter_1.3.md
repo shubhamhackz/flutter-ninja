@@ -15,32 +15,32 @@ Since Flutter will build release packages for both Android and IOS platforms at 
 To install and run Flutter, your development environment must meet the following minimum requirements:
 
 -   Operating system: Windows 7 or higher (64-bit)
-    
+   
 -   Disk space: 400 MB (not including the disk space of Android Studio).
-    
+   
 -   Tools: Flutter relies on the following command-line tools.
-    
-    -   [PowerShell 5.0](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell#upgrading-existing-windows-powershell) or newer
-        
-    -   [Git for Windows](https://git-scm.com/download/win) (Git command line tool);
-        
-    
-    If you have installed Git for Windows, make sure you can run git commands in the command prompt or PowerShell
-    
+   
+   -   [PowerShell 5.0](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell#upgrading-existing-windows-powershell) or newer
+       
+   -   [Git for Windows](https://git-scm.com/download/win) (Git command line tool);
+       
+   
+   If you have installed Git for Windows, make sure you can run git commands in the command prompt or PowerShell
+   
 
 #### Get the Flutter SDK
 
 1.  Go to flutter official website to download the latest available installation package, download address: [https://flutter.dev/docs/development/tools/sdk/releases](https://flutter.dev/docs/development/tools/sdk/releases) , after opening it, it is shown in Figure 1-2:
-    
-    ![Figure 1-2](https://pcdn.flutterchina.club/imgs/1-2.png)
-    
+   
+   ![Figure 1-2](https://pcdn.flutterchina.club/imgs/1-2.png)
+   
 
 Note that the channel version of Flutter will change constantly, please refer to the official website of Flutter. Readers can also go to the Flutter github project to download the installation package at: [https://github.com/flutter/flutter/ releases](https://github.com/flutter/flutter/releases) .
 
 1.  Unzip the installation package zip to the path where you want to install the Flutter SDK (such as :; `C:\src\flutter` note, **do not** install flutter to a path that requires some high permissions, such as `C:\Program Files\`).
-    
+   
 2.  `flutter` Find it under the file in the Flutter installation directory `flutter_console.bat`, double-click to run and start the **flutter command line** , and then you can run the flutter command on the Flutter command line.
-    
+   
 
 ##### Update environment variables
 
@@ -48,8 +48,8 @@ If you want to run flutter commands on the command line that comes with the Wind
 
 -   Go to "Control Panel> User Accounts> User Accounts> Change My Environment Variables"
 -   Under "User Variables" check if there is an entry named "Path":
-    -   If the entry exists, append the full path of flutter\bin and use; as the separator.
-    -   If the entry does not exist, create a new user variable Path, and then the `flutter\bin`full path as its value.
+   -   If the entry exists, append the full path of flutter\bin and use; as the separator.
+   -   If the entry does not exist, create a new user variable Path, and then the `flutter\bin`full path as its value.
 
 Restart Windows to apply this change.
 
@@ -57,7 +57,7 @@ Restart Windows to apply this change.
 
 Run the following command on the Flutter command line to see if other dependencies need to be installed, and if necessary, install them:
 
-```
+``` dart 
 flutter doctor
 
 ```
@@ -66,12 +66,12 @@ This command checks your environment and displays the report in the command line
 
 E.g:
 
-```
+``` dart 
 [-] Android toolchain - develop for Android devices
-    • Android SDK at D:\Android\sdk
-    ✗ Android SDK is missing command line tools; download from https://goo.gl/XxQghQ
-    • Try re-installing or updating your Android SDK,
-      visit https://flutter.io/setup/#android-setup for detailed instructions.
+   • Android SDK at D:\Android\sdk
+   ✗ Android SDK is missing command line tools; download from https://goo.gl/XxQghQ
+   • Try re-installing or updating your Android SDK,
+     visit https://flutter.io/setup/#android-setup for detailed instructions.
 
 ```
 
@@ -101,31 +101,31 @@ To install and run Flutter, your development environment must meet the following
 -   Operating system: macOS (64-bit)
 -   Disk space: 700 MB (not including the disk space of Xcode or Android Studio).
 -   Tools: Flutter relies on the following command-line tools.
-    -   `bash、mkdir、rm、git、curl、unzip、which`
+   -   `bash、mkdir、rm、git、curl、unzip、which`
 
 #### Get the Flutter SDK
 
 1.  Go to flutter official website to download the latest available installation package, official website address: [https://flutter.io/sdk-archive/#macos](https://flutter.io/sdk-archive/#macos)
-    
-    Note that the channel version of Flutter will change constantly, please refer to the official website of Flutter. In addition, in mainland China, if you want to get the list of installation packages or download the installation package normally, you may need to go over the wall. Readers can also go to the Flutter github project to download the installation package at: [https://github.com/flutter/flutter/ releases](https://github.com/flutter/flutter/releases) .
-    
+   
+   Note that the channel version of Flutter will change constantly, please refer to the official website of Flutter. In addition, in mainland China, if you want to get the list of installation packages or download the installation package normally, you may need to go over the wall. Readers can also go to the Flutter github project to download the installation package at: [https://github.com/flutter/flutter/ releases](https://github.com/flutter/flutter/releases) .
+   
 2.  Unzip the installation package to the directory you want to install, such as:
-    
-    ```
-    cd ~/development
-    unzip ~/Downloads/flutter_macos_v0.5.1-beta.zip
-    
-    ```
-    
+   
+``` dart 
+   cd ~/development
+   unzip ~/Downloads/flutter_macos_v0.5.1-beta.zip
+   
+```
+   
 3.  Add `flutter`related tools to the path:
-    
-    ```
-    export PATH=`pwd`/flutter/bin:$PATH
-    
-    ```
-    
-    This code can only temporarily set the PATH environment variable for the current command line window. If you want to permanently add Flutter to the PATH, please refer to the **Update Environment Variables** section below .
-    
+   
+``` dart 
+   export PATH=`pwd`/flutter/bin:$PATH
+   
+```
+   
+   This code can only temporarily set the PATH environment variable for the current command line window. If you want to permanently add Flutter to the PATH, please refer to the **Update Environment Variables** section below .
+   
 
 ##### Run flutter doctor command
 
@@ -138,34 +138,34 @@ Add Flutter to the PATH, you can run `flutter` commands in any terminal session 
 The steps to permanently modify this variable for all terminal sessions are specific to the computer system. Usually, you will add the command for setting environment variables to the executed file when you open a new window. E.g
 
 1.  Make sure that the directory of your Flutter SDK is recorded as "FLUTTER_INSTALL_PATH", which you will use in step 3.
-    
+   
 2.  Open (or create) `$HOME/.bash_profile`. The file path and file name may be different on your computer.
-    
+   
 3.  Add the following path:
-    
-    ```
-    export PATH=[FLUTTER_INSTALL_PATH]/flutter/bin:$PATH
-    
-    ```
-    
-    For example, the author's Flutter installation directory is "~/code/flutter_dir", then the code is:
-    
-    ```
-    export PATH=~/code/flutter_dir/flutter/bin:$PATH
-    
-    ```
-    
+   
+``` dart 
+   export PATH=[FLUTTER_INSTALL_PATH]/flutter/bin:$PATH
+   
+```
+   
+   For example, the author's Flutter installation directory is "~/code/flutter_dir", then the code is:
+   
+``` dart 
+   export PATH=~/code/flutter_dir/flutter/bin:$PATH
+   
+```
+   
 4.  Run `source $HOME/.bash_profile` refresh the current terminal window.
-    
-    > **Note:** If you are using a terminal zsh, when the terminal starts `~/.bash_profile` will not be loaded, the solution is to modify `～/.zshrc`, in add: source ~ / .bash_profile
-    
+   
+   > **Note:** If you are using a terminal zsh, when the terminal starts `~/.bash_profile` will not be loaded, the solution is to modify `～/.zshrc`, in add: source ~ / .bash_profile
+   
 5.  Verify that "flutter/bin" is already in the PATH:
-    
-    ```
-    echo $PATH
-    
-    ```
-    
+   
+``` dart 
+   echo $PATH
+   
+```
+   
 
 #### Install Xcode
 
@@ -187,10 +187,10 @@ Like Window, you need to install Android Studio first to build and run Flutter p
 
 The Flutter SDK has multiple branches, such as beta, dev, master, and stable. Among them, the stable branch is a stable branch (in the future, there may be a new stable branch after a new stable version is released, such as 1.0.0). Dev and master are Development branch, after installing flutter, you can run to `flutter channel` view all branches, for example, after the author runs locally, the result is as follows:
 
-```
+``` dart 
 Flutter channels:
-  beta
-  dev
+ beta
+ dev
 * master
 
 ```
@@ -201,7 +201,7 @@ The branch with "*" is the branch tracked by your local Flutter SDK. To switch b
 
 To upgrade flutter sdk, just one command:
 
-```
+``` dart 
 flutter upgrade
 
 ```
@@ -250,17 +250,17 @@ In the project directory, the code of your application is located `lib/main.dart
 #### Run the application
 
 1.  Locate the Android Studio toolbar, as shown in Figure 1-3:
-    
-    ![Figure 1-3](https://pcdn.flutterchina.club/imgs/1-3.png)
-    
+   
+   ![Figure 1-3](https://pcdn.flutterchina.club/imgs/1-3.png)
+   
 2.  In the **target selector** , select an Android device running the application. If it is not listed, please select **Tools>Android>AVD Manager** and create one there.
-    
+   
 3.  Click the **Run icon in the toolbar** .
-    
+   
 4.  If everything is ok, you should see the launched application on your device or emulator:
-    
-    ![Figure 1-4](https://pcdn.flutterchina.club/imgs/1-4.png)
-    
+   
+   ![Figure 1-4](https://pcdn.flutterchina.club/imgs/1-4.png)
+   
 
 #### Experience hot reload
 
@@ -270,9 +270,9 @@ Flutter by _thermal overloads (hot reload)_ to achieve rapid development cycle, 
 2.  The string `'You have pushed the button this many times:'`Change`'You have clicked the button this many times:'`
 3.  Don't press the "Stop" button; let your app continue to run.
 4.  To check the changes, please call **the Save** ( `cmd-s`/ `ctrl-s`), or click **the thermal overload button** (the button with the lightning ⚡️ icon).
-    
-    You will immediately see the updated string in the running application.
-    
+   
+   You will immediately see the updated string in the running application.
+   
 
 ### Configuration and use of VS Code
 
@@ -286,9 +286,9 @@ VS Code is a lightweight editor that supports Flutter running and debugging.
 4.  Type in the search box `flutter`, select'Flutter' in the search result list, and click **Install** .
 5.  Select'OK' to restart VS Code.
 6.  Verify configuration
-    -   Call **View>Command Palette...**
-    -   Enter'doctor', and then select **the'Flutter: Run Flutter Doctor'** action.
-    -   Check whether there is a problem with the output in the "OUTPUT" window
+   -   Call **View>Command Palette...**
+   -   Enter'doctor', and then select **the'Flutter: Run Flutter Doctor'** action.
+   -   Check whether there is a problem with the output in the "OUTPUT" window
 
 #### Create Flutter app
 
@@ -317,21 +317,21 @@ Windows only supports building and running Flutter applications for Android devi
 To prepare to run and test the Flutter app on the Android emulator, follow these steps:
 
 1.  Launch **Android Studio>Tools>Android>AVD Manager** and select **Create Virtual Device** .
-    
+   
 2.  Choose a device and choose **Next** .
-    
+   
 3.  Select one or more system impressions for the Android version to be simulated, and then select **Next** . It is recommended to use _x86_ or _x86_64_ image.
-    
+   
 4.  Under "Emulated Performance", select **Hardware - GLES 2.0** to enable [hardware acceleration](https://developer.android.com/studio/run/emulator-acceleration.html) .
-    
+   
 5.  Verify that the AVD configuration is correct, and then select **Finish** .
-    
-    For more information about the above steps, see [Managing AVDs](https://developer.android.com/studio/run/managing-avds.html) .
-    
+   
+   For more information about the above steps, see [Managing AVDs](https://developer.android.com/studio/run/managing-avds.html) .
+   
 6.  In "Android Virtual Device Manager", click **Run on the** toolbar . The emulator starts and displays the startup screen of the selected operating system version or device.
-    
+   
 7.  Running `flutter run`start your device. The name of the connected device is , where _platform_ is the chip series, such as x86.`Android SDK built for  <platform>`
-    
+   
 
 ### Connect to a real Android device
 
@@ -349,63 +349,63 @@ By default, Android SDK version Flutter is based on your use of the `adb`tool ve
 To prepare to run and test the Flutter app on the iOS simulator, follow these steps:
 
 1.  On your MAC, find the emulator via Spotlight or the following command:
-    
-    ```
-    open -a Simulator
-    
-    ```
-    
+   
+``` dart 
+   open -a Simulator
+   
+```
+   
 2.  Make sure that the simulator is using a 64-bit device (iPhone 5s or later) by checking the settings in the simulator's **Hardware> Device** menu.
-    
+   
 3.  Depending on the size of your computer screen, the simulated high-definition screen iOS device may overflow the screen. The device scale can be set under the **Window> Scale** menu of the simulator .
-    
+   
 4.  Running `flutter run`start flutter application.
-    
+   
 
 ### Connect to a real iOS device
 
 To install the Flutter app on a real iOS device, you need some additional tools and an Apple account, and you need to do some settings in Xcode.
 
 1.  Install [homebrew](http://brew.sh/) (if brew is already installed, skip this step).
-    
+   
 2.  Open a terminal and run these commands as follows:
-    
-    ```
-    brew update
-    brew install --HEAD libimobiledevice
-    brew install ideviceinstaller ios-deploy cocoapods
-    pod setup
-    
-    ```
-    
-    If any of these commands fails with an error, please run brew doctor and follow the instructions to solve the problem.
-    
+   
+``` dart 
+   brew update
+   brew install --HEAD libimobiledevice
+   brew install ideviceinstaller ios-deploy cocoapods
+   pod setup
+   
+```
+   
+   If any of these commands fails with an error, please run brew doctor and follow the instructions to solve the problem.
+   
 3.  Follow the Xcode signing process to configure your project:
-    
-    -   Flutter in your project directory by `open ios/Runner.xcworkspace`open the default Xcode workspace.
-        
-    -   In Xcode, select the `Runner`project on the left side of the navigation panel .
-        
-    -   In the `Runner`target settings page, make sure to select your development team under **General> Signing> Team** . When you select a team, Xcode will create and download a development certificate, register your account with your device, and create and download a configuration file (if needed).
-        
-    -   To start your first iOS development project, you may need to log in to Xcode with your Apple ID, as shown in Figure 1-5:
-        
-        ![Figure 1-5](https://pcdn.flutterchina.club/imgs/1-5.png)
-        
-        Any Apple ID supports development and testing, but if you want to distribute the application to the App Store, you must register for the Apple Developer Program. Readers can learn about the details.
-        
-    -   When you attach a real device for iOS development for the first time, you need to trust your Mac and the development certificate on the device at the same time. When connecting an iOS device to a Mac for the first time, select it in the dialog box `Trust`.
-        
-        ![Add trust](https://pcdn.flutterchina.club/imgs/1-6.png)
-        
-        Then, go to the iOS device **Settings** menu, select **General> Device Manager** and trust your certificate.
-        
-    -   If the automatic signature in Xcode fails, please verify that the **General> Identity> Bundle Identifier** value of the project is unique, as shown in Figure 1-7:
-        
-        ![Verify that the bundle id is unique](https://pcdn.flutterchina.club/imgs/1-7.png)
-        
-    -   Running `flutter run`start flutter application.
-        
+   
+   -   Flutter in your project directory by `open ios/Runner.xcworkspace`open the default Xcode workspace.
+       
+   -   In Xcode, select the `Runner`project on the left side of the navigation panel .
+       
+   -   In the `Runner`target settings page, make sure to select your development team under **General> Signing> Team** . When you select a team, Xcode will create and download a development certificate, register your account with your device, and create and download a configuration file (if needed).
+       
+   -   To start your first iOS development project, you may need to log in to Xcode with your Apple ID, as shown in Figure 1-5:
+       
+       ![Figure 1-5](https://pcdn.flutterchina.club/imgs/1-5.png)
+       
+       Any Apple ID supports development and testing, but if you want to distribute the application to the App Store, you must register for the Apple Developer Program. Readers can learn about the details.
+       
+   -   When you attach a real device for iOS development for the first time, you need to trust your Mac and the development certificate on the device at the same time. When connecting an iOS device to a Mac for the first time, select it in the dialog box `Trust`.
+       
+       ![Add trust](https://pcdn.flutterchina.club/imgs/1-6.png)
+       
+       Then, go to the iOS device **Settings** menu, select **General> Device Manager** and trust your certificate.
+       
+   -   If the automatic signature in Xcode fails, please verify that the **General> Identity> Bundle Identifier** value of the project is unique, as shown in Figure 1-7:
+       
+       ![Verify that the bundle id is unique](https://pcdn.flutterchina.club/imgs/1-7.png)
+       
+   -   Running `flutter run`start flutter application.
+       
 
 ## 1.3.4 Common configuration problems
 
@@ -433,7 +433,7 @@ This is caused by going to Google to download the Android SDK, but Google is cur
 
 The general format is
 
-```
+``` dart 
 Could not HEAD **
 Could not Get **
 
@@ -444,26 +444,26 @@ Such as:`Android Studio Could not GET gradle-3.2.0.pom`
 This type of problem is caused by the inability to connect to the Maven library. The solution is as follows:
 
 1.  enter`project name/android`
-    
+   
 2.  turn on `build.gradle`
-    
+   
 3.  Find this part below and add `maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }`
-    
-    ```
-    allprojects {
-        repositories {
-          google()
-          jcenter()
-          maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } //Add this
-        }
-    }
-    
-    ```
-    
+   
+``` dart 
+   allprojects {
+       repositories {
+         google()
+         jcenter()
+         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } //Add this
+       }
+   }
+   
+```
+   
 4.  Enter File/ Settings/ Build, Execution, Deployment/ BuildTools/ Gradle/ Android Studio, check Enable embedded Maven repository and restart Android Studio to solve it.
-    
-    > **Note: The** existence of such a situation, when you set up according to the above steps still can not solve this problem, and there are similar erros saying `Could not HEAD maven.aliyun.com` error message, check `C:\Users\{user_name}\.gradle\gradle.properties`if there are proxy settings. The problem can be solved after deletion.
-    
+   
+   > **Note: The** existence of such a situation, when you set up according to the above steps still can not solve this problem, and there are similar erros saying `Could not HEAD maven.aliyun.com` error message, check `C:\Users\{user_name}\.gradle\gradle.properties`if there are proxy settings. The problem can be solved after deletion.
+   
 
 #### Hot Reload problem
 

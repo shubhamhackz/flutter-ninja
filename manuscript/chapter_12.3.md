@@ -20,16 +20,16 @@ First, we build the channel. We use to `MethodChannel`call a method to return th
 
 The client and host of the channel are connected by the channel name passed in the channel constructor. All channel names used in a single application must be unique; we recommend adding a unique "domain name prefix" before the channel name, for example `samples.flutter.io/battery`.
 
-```
+``` dart 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 ...
 class _MyHomePageState extends State<MyHomePage> {
-  static const platform = const MethodChannel('samples.flutter.io/battery');
+ static const platform = const MethodChannel('samples.flutter.io/battery');
 
-  // Get battery level.
+ // Get battery level.
 }
 
 ```
@@ -38,45 +38,45 @@ Next, we call the method on the channel, specifying the method to be called via 
 
 We use the returned results `setState`to update the user interface status in `batteryLevel`.
 
-```
-  // Get battery level.
-  String _batteryLevel = 'Unknown battery level.';
+``` dart 
+ // Get battery level.
+ String _batteryLevel = 'Unknown battery level.';
 
-  Future<Null> _getBatteryLevel() async {
-    String batteryLevel;
-    try {
-      final int result = await platform.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level at $result % .';
-    } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
-    }
+ Future<Null> _getBatteryLevel() async {
+   String batteryLevel;
+   try {
+     final int result = await platform.invokeMethod('getBatteryLevel');
+     batteryLevel = 'Battery level at $result % .';
+   } on PlatformException catch (e) {
+     batteryLevel = "Failed to get battery level: '${e.message}'.";
+   }
 
-    setState(() {
-      _batteryLevel = batteryLevel;
-    });
-  }
+   setState(() {
+     _batteryLevel = batteryLevel;
+   });
+ }
 
 ```
 
 Finally, we create a user interface in the build that contains a small font to display the battery status and a button to refresh the value.
 
-```
+``` dart 
 @override
 Widget build(BuildContext context) {
-  return new Material(
-    child: new Center(
-      child: new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          new RaisedButton(
-            child: new Text('Get Battery Level'),
-            onPressed: _getBatteryLevel,
-          ),
-          new Text(_batteryLevel),
-        ],
-      ),
-    ),
-  );
+ return new Material(
+   child: new Center(
+     child: new Column(
+       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+       children: [
+         new RaisedButton(
+           child: new Text('Get Battery Level'),
+           onPressed: _getBatteryLevel,
+         ),
+         new Text(_batteryLevel),
+       ],
+     ),
+   ),
+ );
 }
 
 ```

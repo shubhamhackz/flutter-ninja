@@ -25,29 +25,29 @@ Currently, there are two main ways to run programs: compiling and interpreting c
 Now let's see why Flutter chooses Dart language? The author summarizes the following points based on the official explanation and my own understanding of Flutter (because other cross-platform frameworks use JavaScript as their development language, we mainly compare Dart and JavaScript):
 
 1.  **High Development Efficiency**
-    
-    The Dart runtime and compiler support a combination of two key features of Flutter:
-    
-    **JIT-based rapid development cycle** : Flutter adopts the JIT mode in the development phase, which avoids the need to compile every change and greatly saves development time;
-    
-    **AOT-based release package** : Flutter can generate efficient ARM code through AOT during release to ensure application performance. JavaScript does not have this capability.
-    
+   
+   The Dart runtime and compiler support a combination of two key features of Flutter:
+   
+   **JIT-based rapid development cycle** : Flutter adopts the JIT mode in the development phase, which avoids the need to compile every change and greatly saves development time;
+   
+   **AOT-based release package** : Flutter can generate efficient ARM code through AOT during release to ensure application performance. JavaScript does not have this capability.
+   
 2.  **High Performance**
-    
-    Flutter aims to provide a smooth, high-fidelity UI experience. In order to achieve this, Flutter needs to be able to run a large amount of code in each animation frame. This means that a language that can provide high performance without periodic pauses that will drop frames is needed. Dart supports AOT, which can do better than JavaScript at this point.
-    
+   
+   Flutter aims to provide a smooth, high-fidelity UI experience. In order to achieve this, Flutter needs to be able to run a large amount of code in each animation frame. This means that a language that can provide high performance without periodic pauses that will drop frames is needed. Dart supports AOT, which can do better than JavaScript at this point.
+   
 3.  **Fast Memory Allocation**
-    
-    The Flutter framework uses functional streams, which makes it largely dependent on the underlying memory allocator. Therefore, it is very important to have a memory allocator that can effectively handle trivial tasks. Flutter will not work effectively in languages ​​lacking this feature. Of course, the JavaScript engine of Chrome V8 has also done a good job in memory allocation. In fact, many members of the Dart development team are from the Chrome team, so Dart cannot be used as an advantage over JavaScript in memory allocation, but for Flutter Say, it needs such features, and Dart just meets it.
-    
+   
+   The Flutter framework uses functional streams, which makes it largely dependent on the underlying memory allocator. Therefore, it is very important to have a memory allocator that can effectively handle trivial tasks. Flutter will not work effectively in languages ​​lacking this feature. Of course, the JavaScript engine of Chrome V8 has also done a good job in memory allocation. In fact, many members of the Dart development team are from the Chrome team, so Dart cannot be used as an advantage over JavaScript in memory allocation, but for Flutter Say, it needs such features, and Dart just meets it.
+   
 4.  **Type Safety**
-    
-    Since Dart is a type-safe language and supports static type detection, some types of errors can be found before compilation and potential problems can be eliminated, which may be more attractive to front-end developers. In contrast, JavaScript is a weakly typed language, so many extension languages ​​and tools that add static type detection to JavaScript code have appeared in the front-end community, such as Microsoft's TypeScript and Facebook's Flow. In contrast, Dart itself supports static typing, which is an important advantage of it.
-    
+   
+   Since Dart is a type-safe language and supports static type detection, some types of errors can be found before compilation and potential problems can be eliminated, which may be more attractive to front-end developers. In contrast, JavaScript is a weakly typed language, so many extension languages ​​and tools that add static type detection to JavaScript code have appeared in the front-end community, such as Microsoft's TypeScript and Facebook's Flow. In contrast, Dart itself supports static typing, which is an important advantage of it.
+   
 5.  **The Dart team is by your side**
-    
-    It may seem inconspicuous, but it is very important. Thanks to the active investment of the Dart team, the Flutter team can get more and more convenient support. As stated on the Flutter official website, "We are working closely with the Dart community to improve the use of Dart in Flutter. For example, when we initially adopted Dart, the language did not provide a toolchain for generating native binary files (which helps to achieve high performance), but it is now implemented because the Dart team built it specifically for Flutter. 
-    
+   
+   It may seem inconspicuous, but it is very important. Thanks to the active investment of the Dart team, the Flutter team can get more and more convenient support. As stated on the Flutter official website, "We are working closely with the Dart community to improve the use of Dart in Flutter. For example, when we initially adopted Dart, the language did not provide a toolchain for generating native binary files (which helps to achieve high performance), but it is now implemented because the Dart team built it specifically for Flutter. 
+   
 
 #### to sum up
 
@@ -62,13 +62,13 @@ In this section, we first give an overall introduction to the Flutter framework,
 ### Flutter Framework
 Flutter is designed as an extensible, layered system. It exists as a series of independent libraries that each depend on the underlying layer. No layer has privileged access to the layer below, and every part of the framework level is designed to be optional and replaceable.This is a pure Dart SDK, which implements a set of basic libraries.
 
- From the bottom up, let's briefly introduce:
+From the bottom up, let's briefly introduce:
 
 - Basic foundational classes, and building block services such as animation, painting, and gestures that offer commonly used abstractions over the underlying foundation.
 - The rendering layer provides an abstraction for dealing with layout. With this layer, you can build a tree of renderable objects. You can manipulate these objects dynamically, with the tree automatically updating the layout to reflect your changes.
 - The widgets layer is a composition abstraction. Each render object in the rendering layer has a corresponding class in the widgets layer. In addition, the widgets layer allows you to define combinations of classes that you can reuse. This is the layer at which the reactive programming model is introduced.
 - The Material and Cupertino libraries offer comprehensive sets of controls that use the widget layer’s composition primitives to implement the Material or iOS design languages.
-    
+   
 
 ### Flutter Engine
 
@@ -85,9 +85,9 @@ This section gives you some learning suggestions and shares some of the author's
 ### Resources
 
 -   **Official website** : Reading the resources of Flutter official website is the best way to get started quickly. At the same time, the official website is also a place to learn about the latest developments in Flutter. Since Flutter is still in the rapid development stage, readers are advised to go to the official website from time to time to see if there are any new trends. .
-    
+   
 -   **Source code and comments** : The source code comments should be used as the first document for learning Flutter. The source code of the Flutter SDK is open source, and the comments are very detailed. There are also many examples. In fact, the official Flutter SDK documentation is generated through comments. Source code combined with comments can help you solve most problems.
-    
+   
 -   **Github** : If the problem you encounter is not answered on StackOverflow, you can go to the flutter's github project to raise an issue.
 -   **Gallery source code** : Gallery is the official sample app of Flutter. There are rich examples in it. Readers can download and install it online. The source code of Gallery is in the "examples" directory of the Flutter source code.
 

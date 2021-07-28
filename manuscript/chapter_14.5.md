@@ -11,20 +11,20 @@ We already know `Image`that the `image`parameter of the component is a required 
 
 We look at `ImageProvider`the detailed definition of the abstract class:
 
-```
+``` dart 
 abstract class ImageProvider<T> {
 
-  ImageStream resolve(ImageConfiguration configuration) {
-    // 实现代码省略
-  }
-  Future<bool> evict({ ImageCache cache,
-                      ImageConfiguration configuration = ImageConfiguration.empty }) async {
-    // 实现代码省略
-  }
+ ImageStream resolve(ImageConfiguration configuration) {
+   // 实现代码省略
+ }
+ Future<bool> evict({ ImageCache cache,
+                     ImageConfiguration configuration = ImageConfiguration.empty }) async {
+   // 实现代码省略
+ }
 
-  Future<T> obtainKey(ImageConfiguration configuration); 
-  @protected
-  ImageStreamCompleter load(T key); // 需子类实现
+ Future<T> obtainKey(ImageConfiguration configuration); 
+ @protected
+ ImageStreamCompleter load(T key); // 需子类实现
 }
 
 ```
@@ -33,19 +33,19 @@ abstract class ImageProvider<T> {
 
 The interface for loading image data sources. Different data sources have different loading methods, and each `ImageProvider`subclass must implement it. For example, `NetworkImage`classes and `AssetImage`classes, they are all `ImageProvider`subclasses, but they need to load image data from different data sources: image data `NetworkImage`is loaded from the network, but loaded `AssetImage`from the final application package (loading hits application installation Resource pictures in the package). Let's take `NetworkImage`an example and look at the implementation of its load method:
 
-```
+``` dart 
 
 @override
 ImageStreamCompleter load(image_provider.NetworkImage key) {
 
-  final StreamController<ImageChunkEvent> chunkEvents = StreamController<ImageChunkEvent>();
+ final StreamController<ImageChunkEvent> chunkEvents = StreamController<ImageChunkEvent>();
 
-  return MultiFrameImageStreamCompleter(
-    codec: _loadAsync(key, chunkEvents), //调用
-    chunkEvents: chunkEvents.stream,
-    scale: key.scale,
-    ... //省略无关代码
-  );
+ return MultiFrameImageStreamCompleter(
+   codec: _loadAsync(key, chunkEvents), //调用
+   chunkEvents: chunkEvents.stream,
+   scale: key.scale,
+   ... //省略无关代码
+ );
 }
 
 ```
@@ -56,27 +56,27 @@ We see that `load`the return value type of the method is `ImageStreamCompleter`t
 
 We can see that `MultiFrameImageStreamCompleter`a `codec`parameter is required , and the parameter type is . It is a handler for the image encoding and decoding class. In fact, it is just a wrapper class of the flutter engine API, which means that the image encoding and decoding logic is not implemented in the Dart code part, but in the flutter engine. The class part is defined as follows:`Future<ui.Codec>``Codec``Codec`
 
-```
+``` dart 
 @pragma('vm:entry-point')
 class Codec extends NativeFieldWrapperClass2 {
-  // 此类由flutter engine创建，不应该手动实例化此类或直接继承此类。
-  @pragma('vm:entry-point')
-  Codec._();
+ // 此类由flutter engine创建，不应该手动实例化此类或直接继承此类。
+ @pragma('vm:entry-point')
+ Codec._();
 
-  /// 图片中的帧数(动态图会有多帧)
-  int get frameCount native 'Codec_frameCount';
+ /// 图片中的帧数(动态图会有多帧)
+ int get frameCount native 'Codec_frameCount';
 
-  /// 动画重复的次数
-  /// * 0 表示只执行一次
-  /// * -1 表示循环执行
-  int get repetitionCount native 'Codec_repetitionCount';
+ /// 动画重复的次数
+ /// * 0 表示只执行一次
+ /// * -1 表示循环执行
+ int get repetitionCount native 'Codec_repetitionCount';
 
-  /// 获取下一个动画帧
-  Future<FrameInfo> getNextFrame() {
-    return _futurize(_getNextFrame);
-  }
+ /// 获取下一个动画帧
+ Future<FrameInfo> getNextFrame() {
+   return _futurize(_getNextFrame);
+ }
 
-  String _getNextFrame(_Callback<FrameInfo> callback) native 'Codec_getNextFrame';
+ String _getNextFrame(_Callback<FrameInfo> callback) native 'Codec_getNextFrame';
 
 ```
 
@@ -84,40 +84,40 @@ We can see that the `Codec`final result is one or more (motion picture) frames, 
 
 `MultiFrameImageStreamCompleter 的`  `codec`The parameter value `_loadAsync`is the return value of the method, we continue to look at `_loadAsync`the implementation of the method:
 
-```
+``` dart 
 
- Future<ui.Codec> _loadAsync(
-    NetworkImage key,
-    StreamController<ImageChunkEvent> chunkEvents,
-  ) async {
-    try {
-      //下载图片
-      final Uri resolved = Uri.base.resolve(key.url);
-      final HttpClientRequest request = await _httpClient.getUrl(resolved);
-      headers?.forEach((String name, String value) {
-        request.headers.add(name, value);
-      });
-      final HttpClientResponse response = await request.close();
-      if (response.statusCode != HttpStatus.ok)
-        throw Exception(...);
-      // 接收图片数据 
-      final Uint8List bytes = await consolidateHttpClientResponseBytes(
-        response,
-        onBytesReceived: (int cumulative, int total) {
-          chunkEvents.add(ImageChunkEvent(
-            cumulativeBytesLoaded: cumulative,
-            expectedTotalBytes: total,
-          ));
-        },
-      );
-      if (bytes.lengthInBytes == 0)
-        throw Exception('NetworkImage is an empty file: $resolved');
-      // 对图片数据进行解码
-      return PaintingBinding.instance.instantiateImageCodec(bytes);
-    } finally {
-      chunkEvents.close();
-    }
-  }
+Future<ui.Codec> _loadAsync(
+   NetworkImage key,
+   StreamController<ImageChunkEvent> chunkEvents,
+ ) async {
+   try {
+     //下载图片
+     final Uri resolved = Uri.base.resolve(key.url);
+     final HttpClientRequest request = await _httpClient.getUrl(resolved);
+     headers?.forEach((String name, String value) {
+       request.headers.add(name, value);
+     });
+     final HttpClientResponse response = await request.close();
+     if (response.statusCode != HttpStatus.ok)
+       throw Exception(...);
+     // 接收图片数据 
+     final Uint8List bytes = await consolidateHttpClientResponseBytes(
+       response,
+       onBytesReceived: (int cumulative, int total) {
+         chunkEvents.add(ImageChunkEvent(
+           cumulativeBytesLoaded: cumulative,
+           expectedTotalBytes: total,
+         ));
+       },
+     );
+     if (bytes.lengthInBytes == 0)
+       throw Exception('NetworkImage is an empty file: $resolved');
+     // 对图片数据进行解码
+     return PaintingBinding.instance.instantiateImageCodec(bytes);
+   } finally {
+     chunkEvents.close();
+   }
+ }
 
 ```
 
@@ -130,9 +130,9 @@ The download logic is relatively simple: by `HttpClient`downloading the image fr
 
 After the picture is downloaded, it is called `PaintingBinding.instance.instantiateImageCodec(bytes)`to decode the picture. It is worth noting that it is `instantiateImageCodec(...)`also a Native API package, which actually calls the Flutter engine `instantiateImageCodec`method. The source code is as follows:
 
-```
+``` dart 
 String _instantiateImageCodec(Uint8List list, _Callback<Codec> callback, _ImageInfo imageInfo, int targetWidth, int targetHeight)
-  native 'instantiateImageCodec';
+ native 'instantiateImageCodec';
 
 ```
 
@@ -144,58 +144,58 @@ This interface is mainly to cooperate with the realization of image caching. `Im
 
 `resolve`The method is `ImageProvider`the `Image`main entry method that is exposed to . It accepts a `ImageConfiguration`parameter and returns `ImageStream`, which is the image data stream. We focus on the `resolve`execution process:
 
-```
+``` dart 
 ImageStream resolve(ImageConfiguration configuration) {
-  ... //省略无关代码
-  final ImageStream stream = ImageStream();
-  T obtainedKey; //
-  //定义错误处理函数
-  Future<void> handleError(dynamic exception, StackTrace stack) async {
-    ... //省略无关代码
-    stream.setCompleter(imageCompleter);
-    imageCompleter.setError(...);
-  }
+ ... //省略无关代码
+ final ImageStream stream = ImageStream();
+ T obtainedKey; //
+ //定义错误处理函数
+ Future<void> handleError(dynamic exception, StackTrace stack) async {
+   ... //省略无关代码
+   stream.setCompleter(imageCompleter);
+   imageCompleter.setError(...);
+ }
 
-  // 创建一个新Zone，主要是为了当发生错误时不会干扰MainZone
-  final Zone dangerZone = Zone.current.fork(...);
+ // 创建一个新Zone，主要是为了当发生错误时不会干扰MainZone
+ final Zone dangerZone = Zone.current.fork(...);
 
-  dangerZone.runGuarded(() {
-    Future<T> key;
-    // 先验证是否已经有缓存
-    try {
-      // 生成缓存key，后面会根据此key来检测是否有缓存
-      key = obtainKey(configuration);
-    } catch (error, stackTrace) {
-      handleError(error, stackTrace);
-      return;
-    }
-    key.then<void>((T key) {
-      obtainedKey = key;
-      // 缓存的处理逻辑在这里，记为A，下面详细介绍
-      final ImageStreamCompleter completer = PaintingBinding.instance
-          .imageCache.putIfAbsent(key, () => load(key), onError: handleError);
-      if (completer != null) {
-        stream.setCompleter(completer);
-      }
-    }).catchError(handleError);
-  });
-  return stream;
+ dangerZone.runGuarded(() {
+   Future<T> key;
+   // 先验证是否已经有缓存
+   try {
+     // 生成缓存key，后面会根据此key来检测是否有缓存
+     key = obtainKey(configuration);
+   } catch (error, stackTrace) {
+     handleError(error, stackTrace);
+     return;
+   }
+   key.then<void>((T key) {
+     obtainedKey = key;
+     // 缓存的处理逻辑在这里，记为A，下面详细介绍
+     final ImageStreamCompleter completer = PaintingBinding.instance
+         .imageCache.putIfAbsent(key, () => load(key), onError: handleError);
+     if (completer != null) {
+       stream.setCompleter(completer);
+     }
+   }).catchError(handleError);
+ });
+ return stream;
 }
 
 ```
 
 `ImageConfiguration`Contains relevant information about the picture and the device, such as the size of the picture, where it is located `AssetBundle`(only pictures that have been loaded into the installation package exist), and the current device platform, devicePixelRatio (device pixel ratio, etc.). The Flutter SDK provides a convenient function `createLocalImageConfiguration`to create `ImageConfiguration`objects:
 
-```
+``` dart 
 ImageConfiguration createLocalImageConfiguration(BuildContext context, { Size size }) {
-  return ImageConfiguration(
-    bundle: DefaultAssetBundle.of(context),
-    devicePixelRatio: MediaQuery.of(context, nullOk: true)?.devicePixelRatio ?? 1.0,
-    locale: Localizations.localeOf(context, nullOk: true),
-    textDirection: Directionality.of(context),
-    size: size,
-    platform: defaultTargetPlatform,
-  );
+ return ImageConfiguration(
+   bundle: DefaultAssetBundle.of(context),
+   devicePixelRatio: MediaQuery.of(context, nullOk: true)?.devicePixelRatio ?? 1.0,
+   locale: Localizations.localeOf(context, nullOk: true),
+   textDirection: Directionality.of(context),
+   size: size,
+   platform: defaultTargetPlatform,
+ );
 }
 
 ```
@@ -206,98 +206,98 @@ A process at the above code is the primary code cache, here `PaintingBinding.ins
 
 Let's look at the `ImageCache`class definition below :
 
-```
+``` dart 
 const int _kDefaultSize = 1000;
 const int _kDefaultSizeBytes = 100 << 20; // 100 MiB
 
 class ImageCache {
-  // 正在加载中的图片队列
-  final Map<Object, _PendingImage> _pendingImages = <Object, _PendingImage>{};
-  // 缓存队列
-  final Map<Object, _CachedImage> _cache = <Object, _CachedImage>{};
+ // 正在加载中的图片队列
+ final Map<Object, _PendingImage> _pendingImages = <Object, _PendingImage>{};
+ // 缓存队列
+ final Map<Object, _CachedImage> _cache = <Object, _CachedImage>{};
 
-  // 缓存数量上限(1000)
-  int _maximumSize = _kDefaultSize;
-  // 缓存容量上限 (100 MB)
-  int _maximumSizeBytes = _kDefaultSizeBytes;
+ // 缓存数量上限(1000)
+ int _maximumSize = _kDefaultSize;
+ // 缓存容量上限 (100 MB)
+ int _maximumSizeBytes = _kDefaultSizeBytes;
 
-  // 缓存上限设置的setter
-  set maximumSize(int value) {...}
-  set maximumSizeBytes(int value) {...}
+ // 缓存上限设置的setter
+ set maximumSize(int value) {...}
+ set maximumSizeBytes(int value) {...}
 
-  ... // 省略部分定义
+ ... // 省略部分定义
 
-  // 清除所有缓存
-  void clear() {
-    // ...省略具体实现代码
-  }
-
-  // 清除指定key对应的图片缓存
-  bool evict(Object key) {
+ // 清除所有缓存
+ void clear() {
    // ...省略具体实现代码
-  }
+ }
+
+ // 清除指定key对应的图片缓存
+ bool evict(Object key) {
+  // ...省略具体实现代码
+ }
 
 
-  ImageStreamCompleter putIfAbsent(Object key, ImageStreamCompleter loader(), { ImageErrorListener onError }) {
-    assert(key != null);
-    assert(loader != null);
-    ImageStreamCompleter result = _pendingImages[key]?.completer;
-    // 图片还未加载成功，直接返回
-    if (result != null)
-      return result;
+ ImageStreamCompleter putIfAbsent(Object key, ImageStreamCompleter loader(), { ImageErrorListener onError }) {
+   assert(key != null);
+   assert(loader != null);
+   ImageStreamCompleter result = _pendingImages[key]?.completer;
+   // 图片还未加载成功，直接返回
+   if (result != null)
+     return result;
 
-    // 有缓存，继续往下走
-    // 先移除缓存，后再添加，可以让最新使用过的缓存在_map中的位置更近一些，清理时会LRU来清除
-    final _CachedImage image = _cache.remove(key);
-    if (image != null) {
-      _cache[key] = image;
-      return image.completer;
-    }
-    try {
-      result = loader();
-    } catch (error, stackTrace) {
-      if (onError != null) {
-        onError(error, stackTrace);
-        return null;
-      } else {
-        rethrow;
-      }
-    }
-    void listener(ImageInfo info, bool syncCall) {
-      final int imageSize = info?.image == null ? 0 : info.image.height * info.image.width * 4;
-      final _CachedImage image = _CachedImage(result, imageSize);
-      // 下面是缓存处理的逻辑
-      if (maximumSizeBytes > 0 && imageSize > maximumSizeBytes) {
-        _maximumSizeBytes = imageSize + 1000;
-      }
-      _currentSizeBytes += imageSize;
-      final _PendingImage pendingImage = _pendingImages.remove(key);
-      if (pendingImage != null) {
-        pendingImage.removeListener();
-      }
+   // 有缓存，继续往下走
+   // 先移除缓存，后再添加，可以让最新使用过的缓存在_map中的位置更近一些，清理时会LRU来清除
+   final _CachedImage image = _cache.remove(key);
+   if (image != null) {
+     _cache[key] = image;
+     return image.completer;
+   }
+   try {
+     result = loader();
+   } catch (error, stackTrace) {
+     if (onError != null) {
+       onError(error, stackTrace);
+       return null;
+     } else {
+       rethrow;
+     }
+   }
+   void listener(ImageInfo info, bool syncCall) {
+     final int imageSize = info?.image == null ? 0 : info.image.height * info.image.width * 4;
+     final _CachedImage image = _CachedImage(result, imageSize);
+     // 下面是缓存处理的逻辑
+     if (maximumSizeBytes > 0 && imageSize > maximumSizeBytes) {
+       _maximumSizeBytes = imageSize + 1000;
+     }
+     _currentSizeBytes += imageSize;
+     final _PendingImage pendingImage = _pendingImages.remove(key);
+     if (pendingImage != null) {
+       pendingImage.removeListener();
+     }
 
-      _cache[key] = image;
-      _checkCacheSize();
-    }
-    if (maximumSize > 0 && maximumSizeBytes > 0) {
-      final ImageStreamListener streamListener = ImageStreamListener(listener);
-      _pendingImages[key] = _PendingImage(result, streamListener);
-      // Listener is removed in [_PendingImage.removeListener].
-      result.addListener(streamListener);
-    }
-    return result;
-  }
+     _cache[key] = image;
+     _checkCacheSize();
+   }
+   if (maximumSize > 0 && maximumSizeBytes > 0) {
+     final ImageStreamListener streamListener = ImageStreamListener(listener);
+     _pendingImages[key] = _PendingImage(result, streamListener);
+     // Listener is removed in [_PendingImage.removeListener].
+     result.addListener(streamListener);
+   }
+   return result;
+ }
 
-  // 当缓存数量超过最大值或缓存的大小超过最大缓存容量，会调用此方法清理到缓存上限以内
-  void _checkCacheSize() {
-   while (_currentSizeBytes > _maximumSizeBytes || _cache.length > _maximumSize) {
-      final Object key = _cache.keys.first;
-      final _CachedImage image = _cache[key];
-      _currentSizeBytes -= image.sizeBytes;
-      _cache.remove(key);
-    }
-    ... //省略无关代码
-  }
+ // 当缓存数量超过最大值或缓存的大小超过最大缓存容量，会调用此方法清理到缓存上限以内
+ void _checkCacheSize() {
+  while (_currentSizeBytes > _maximumSizeBytes || _cache.length > _maximumSize) {
+     final Object key = _cache.keys.first;
+     final _CachedImage image = _cache[key];
+     _currentSizeBytes -= image.sizeBytes;
+     _cache.remove(key);
+   }
+   ... //省略无关代码
+ }
 }
 
 ```
@@ -309,31 +309,31 @@ If there is a cache, use the cache, if there is no cache, call the load method t
 
 In addition, we can see `ImageCache`that there is a setter for setting the upper limit of the cache in the class, so if we can customize the upper limit of the cache:
 
-```
- PaintingBinding.instance.imageCache.maximumSize=2000; //最多2000张
- PaintingBinding.instance.imageCache.maximumSizeBytes = 200 << 20; //最大200M
+``` dart 
+PaintingBinding.instance.imageCache.maximumSize=2000; //最多2000张
+PaintingBinding.instance.imageCache.maximumSizeBytes = 200 << 20; //最大200M
 
 ```
 
 Now we look at the cached key, because the value of the same key in the Map will be overwritten, that is to say, the key is a unique identifier of the image cache, as long as it is a different key, the image data will be cached separately (even if it is actually the same image). So what is the unique identification of the picture? Tracing the source code, it is easy to find that the key is `ImageProvider.obtainKey()`the return value of the method, and this method needs `ImageProvider`to be rewritten by subclasses, which means that different `ImageProvider`key definition logic will be different. In fact, it is also very easy to understand. For example `NetworkImage`, it is appropriate to use the url of the picture as the key, and for `AssetImage`the "package name + path", the only key should be used. Let's take `NetworkImage`an example and take a look at its `obtainKey()`implementation:
 
-```
+``` dart 
 @override
 Future<NetworkImage> obtainKey(image_provider.ImageConfiguration configuration) {
-  return SynchronousFuture<NetworkImage>(this);
+ return SynchronousFuture<NetworkImage>(this);
 }
 
 ```
 
 The code is very simple, it creates a synchronized future, and then directly returns itself as a key. Because the `NetworkImage`"==" operator is used in Map to determine whether the key (the object at this time ) is equal, the logic for defining the key is `NetworkImage`the "==" operator:
 
-```
+``` dart 
 @override
 bool operator ==(dynamic other) {
-  ... //省略无关代码
-  final NetworkImage typedOther = other;
-  return url == typedOther.url
-      && scale == typedOther.scale;
+ ... //省略无关代码
+ final NetworkImage typedOther = other;
+ return url == typedOther.url
+     && scale == typedOther.scale;
 }
 
 ```
@@ -354,72 +354,72 @@ The above mainly combines the source code to explore the `ImageProvider`main fun
 
 To change the way of thinking in this section, let's not look at `Image`the source code directly , but implement a simplified version of the " `Image`component" based on the knowledge we have mastered `MyImage`. The code is roughly as follows:
 
-```
+``` dart 
 class MyImage extends StatefulWidget {
-  const MyImage({
-    Key key,
-    @required this.imageProvider,
-  })
-      : assert(imageProvider != null),
-        super(key: key);
+ const MyImage({
+   Key key,
+   @required this.imageProvider,
+ })
+     : assert(imageProvider != null),
+       super(key: key);
 
-  final ImageProvider imageProvider;
+ final ImageProvider imageProvider;
 
-  @override
-  _MyImageState createState() => _MyImageState();
+ @override
+ _MyImageState createState() => _MyImageState();
 }
 
 class _MyImageState extends State<MyImage> {
-  ImageStream _imageStream;
-  ImageInfo _imageInfo;
+ ImageStream _imageStream;
+ ImageInfo _imageInfo;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // 依赖改变时，图片的配置信息可能会发生改变
-    _getImage();
-  }
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+   // 依赖改变时，图片的配置信息可能会发生改变
+   _getImage();
+ }
 
-  @override
-  void didUpdateWidget(MyImage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.imageProvider != oldWidget.imageProvider)
-      _getImage();
-  }
+ @override
+ void didUpdateWidget(MyImage oldWidget) {
+   super.didUpdateWidget(oldWidget);
+   if (widget.imageProvider != oldWidget.imageProvider)
+     _getImage();
+ }
 
-  void _getImage() {
-    final ImageStream oldImageStream = _imageStream;
-    // 调用imageProvider.resolve方法，获得ImageStream。
-    _imageStream =
-        widget.imageProvider.resolve(createLocalImageConfiguration(context));
-    //判断新旧ImageStream是否相同，如果不同，则需要调整流的监听器
-    if (_imageStream.key != oldImageStream?.key) {
-      final ImageStreamListener listener = ImageStreamListener(_updateImage);
-      oldImageStream?.removeListener(listener);
-      _imageStream.addListener(listener);
-    }
-  }
+ void _getImage() {
+   final ImageStream oldImageStream = _imageStream;
+   // 调用imageProvider.resolve方法，获得ImageStream。
+   _imageStream =
+       widget.imageProvider.resolve(createLocalImageConfiguration(context));
+   //判断新旧ImageStream是否相同，如果不同，则需要调整流的监听器
+   if (_imageStream.key != oldImageStream?.key) {
+     final ImageStreamListener listener = ImageStreamListener(_updateImage);
+     oldImageStream?.removeListener(listener);
+     _imageStream.addListener(listener);
+   }
+ }
 
-  void _updateImage(ImageInfo imageInfo, bool synchronousCall) {
-    setState(() {
-      // Trigger a build whenever the image changes.
-      _imageInfo = imageInfo;
-    });
-  }
+ void _updateImage(ImageInfo imageInfo, bool synchronousCall) {
+   setState(() {
+     // Trigger a build whenever the image changes.
+     _imageInfo = imageInfo;
+   });
+ }
 
-  @override
-  void dispose() {
-    _imageStream.removeListener(ImageStreamListener(_updateImage));
-    super.dispose();
-  }
+ @override
+ void dispose() {
+   _imageStream.removeListener(ImageStreamListener(_updateImage));
+   super.dispose();
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    return RawImage(
-      image: _imageInfo?.image, // this is a dart:ui Image object
-      scale: _imageInfo?.scale ?? 1.0,
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return RawImage(
+     image: _imageInfo?.image, // this is a dart:ui Image object
+     scale: _imageInfo?.scale ?? 1.0,
+   );
+ }
 }
 
 ```
@@ -432,20 +432,20 @@ The above code flow is as follows:
 
 Test it below `MyImage`:
 
-```
+``` dart 
 class ImageInternalTestRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        MyImage(
-          imageProvider: NetworkImage(
-            "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4",
-          ),
-        )
-      ],
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Column(
+     children: <Widget>[
+       MyImage(
+         imageProvider: NetworkImage(
+           "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4",
+         ),
+       )
+     ],
+   );
+ }
 }
 
 ```

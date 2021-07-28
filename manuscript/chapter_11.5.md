@@ -21,7 +21,7 @@ In the following example, we will connect to [the test server provided](http://w
 
 In Flutter, we can create a `WebSocketChannel`connection to a server:
 
-```
+``` dart 
 final channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
 
 ```
@@ -32,12 +32,12 @@ Now that we have established a connection, we can listen for messages from the s
 
 How do we collect messages and display them? In this example, we will use a [`StreamBuilder`](https://docs.flutter.io/flutter/widgets/StreamBuilder-class.html)to listen for new messages and a Text to display them.
 
-```
+``` dart 
 new StreamBuilder(
-  stream: widget.channel.stream,
-  builder: (context, snapshot) {
-    return new Text(snapshot.hasData ? '${snapshot.data}' : '');
-  },
+ stream: widget.channel.stream,
+ builder: (context, snapshot) {
+   return new Text(snapshot.hasData ? '${snapshot.data}' : '');
+ },
 );
 
 ```
@@ -50,7 +50,7 @@ new StreamBuilder(
 
 In order to send data to the server, we will send a `add`message to the `WebSocketChannel`provided sink.
 
-```
+``` dart 
 channel.sink.add('Hello!');
 
 ```
@@ -65,88 +65,88 @@ channel.sink.add('Hello!');
 
 After we use `WebSocket`it, we need to close the connection:
 
-```
+``` dart 
 channel.sink.close();
 
 ```
 
 ### Complete example
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class WebSocketRoute extends StatefulWidget {
-  @override
-  _WebSocketRouteState createState() => new _WebSocketRouteState();
+ @override
+ _WebSocketRouteState createState() => new _WebSocketRouteState();
 }
 
 class _WebSocketRouteState extends State<WebSocketRoute> {
-  TextEditingController _controller = new TextEditingController();
-  IOWebSocketChannel channel;
-  String _text = "";
+ TextEditingController _controller = new TextEditingController();
+ IOWebSocketChannel channel;
+ String _text = "";
 
 
-  @override
-  void initState() {
-    //创建websocket连接
-    channel = new IOWebSocketChannel.connect('ws://echo.websocket.org');
-  }
+ @override
+ void initState() {
+   //创建websocket连接
+   channel = new IOWebSocketChannel.connect('ws://echo.websocket.org');
+ }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("WebSocket(内容回显)"),
-      ),
-      body: new Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new Form(
-              child: new TextFormField(
-                controller: _controller,
-                decoration: new InputDecoration(labelText: 'Send a message'),
-              ),
-            ),
-            new StreamBuilder(
-              stream: channel.stream,
-              builder: (context, snapshot) {
-                //网络不通会走到这
-                if (snapshot.hasError) {
-                  _text = "网络不通...";
-                } else if (snapshot.hasData) {
-                  _text = "echo: "+snapshot.data;
-                }
-                return new Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24.0),
-                  child: new Text(_text),
-                );
-              },
-            )
-          ],
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _sendMessage,
-        tooltip: 'Send message',
-        child: new Icon(Icons.send),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return new Scaffold(
+     appBar: new AppBar(
+       title: new Text("WebSocket(内容回显)"),
+     ),
+     body: new Padding(
+       padding: const EdgeInsets.all(20.0),
+       child: new Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: <Widget>[
+           new Form(
+             child: new TextFormField(
+               controller: _controller,
+               decoration: new InputDecoration(labelText: 'Send a message'),
+             ),
+           ),
+           new StreamBuilder(
+             stream: channel.stream,
+             builder: (context, snapshot) {
+               //网络不通会走到这
+               if (snapshot.hasError) {
+                 _text = "网络不通...";
+               } else if (snapshot.hasData) {
+                 _text = "echo: "+snapshot.data;
+               }
+               return new Padding(
+                 padding: const EdgeInsets.symmetric(vertical: 24.0),
+                 child: new Text(_text),
+               );
+             },
+           )
+         ],
+       ),
+     ),
+     floatingActionButton: new FloatingActionButton(
+       onPressed: _sendMessage,
+       tooltip: 'Send message',
+       child: new Icon(Icons.send),
+     ),
+   );
+ }
 
-  void _sendMessage() {
-    if (_controller.text.isNotEmpty) {
-      channel.sink.add(_controller.text);
-    }
-  }
+ void _sendMessage() {
+   if (_controller.text.isNotEmpty) {
+     channel.sink.add(_controller.text);
+   }
+ }
 
-  @override
-  void dispose() {
-    channel.sink.close();
-    super.dispose();
-  }
+ @override
+ void dispose() {
+   channel.sink.close();
+   super.dispose();
+ }
 }
 
 ```

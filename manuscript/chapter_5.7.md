@@ -11,51 +11,51 @@ Flutter provides some trim functions for trimming components.
 
 Let's look at an example:
 
-```
+``` dart 
 import 'package:flutter/material.dart';
 
 class ClipTestRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // 头像  
-    Widget avatar = Image.asset("imgs/avatar.png", width: 60.0);
-    return Center(
-      child: Column(
-        children: <Widget>[
-          avatar, //不剪裁
-          ClipOval(child: avatar), //剪裁为圆形
-          ClipRRect( //剪裁为圆角矩形
-            borderRadius: BorderRadius.circular(5.0),
-            child: avatar,
-          ), 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                widthFactor: .5,//宽度设为原来宽度一半，另一半会溢出
-                child: avatar,
-              ),
-              Text("你好世界", style: TextStyle(color: Colors.green),)
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ClipRect(//将溢出部分剪裁
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  widthFactor: .5,//宽度设为原来宽度一半
-                  child: avatar,
-                ),
-              ),
-              Text("你好世界",style: TextStyle(color: Colors.green))
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   // 头像  
+   Widget avatar = Image.asset("imgs/avatar.png", width: 60.0);
+   return Center(
+     child: Column(
+       children: <Widget>[
+         avatar, //不剪裁
+         ClipOval(child: avatar), //剪裁为圆形
+         ClipRRect( //剪裁为圆角矩形
+           borderRadius: BorderRadius.circular(5.0),
+           child: avatar,
+         ), 
+         Row(
+           mainAxisAlignment: MainAxisAlignment.center,
+           children: <Widget>[
+             Align(
+               alignment: Alignment.topLeft,
+               widthFactor: .5,//宽度设为原来宽度一半，另一半会溢出
+               child: avatar,
+             ),
+             Text("你好世界", style: TextStyle(color: Colors.green),)
+           ],
+         ),
+         Row(
+           mainAxisAlignment: MainAxisAlignment.center,
+           children: <Widget>[
+             ClipRect(//将溢出部分剪裁
+               child: Align(
+                 alignment: Alignment.topLeft,
+                 widthFactor: .5,//宽度设为原来宽度一半
+                 child: avatar,
+               ),
+             ),
+             Text("你好世界",style: TextStyle(color: Colors.green))
+           ],
+         ),
+       ],
+     ),
+   );
+ }
 }
 
 ```
@@ -72,13 +72,13 @@ If we want to crop a specific area of ​​the sub-component, for example, in t
 
 First, customize one `CustomClipper`:
 
-```
+``` dart 
 class MyClipper extends CustomClipper<Rect> {
-  @override
-  Rect getClip(Size size) => Rect.fromLTWH(10.0, 15.0, 40.0, 30.0);
+ @override
+ Rect getClip(Size size) => Rect.fromLTWH(10.0, 15.0, 40.0, 30.0);
 
-  @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) => false;
+ @override
+ bool shouldReclip(CustomClipper<Rect> oldClipper) => false;
 }
 
 ```
@@ -88,15 +88,15 @@ class MyClipper extends CustomClipper<Rect> {
 
 Then, we use `ClipRect`to perform cropping. In order to see the actual position of the picture, we set a red background:
 
-```
+``` dart 
 DecoratedBox(
-  decoration: BoxDecoration(
-    color: Colors.red
-  ),
-  child: ClipRect(
-      clipper: MyClipper(), //使用自定义的clipper
-      child: avatar
-  ),
+ decoration: BoxDecoration(
+   color: Colors.red
+ ),
+ child: ClipRect(
+     clipper: MyClipper(), //使用自定义的clipper
+     child: avatar
+ ),
 )
 
 ```

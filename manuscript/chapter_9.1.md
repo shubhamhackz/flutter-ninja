@@ -25,9 +25,9 @@ The animation process can be uniform speed, uniform acceleration or first accele
 
 We can `CurvedAnimation`specify the curve of the animation by, such as:
 
-```
+``` dart 
 final CurvedAnimation curve =
-    new CurvedAnimation(parent: controller, curve: Curves.easeIn);
+   new CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
 ```
 
@@ -65,12 +65,12 @@ In addition to those listed above , there are many other curves defined in the [
 
 Of course, we can also create our own Curve, for example, we define a sine curve:
 
-```
+``` dart 
 class ShakeCurve extends Curve {
-  @override
-  double transform(double t) {
-    return math.sin(t * math.PI * 2);
-  }
+ @override
+ double transform(double t) {
+   return math.sin(t * math.PI * 2);
+ }
 }
 
 ```
@@ -79,20 +79,20 @@ class ShakeCurve extends Curve {
 
 `AnimationController`For controlling the animation, which contains animation start `forward()`, stop `stop()`, reverse playback `reverse()`method. `AnimationController`At each frame of the animation, a new value will be generated. By default, `AnimationController`a number from 0.0 to 1.0 (the default interval) is linearly generated within a given time period. For example, the following code creates an `Animation`object (but does not start the animation):
 
-```
+``` dart 
 final AnimationController controller = new AnimationController(
-    duration: const Duration(milliseconds: 2000), vsync: this);
+   duration: const Duration(milliseconds: 2000), vsync: this);
 
 ```
 
 `AnimationController`The interval for generating numbers can be specified by `lowerBound`sum `upperBound`, such as:
 
-```
+``` dart 
 final AnimationController controller = new AnimationController( 
- duration: const Duration(milliseconds: 2000), 
- lowerBound: 10.0,
- upperBound: 20.0,
- vsync: this
+duration: const Duration(milliseconds: 2000), 
+lowerBound: 10.0,
+upperBound: 20.0,
+vsync: this
 );
 
 ```
@@ -107,10 +107,10 @@ final AnimationController controller = new AnimationController(
 
 When creating one `AnimationController`, you need to pass a `vsync`parameter, it receives a `TickerProvider`type of object, and its main responsibility is to create `Ticker`, defined as follows:
 
-```
+``` dart 
 abstract class TickerProvider {
-  //通过一个回调创建一个Ticker
-  Ticker createTicker(TickerCallback onTick);
+ //通过一个回调创建一个Ticker
+ Ticker createTicker(TickerCallback onTick);
 }
 
 ```
@@ -123,7 +123,7 @@ Usually we will `SingleTickerProviderStateMixin`add to `State`the definition, an
 
 By default, `AnimationController`the range of object values ​​is [0.0, 1.0]. If we need to build UI animation values ​​in different ranges or different data types, we can use `Tween`to add mapping to generate values ​​of different ranges or data types. For example, like the following example, `Tween`the value of [-200.0, 0.0] is generated:
 
-```
+``` dart 
 final Tween doubleTween = new Tween<double>(begin: -200.0, end: 0.0);
 
 ```
@@ -134,9 +134,9 @@ final Tween doubleTween = new Tween<double>(begin: -200.0, end: 0.0);
 
 Let's look at an example of ColorTween mapping the animation input range to the transition output between two color values:
 
-```
+``` dart 
 final Tween colorTween =
-    new ColorTween(begin: Colors.transparent, end: Colors.black54);
+   new ColorTween(begin: Colors.transparent, end: Colors.black54);
 
 ```
 
@@ -146,9 +146,9 @@ final Tween colorTween =
 
 To use the Tween object, you need to call its `animate()`method and then pass in a controller object. For example, the following code generates an integer value from 0 to 255 in 500 milliseconds.
 
-```
+``` dart 
 final AnimationController controller = new AnimationController(
-    duration: const Duration(milliseconds: 500), vsync: this);
+   duration: const Duration(milliseconds: 500), vsync: this);
 Animation<int> alpha = new IntTween(begin: 0, end: 255).animate(controller);
 
 ```
@@ -157,10 +157,10 @@ Note that one is `animate()`returned `Animation`, not one `Animatable`.
 
 The following example builds a controller, a curve, and a Tween:
 
-```
+``` dart 
 final AnimationController controller = new AnimationController(
-    duration: const Duration(milliseconds: 500), vsync: this);
+   duration: const Duration(milliseconds: 500), vsync: this);
 final Animation curve =
-    new CurvedAnimation(parent: controller, curve: Curves.easeOut);
+   new CurvedAnimation(parent: controller, curve: Curves.easeOut);
 Animation<int> alpha = new IntTween(begin: 0, end: 255).animate(curve);
 ```

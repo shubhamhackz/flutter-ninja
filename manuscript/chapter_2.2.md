@@ -7,53 +7,53 @@ Route usually refers to page in mobile development, which is the same as the con
 Based on the "Counter" example in the previous section, we make the following modifications:
 
 1.  Create a new route and name it "NewRoute"
-    
-    ```
-    class NewRoute extends StatelessWidget {
-      @override
-      Widget build(BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("New route"),
-          ),
-          body: Center(
-            child: Text("This is new route"),
-          ),
-        );
-      }
-    }
-    
-    ```
-    
-    The new route is inherited from `StatelessWidget`, and the interface is very simple, with a sentence "This is new route" displayed in the middle of the page.
-    
+   
+``` dart 
+   class NewRoute extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text("New route"),
+         ),
+         body: Center(
+           child: Text("This is new route"),
+         ),
+       );
+     }
+   }
+   
+```
+   
+   The new route is inherited from `StatelessWidget`, and the interface is very simple, with a sentence "This is new route" displayed in the middle of the page.
+   
 2.  Add a button ( ) to the child widget in the `_MyHomePageState.build`method :`Column``FlatButton`
-    
-    ```
-    Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          ... //省略无关代码
-          FlatButton(
-             child: Text("open new route"),
-             textColor: Colors.blue,
-             onPressed: () {
-              //导航到新路由   
-              Navigator.push( context,
-               MaterialPageRoute(builder: (context) {
-                  return NewRoute();
-               }));
-              },
-             ),
-           ],
-     )
-    
-    ```
-    
-    We added a button to open a new route and set the button text color to blue. After clicking the button, the new route page will be opened. The effect is shown in Figures 2-2 and 2-3.
-    
-    ![Figure 2-2](https://pcdn.flutterchina.club/imgs/2-2.png)  ![Figure 2-3](https://pcdn.flutterchina.club/imgs/2-3.png)
-    
+   
+``` dart 
+   Column(
+         mainAxisAlignment: MainAxisAlignment.center,
+         children: <Widget>[
+         ... //省略无关代码
+         FlatButton(
+            child: Text("open new route"),
+            textColor: Colors.blue,
+            onPressed: () {
+             //导航到新路由   
+             Navigator.push( context,
+              MaterialPageRoute(builder: (context) {
+                 return NewRoute();
+              }));
+             },
+            ),
+          ],
+    )
+   
+```
+   
+   We added a button to open a new route and set the button text color to blue. After clicking the button, the new route page will be opened. The effect is shown in Figures 2-2 and 2-3.
+   
+   ![Figure 2-2](https://pcdn.flutterchina.club/imgs/2-2.png)  ![Figure 2-3](https://pcdn.flutterchina.club/imgs/2-3.png)
+   
 
 ## 2.2.2 MaterialPageRoute
 
@@ -64,13 +64,13 @@ Based on the "Counter" example in the previous section, we make the following mo
 
 Below we introduce `MaterialPageRoute`the meaning of each parameter of the constructor:
 
-```
-  MaterialPageRoute({
-    WidgetBuilder builder,
-    RouteSettings settings,
-    bool maintainState = true,
-    bool fullscreenDialog = false,
-  })
+``` dart 
+ MaterialPageRoute({
+   WidgetBuilder builder,
+   RouteSettings settings,
+   bool maintainState = true,
+   bool fullscreenDialog = false,
+ })
 
 ```
 
@@ -109,68 +109,68 @@ We create a `TipRoute`route, which accepts a prompt text parameter and is respon
 
 `TipRoute`Implementation code:
 
-```
+``` dart 
 class TipRoute extends StatelessWidget {
-  TipRoute({
-    Key key,
-    @required this.text,  // 接收一个text参数
-  }) : super(key: key);
-  final String text;
+ TipRoute({
+   Key key,
+   @required this.text,  // 接收一个text参数
+ }) : super(key: key);
+ final String text;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("提示"),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(18),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Text(text),
-              RaisedButton(
-                onPressed: () => Navigator.pop(context, "我是返回值"),
-                child: Text("返回"),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     appBar: AppBar(
+       title: Text("提示"),
+     ),
+     body: Padding(
+       padding: EdgeInsets.all(18),
+       child: Center(
+         child: Column(
+           children: <Widget>[
+             Text(text),
+             RaisedButton(
+               onPressed: () => Navigator.pop(context, "我是返回值"),
+               child: Text("返回"),
+             )
+           ],
+         ),
+       ),
+     ),
+   );
+ }
 }
 
 ```
 
 Here is `TipRoute`the code to open the new route :
 
-```
+``` dart 
 class RouterTestRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        onPressed: () async {
-          // 打开`TipRoute`，并等待返回结果
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return TipRoute(
-                  // 路由参数
-                  text: "我是提示xxxx",
-                );
-              },
-            ),
-          );
-          //输出`TipRoute`路由返回结果
-          print("路由返回值: $result");
-        },
-        child: Text("打开提示页"),
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return Center(
+     child: RaisedButton(
+       onPressed: () async {
+         // 打开`TipRoute`，并等待返回结果
+         var result = await Navigator.push(
+           context,
+           MaterialPageRoute(
+             builder: (context) {
+               return TipRoute(
+                 // 路由参数
+                 text: "我是提示xxxx",
+               );
+             },
+           ),
+         );
+         //输出`TipRoute`路由返回结果
+         print("路由返回值: $result");
+       },
+       child: Text("打开提示页"),
+     ),
+   );
+ }
 }
 
 ```
@@ -182,15 +182,15 @@ Run the above code, click `RouterTestRoute`the "Open Prompt Page" button on the 
 Need to explain:
 
 1.  The prompt text "I am prompt xxxx" is passed to the new routing page through `TipRoute`the `text`parameters. We can get the return data of the new route by waiting for the `Navigator.push(…)`return `Future`.
-    
+   
 2.  `TipRoute`There are two ways to return to the previous page in the page; the first way is to directly click the return arrow in the navigation bar, and the second way is to click the "back" button on the page. The difference between these two return methods is that the former will not return data to the previous route, while the latter will. The following is the output content `RouterTestRoute`of the `print`method in the page in the console after clicking the return button and the return arrow in the navigation bar respectively :
-    
-    ```
-    I/flutter (27896): 路由返回值: 我是返回值
-    I/flutter (27896): 路由返回值: null
-    
-    ```
-    
+   
+``` dart 
+   I/flutter (27896): 路由返回值: 我是返回值
+   I/flutter (27896): 路由返回值: null
+   
+```
+   
 
 The value passing method of the non-named route is introduced above. The value passing method of the named route will be different. We will introduce it when we introduce the named route below.
 
@@ -202,7 +202,7 @@ The so-called "Named Route" is a named route. We can give the route a name first
 
 To use named routing, we must first provide and register a routing table (routing table) so that the application knows which name corresponds to which routing component. In fact, registering the routing table is to name the route. The definition of the routing table is as follows:
 
-```
+``` dart 
 Map<String, WidgetBuilder> routes;
 
 ```
@@ -213,36 +213,36 @@ It is one `Map`, the key is the name of the route, it is a string; the value is 
 
 The registration method of the routing table is very simple. Let's go back to the previous "counter" example, and then find it in `MyApp`the `build`method of the class `MaterialApp`and add `routes`attributes. The code is as follows:
 
-```
+``` dart 
 MaterialApp(
-  title: 'Flutter Demo',
-  theme: ThemeData(
-    primarySwatch: Colors.blue,
-  ),
-  //注册路由表
-  routes:{
-   "new_page":(context) => NewRoute(),
-    ... // 省略其它路由注册信息
-  } ,
-  home: MyHomePage(title: 'Flutter Demo Home Page'),
+ title: 'Flutter Demo',
+ theme: ThemeData(
+   primarySwatch: Colors.blue,
+ ),
+ //注册路由表
+ routes:{
+  "new_page":(context) => NewRoute(),
+   ... // 省略其它路由注册信息
+ } ,
+ home: MyHomePage(title: 'Flutter Demo Home Page'),
 );
 
 ```
 
 Now we have completed the registration of the routing table. The `home`routing in the code above does not use named routes. What if we want to `home`register as named routes? It's actually very simple, just look at the code:
 
-```
+``` dart 
 MaterialApp(
-  title: 'Flutter Demo',
-  initialRoute:"/", //名为"/"的路由作为应用的home(首页)
-  theme: ThemeData(
-    primarySwatch: Colors.blue,
-  ),
-  //注册路由表
-  routes:{
-   "new_page":(context) => NewRoute(),
-   "/":(context) => MyHomePage(title: 'Flutter Demo Home Page'), //注册首页路由
-  } 
+ title: 'Flutter Demo',
+ initialRoute:"/", //名为"/"的路由作为应用的home(首页)
+ theme: ThemeData(
+   primarySwatch: Colors.blue,
+ ),
+ //注册路由表
+ routes:{
+  "new_page":(context) => NewRoute(),
+  "/":(context) => MyHomePage(title: 'Flutter Demo Home Page'), //注册首页路由
+ } 
 );
 
 ```
@@ -253,20 +253,20 @@ As you can see, we only need to register a `MyHomePage`route in the routing tabl
 
 To open a new route by route name, you can use `Navigator`the `pushNamed`method:
 
-```
+``` dart 
 Future pushNamed(BuildContext context, String routeName,{Object arguments})
 
 ```
 
 `Navigator`In addition to `pushNamed`methods, there are `pushReplacementNamed`other methods for managing named routes. Readers can check the API documentation by themselves. Next, we open a new routing page through the routing name, and modify `FlatButton`the `onPressed`callback code to:
 
-```
+``` dart 
 onPressed: () {
-  Navigator.pushNamed(context, "new_page");
-  //Navigator.push(context,
-  //  MaterialPageRoute(builder: (context) {
-  //  return NewRoute();
-  //}));  
+ Navigator.pushNamed(context, "new_page");
+ //Navigator.push(context,
+ //  MaterialPageRoute(builder: (context) {
+ //  return NewRoute();
+ //}));  
 },
 
 ```
@@ -279,31 +279,31 @@ In the original version of Flutter, named routes could not pass parameters, and 
 
 We first register a route:
 
-```
- routes:{
-   "new_page":(context) => EchoRoute(),
-  } ,
+``` dart 
+routes:{
+  "new_page":(context) => EchoRoute(),
+ } ,
 
 ```
 
 `RouteSetting`Obtain routing parameters through objects on the routing page :
 
-```
+``` dart 
 class EchoRoute extends StatelessWidget {
 
-  @override
-  Widget build(BuildContext context) {
-    //获取路由参数  
-    var args=ModalRoute.of(context).settings.arguments;
-    //...省略无关代码
-  }
+ @override
+ Widget build(BuildContext context) {
+   //获取路由参数  
+   var args=ModalRoute.of(context).settings.arguments;
+   //...省略无关代码
+ }
 }
 
 ```
 
 Pass parameters when opening the route
 
-```
+``` dart 
 Navigator.of(context).pushNamed("new_page", arguments: "hi");
 
 ```
@@ -312,14 +312,14 @@ Navigator.of(context).pushNamed("new_page", arguments: "hi");
 
 Suppose we also want to `TipRoute`register the routing page in the routing parameter example above to the routing table so that it can also be opened by the routing name. However, since it `TipRoute`accepts a `text`parameter, how can we `TipRoute`adapt to this situation without changing the source code? it's actually really easy:
 
-```
+``` dart 
 MaterialApp(
-  ... //省略无关代码
-  routes: {
-   "tip2": (context){
-     return TipRoute(text: ModalRoute.of(context).settings.arguments);
-   },
- }, 
+ ... //省略无关代码
+ routes: {
+  "tip2": (context){
+    return TipRoute(text: ModalRoute.of(context).settings.arguments);
+  },
+}, 
 );
 
 ```
@@ -330,24 +330,24 @@ Suppose we want to develop an e-commerce app. When users are not logged in, they
 
 `MaterialApp`There is an `onGenerateRoute`attribute, it may be called when the named route is opened. The reason why it is possible is because when the `Navigator.pushNamed(...)`open named route is called , if the specified route name is registered in the routing table, the `builder`function in the routing table will be called . Generate routing components; if there is no registration in the routing table, it will be called `onGenerateRoute`to generate routing. `onGenerateRoute`The callback signature is as follows:
 
-```
+``` dart 
 Route<dynamic> Function(RouteSettings settings)
 
 ```
 
 With `onGenerateRoute`callbacks, it is very easy to implement the above function of controlling page permissions: we give up using the routing table, and instead provide a `onGenerateRoute`callback, and then perform unified permission control in the callback, such as:
 
-```
+``` dart 
 MaterialApp(
-  ... //省略无关代码
-  onGenerateRoute:(RouteSettings settings){
-      return MaterialPageRoute(builder: (context){
-           String routeName = settings.name;
-       // 如果访问的路由页需要登录，但当前未登录，则直接返回登录页路由，
-       // 引导用户登录；其它情况则正常打开路由。
-     }
-   );
-  }
+ ... //省略无关代码
+ onGenerateRoute:(RouteSettings settings){
+     return MaterialPageRoute(builder: (context){
+          String routeName = settings.name;
+      // 如果访问的路由页需要登录，但当前未登录，则直接返回登录页路由，
+      // 引导用户登录；其它情况则正常打开路由。
+    }
+  );
+ }
 );
 
 ```
