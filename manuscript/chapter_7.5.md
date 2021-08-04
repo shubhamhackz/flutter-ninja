@@ -73,7 +73,7 @@ Widget build(BuildContext context) {
 
 The running results are shown in Figures 7-8 and 7-9:
 
-![Figure 7-8](https://pcdn.flutterchina.club/imgs/7-8.png)![Figure 7-9](https://pcdn.flutterchina.club/imgs/7-9.png)
+![Figure 7-8](../resources/imgs/7-8.png)![Figure 7-9](../resources/imgs/7-9.png)
 
 In the above code, we return different widgets `builder`according to the current asynchronous task status `ConnectionState`. `ConnectionState`Is an enumeration class, defined as follows:
 

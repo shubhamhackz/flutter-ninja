@@ -39,7 +39,7 @@ LinearProgressIndicator(
 
 The running effect is shown in Figure 3-30:
 
-![Figure 3-30](https://pcdn.flutterchina.club/imgs/3-30.png)
+![Figure 3-30](../resources/imgs/3-30.png)
 
 The first progress bar is performing a loop animation: the blue bar is always moving, while the second progress bar is static and stops at 50%.
 
@@ -77,7 +77,7 @@ CircularProgressIndicator(
 
 The running effect is shown in Figure 3-31:
 
-![Figure 3-31](https://pcdn.flutterchina.club/imgs/3-31.png)
+![Figure 3-31](../resources/imgs/3-31.png)
 
 The first progress bar will perform a rotating animation, while the second progress bar is static, it stops at 50%.
 
@@ -112,7 +112,7 @@ SizedBox(
 
 The running effect is shown in Figure 3-32:
 
-![Figure 3-32](https://pcdn.flutterchina.club/imgs/3-32.png)
+![Figure 3-32](../resources/imgs/3-32.png)
 
 Note that if `CircularProgressIndicator`the width and height of the display space are different, it will be displayed as an ellipse. Such as:
 
@@ -132,7 +132,7 @@ SizedBox(
 
 The running effect is shown in Figure 3-33:
 
-![progress_oval](https://pcdn.flutterchina.club/imgs/progress_oval.png)
+![progress_oval](../resources/imgs/progress_oval.png)
 
 ### Progress color animation
 

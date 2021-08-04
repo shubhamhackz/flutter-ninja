@@ -45,7 +45,7 @@ Listener(
 
 The effect after running is shown in Figure 8-1:
 
-![Figure 8-1](https://pcdn.flutterchina.club/imgs/8-1.png)
+![Figure 8-1](../resources/imgs/8-1.png)
 
 Moving a finger to see the current pointer offset in the blue rectangular area, when a triggering event pointer, parameters `PointerDownEvent`, `PointerMoveEvent`, `PointerUpEvent`is `PointerEvent`a subclass of `PointerEvent`class includes some information about the current pointer, such as:
 

@@ -6,7 +6,7 @@ In the "Introduction to Widget" section, we introduced the relationship between 
 
 Element is an instantiated object of Widget at a specific location in the UI tree. Most Elements are only unique `renderObject`, but some Elements have multiple child nodes, such as `RenderObjectElement`some classes inherited from `MultiChildRenderObjectElement`. In the end, all the RenderObjects of the Element form a tree, which we call "Render Tree" or "render tree". To sum up, we can think that Flutter's UI system contains three trees: Widget tree, Element tree, and rendering tree. Their dependency relationship is: Element tree is generated based on Widget tree, and rendering tree depends on Element tree, as shown in Figure 14-0.
 
-![Picture 14-0](https://pcdn.flutterchina.club/imgs/14-0.png)
+![Picture 14-0](../resources/imgs/14-0.png)
 
 Now let’s focus on Element. The life cycle of Element is as follows:
 
@@ -130,7 +130,7 @@ class CustomHome extends Widget {
 
 Now you can `CustomHome`add it to the widget tree. We create it on a new routing page. The final effect is as shown in Figure 14-1 and 14-2 (after clicking):
 
-![Figure 14-1](https://pcdn.flutterchina.club/imgs/14-1.png)  ![Figure 14-2](https://pcdn.flutterchina.club/imgs/14-2.png)
+![Figure 14-1](../resources/imgs/14-1.png)  ![Figure 14-2](../resources/imgs/14-2.png)
 
 Click the button and the button text will be sorted randomly.
 

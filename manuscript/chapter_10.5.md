@@ -168,7 +168,7 @@ class _GradientCircularProgressPainter extends CustomPainter {
 
 Let's test it. In order to show as many `GradientCircularProgressIndicator`different appearances and uses as possible , this sample code will be longer and animations are added. It is recommended that readers run this sample to see the actual effect. Let's take a look at one of the animations. Screenshot of:
 
-![gradient_circular_progress](https://pcdn.flutterchina.club/imgs/gradient_circular_progress.png)
+![gradient_circular_progress](../resources/imgs/gradient_circular_progress.png)
 
 Sample code:
 

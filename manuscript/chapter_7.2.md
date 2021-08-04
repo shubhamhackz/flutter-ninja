@@ -105,7 +105,7 @@ class _InheritedWidgetTestRouteState extends State<InheritedWidgetTestRoute> {
 
 The interface after running is shown in Figure 7-1:
 
-![Figure 7-1](https://pcdn.flutterchina.club/imgs/7-1.png)
+![Figure 7-1](../resources/imgs/7-1.png)
 
 Each time you click the button, the counter will increment, and the console will print a log:
 

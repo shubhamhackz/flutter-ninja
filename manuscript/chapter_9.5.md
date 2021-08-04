@@ -154,4 +154,4 @@ class _StaggerRouteState extends State<StaggerRoute> with TickerProviderStateMix
 
 The execution effect is shown in the figure. Click on the gray rectangle in Figure 9-3 to see the entire animation effect. Figure 9-4 is a frame during the execution of the animation.
 
-![Figure 9-3](https://pcdn.flutterchina.club/imgs/9-3.png)![Figure 9-4](https://pcdn.flutterchina.club/imgs/9-4.png)
+![Figure 9-3](../resources/imgs/9-3.png)![Figure 9-4](../resources/imgs/9-4.png)

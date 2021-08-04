@@ -172,7 +172,7 @@ Obviously, since Flex itself has nothing to draw, it directly traverses its chil
 
 When the size of the content to be drawn overflows the current space, will be executed `paintOverflowIndicator()`to draw the overflow prompt. This is the overflow prompt we often see, as shown in Figure 14-3:
 
-![overflow](https://pcdn.flutterchina.club/imgs/14-3.png)
+![overflow](../resources/imgs/14-3.png)
 
 ### RepaintBoundary
 

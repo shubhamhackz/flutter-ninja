@@ -13,7 +13,7 @@ The communication between Flutter and Native relies on flexible message passing 
 
 Use platform channels to pass messages between Flutter (client) and native (host), as shown in the following figure:
 
-![Platform channel](https://pcdn.flutterchina.club/imgs/12-3.png)
+![Platform channel](../resources/imgs/12-3.png)
 
 When calling a native method in Flutter, the calling information is passed to the native through the platform channel, and the native can perform the specified operation after receiving the calling information. If the data needs to be returned, the native will pass the data to Flutter through the platform channel. It is worth noting that message delivery is asynchronous, which ensures that the user interface will not be suspended during message delivery.
 

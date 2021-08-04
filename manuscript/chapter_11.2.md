@@ -74,7 +74,7 @@ The Dart IO library provides some classes for initiating Http requests, which we
 
 We implement an example of obtaining Baidu homepage html, the example effect is shown in Figure 11-1:
 
-​  ![Figure 11-1](https://pcdn.flutterchina.club/imgs/11-1.png)
+​  ![Figure 11-1](../resources/imgs/11-1.png)
 
 After clicking the "Get Baidu Homepage" button, it will request the Baidu homepage. After the request is successful, we will display the returned content and print the response header on the console. The code is as follows:
 

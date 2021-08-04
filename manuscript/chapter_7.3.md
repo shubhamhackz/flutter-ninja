@@ -266,13 +266,13 @@ class _ProviderRouteState extends State<ProviderRoute> {
 
 The effect after running the example is shown in Figure 7-2:
 
-![provider](https://pcdn.flutterchina.club/imgs/7-2.png)
+![provider](../resources/imgs/7-2.png)
 
 Every time you click the "Add Product" button, the total price will increase by 20, and the desired function is realized! Some readers may wonder, does it make sense to implement such a simple function with a large circle? In fact, based on this example, we just update a state in the same routing page. `ChangeNotifierProvider`The advantage we use is not obvious, but what if we are making a shopping APP? Since shopping cart data is usually shared throughout the app, for example, it will be shared across routes. If we put it `ChangeNotifierProvider`at the root of the Widget tree of the entire application, then the entire APP can share the data of the shopping cart, and `ChangeNotifierProvider`the advantage at this time will be very obvious.
 
 Although the above example is relatively simple, it clearly reflects the principle and process of Provider. Figure 7-3 is the schematic diagram of Provider:
 
-![Figure 7-3](https://pcdn.flutterchina.club/imgs/7-3.png)
+![Figure 7-3](../resources/imgs/7-3.png)
 
 After the model changes, it will automatically notify `ChangeNotifierProvider`(subscribers), the `ChangeNotifierProvider`internal will be rebuilt `InheritedWidget`, and `InheritedWidget`the descendant widgets that depend on it will be updated.
 

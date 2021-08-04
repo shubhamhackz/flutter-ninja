@@ -77,7 +77,7 @@ Column(
 
 The actual running result is shown in Figure 4-1:
 
-![Pic 4-1](https://pcdn.flutterchina.club/imgs/4-1.png)
+![Pic 4-1](../resources/imgs/4-1.png)
 
 Explanation: The first one `Row`is very simple, the default is center alignment; the second one `Row`, because the `mainAxisSize`value of `MainAxisSize.min`, `Row`the width is equal to the sum of the two `Text`widths, so the alignment is meaningless, so it will be displayed from left to right; the third `Row`setting `textDirection`value is `TextDirection.rtl`, so the order of the sub-assembly from right to left, but at this time `MainAxisAlignment.end`represents a left-aligned, so that the final result looks like the display in the third row of FIG.; row fourth test is longitudinal alignment, since the two sub The text font is different, so its height is also different. We specified the `verticalDirection`value `VerticalDirection.up`, which is arranged from low to top, and the `crossAxisAlignment`value at this time `CrossAxisAlignment.start`indicates bottom alignment.
 
@@ -105,7 +105,7 @@ class CenterColumnRoute extends StatelessWidget {
 
 The running effect is shown in Figure 4-2:
 
-![Figure 4-2 Example](https://pcdn.flutterchina.club/imgs/4-2.png)
+![Figure 4-2 Example](../resources/imgs/4-2.png)
 
 Explanation:
 
@@ -167,7 +167,7 @@ Container(
 
 The running effect is shown in Figure 4-3:
 
-![Figure 4-3](https://pcdn.flutterchina.club/imgs/4-3.png)
+![Figure 4-3](../resources/imgs/4-3.png)
 
 If you want the inside to `Column`fill the outside `Column`, you can use `Expanded`components:
 
@@ -189,6 +189,6 @@ Expanded(
 
 The running effect is shown in Figure 4-4:
 
-![Figure 4-4](https://pcdn.flutterchina.club/imgs/4-4.png)
+![Figure 4-4](../resources/imgs/4-4.png)
 
 We will introduce Expanded in detail when introducing flexible layout.

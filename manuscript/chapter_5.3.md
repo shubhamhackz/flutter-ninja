@@ -58,6 +58,6 @@ DecoratedBox(
 
 The effect after running is shown in Figure 5-9:
 
-![Figure 5-9](https://pcdn.flutterchina.club/imgs/5-9.png)
+![Figure 5-9](../resources/imgs/5-9.png)
 
 Well, `BoxDecoration`we have realized the appearance of a gradient button, but this example is not a standard button yet, because it can't respond to click events yet, we will implement a complete function in the chapter "Custom Components" later `GradientButton`. In addition, the `LinearGradient`class is used in the above example , which is used to define the linear gradient class. Flutter also provides other gradient configuration classes, such as `RadialGradient`, `SweepGradient`and readers can check the API documentation if necessary.

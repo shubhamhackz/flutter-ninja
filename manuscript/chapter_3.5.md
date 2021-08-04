@@ -69,7 +69,7 @@ Image.network(
 
 After running the above two examples, the picture is successfully loaded as shown in Figure 3-17:
 
-![Figure 3-17](https://pcdn.flutterchina.club/imgs/3-17.png)
+![Figure 3-17](../resources/imgs/3-17.png)
 
 #### parameter
 
@@ -103,7 +103,7 @@ const Image({
    
    A picture is worth a thousand words! We apply different `fit`values ​​to an avatar image with the same width and height , and the effect is shown in Figure 3-18:
    
-   ![Figure 3-18](https://pcdn.flutterchina.club/imgs/3-18.png)
+   ![Figure 3-18](../resources/imgs/3-18.png)
    
 
 -   `color`和`colorBlendMode`: When drawing the picture, you can perform color mixing for each pixel, `color`specify the mixed color, and `colorBlendMode`specify the mixing mode. The following is a simple example:
@@ -121,7 +121,7 @@ const Image({
 
 The running effect is shown in Figure 3-19 (color):
 
-![Figure 3-19](https://pcdn.flutterchina.club/imgs/3-19.png)
+![Figure 3-19](../resources/imgs/3-19.png)
 
 -   `repeat`: When the size of the picture itself is smaller than the display space, specify the repetition rule of the picture. A simple example is as follows:
    
@@ -137,7 +137,7 @@ The running effect is shown in Figure 3-19 (color):
    
    The effect after running is shown in Figure 3-20:
    
-   ![Figure 3-20](https://pcdn.flutterchina.club/imgs/3-20.png)
+   ![Figure 3-20](../resources/imgs/3-20.png)
    
 
 The complete sample code is as follows:
@@ -280,7 +280,7 @@ Text(icons,
 
 The running effect is shown in Figure 3-21:
 
-![Figure 3-21](https://pcdn.flutterchina.club/imgs/3-21.png)
+![Figure 3-21](../resources/imgs/3-21.png)
 
 From this example, we can see that using icons is like using text, but this method requires us to provide the code point of each icon, which is not friendly to developers. Therefore, Flutter encapsulates `IconData`and `Icon`specifically displays font icons. The example can also be implemented as follows:
 
@@ -349,4 +349,4 @@ Suppose we need to use a book icon and WeChat icon in our project, we package an
    
    The effect after running is shown in Figure 3-22:
    
-   ![Figure 3-22](https://pcdn.flutterchina.club/imgs/3-22.png)
+   ![Figure 3-22](../resources/imgs/3-22.png)

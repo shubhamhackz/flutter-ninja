@@ -62,7 +62,7 @@ class ClipTestRoute extends StatelessWidget {
 
 The running effect is shown in Figure 5-24:
 
-![Figure 5-24](https://pcdn.flutterchina.club/imgs/5-24.png)
+![Figure 5-24](../resources/imgs/5-24.png)
 
 The above sample code comments are more detailed, so I won’t repeat them here. But it is worth mentioning the last two `Row`! After they are `Align`set `widthFactor`to 0.5, the actual width of the picture is equal to 60×0.5, which is half of the original width, but the overflow part of the picture will still be displayed at this time, so the first "Hello World" will overlap with another part of the picture for cropping `Row`To `ClipRect`remove the overflow part, we cut off the overflow part in the second one .
 
@@ -103,6 +103,6 @@ DecoratedBox(
 
 The running effect is shown in Figure 5-25:
 
-![Figure 5-25](https://pcdn.flutterchina.club/imgs/5-25.png)
+![Figure 5-25](../resources/imgs/5-25.png)
 
 It can be seen that our cropping was successful, but the size of the space occupied by the picture is still 60×60 (red area). This is because the cropping is done in the drawing stage after the layout is completed, so it will not affect the size of the component. And the `Transform`principle is similar.

@@ -52,7 +52,7 @@ Based on the "Counter" example in the previous section, we make the following mo
    
    We added a button to open a new route and set the button text color to blue. After clicking the button, the new route page will be opened. The effect is shown in Figures 2-2 and 2-3.
    
-   ![Figure 2-2](https://pcdn.flutterchina.club/imgs/2-2.png)  ![Figure 2-3](https://pcdn.flutterchina.club/imgs/2-3.png)
+   ![Figure 2-2](../resources/imgs/2-2.png)  ![Figure 2-3](../resources/imgs/2-3.png)
    
 
 ## 2.2.2 MaterialPageRoute
@@ -177,7 +177,7 @@ class RouterTestRoute extends StatelessWidget {
 
 Run the above code, click `RouterTestRoute`the "Open Prompt Page" button on the `TipRoute`page, the page will be opened , and the running effect is shown in Figure 2-4:
 
-![Figure 2-4](https://pcdn.flutterchina.club/imgs/2-4.png)
+![Figure 2-4](../resources/imgs/2-4.png)
 
 Need to explain:
 

@@ -95,7 +95,7 @@ class FlexLayoutTestRoute extends StatelessWidget {
 
 The running effect is shown in Figure 4-5:
 
-![Flexible layout](https://pcdn.flutterchina.club/imgs/4-5.png)
+![Flexible layout](../resources/imgs/4-5.png)
 
 `Spacer`The function in the example is to occupy a specified proportion of space. In fact, it is just `Expanded`a packaging class. `Spacer`The source code is as follows:
 

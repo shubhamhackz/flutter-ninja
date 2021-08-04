@@ -30,7 +30,7 @@ const AlertDialog({
 
 The parameters are relatively simple, so I won't repeat them. Let's look at an example. If we want to pop up a confirmation dialog box when deleting a file, the dialog box is shown in Figure 7-10:
 
-![Figure 7-10](https://pcdn.flutterchina.club/imgs/7-10.png)
+![Figure 7-10](../resources/imgs/7-10.png)
 
 The dialog style code is as follows:
 
@@ -122,7 +122,7 @@ After the example runs, we click the dialog box "Cancel" button or mask, the con
 
 `SimpleDialog`It is also a dialog box provided by the Material component library, which will display a list for the scene selected by the list. The following is an example of selecting APP language, and the running result is shown in Figure 7-11.
 
-![Figure 7-11](https://pcdn.flutterchina.club/imgs/7-11.png)
+![Figure 7-11](../resources/imgs/7-11.png)
 
 The implementation code is as follows:
 
@@ -193,7 +193,7 @@ Dialog(
 
 Let's look at an example of a pop-up dialog box with 30 list items. The running effect is shown in Figure 7-12:
 
-![Figure 7-12](https://pcdn.flutterchina.club/imgs/7-12.png)
+![Figure 7-12](../resources/imgs/7-12.png)
 
 The implementation code is as follows:
 
@@ -347,7 +347,7 @@ showCustomDialog<bool>(
 
 The running effect is shown in Figure 7-13:
 
-![Figure 7-13](https://pcdn.flutterchina.club/imgs/7-13.png)
+![Figure 7-13](../resources/imgs/7-13.png)
 
 It can be found that the mask color is darker than `showDialog`the dialog box opened by the method. In addition, the dialog box opening/closing animation has become a zoom animation, and readers can run the example to check the effect.
 
@@ -383,7 +383,7 @@ Achieve is very simple, direct call `Navigator`the `push`method to open a new di
 
 When the user chooses to delete a file, we will ask whether to delete the file; when the user chooses a folder, we should let the user confirm whether to delete the subfolder. In order to avoid the second pop-up window confirming whether to delete the subdirectories when the user selects a folder, we add a "Also delete subdirectories?" check box at the bottom of the confirmation dialog box, as shown in Figure 7-14:
 
-![Figure 7-14](https://pcdn.flutterchina.club/imgs/7-14.png)
+![Figure 7-14](../resources/imgs/7-14.png)
 
 Now there is a question: how to manage the checked state of the check box? Traditionally, we will manage the selected state in the State of the routing page. We may write the following code:
 
@@ -578,7 +578,7 @@ RaisedButton(
 
 The effect after running is shown in Figure 7-15:
 
-![Figure 7-15](https://pcdn.flutterchina.club/imgs/7-15.png)
+![Figure 7-15](../resources/imgs/7-15.png)
 
 The visible checkbox can be selected. After clicking "Cancel" or "Delete", the console will print out the final confirmation status.
 
@@ -784,7 +784,7 @@ RaisedButton(
 
 The effect after running is shown in Figure 7-16:
 
-![Figure 7-16](https://pcdn.flutterchina.club/imgs/7-16.png)
+![Figure 7-16](../resources/imgs/7-16.png)
 
 `showModalBottomSheet`The realization principle and the `showGeneralDialog`realization principle of are the same, and they are all realized by routing. Readers can check the source code comparison. But it is worth mentioning that there is another `showBottomSheet`method, which will pop up a full-screen menu list from the bottom of the device, an example is as follows:
 
@@ -815,7 +815,7 @@ PersistentBottomSheetController<int> _showBottomSheet() {
 
 The running effect is shown in Figure 7-17:
 
-![Figure 7-17](https://pcdn.flutterchina.club/imgs/7-17.png)
+![Figure 7-17](../resources/imgs/7-17.png)
 
 `PersistentBottomSheetController`It contains some methods to control the dialog box, such as the `close`method to close the dialog box, the function is relatively simple, readers can view the source code by themselves. The only thing to note is that it is `showBottomSheet`different from the principle of the pop-up dialog box we introduced above: it `showBottomSheet`is to call the method implementation `Scaffold`of `ScaffoldState`the `showBottomSheet`same name of the component at the top of the widget tree , that is to say, to call the `showBottomSheet`method, you must ensure that there is in the parent component `Scaffold`.
 
@@ -849,7 +849,7 @@ showLoadingDialog() {
 
 The display effect is shown in Figure 7-18:
 
-![Figure 7-18](https://pcdn.flutterchina.club/imgs/7-18.png)
+![Figure 7-18](../resources/imgs/7-18.png)
 
 If we suspect Loading box is too wide, want to customize the width of the dialog box, then only use `SizedBox`or `ConstrainedBox`does not work, because `showDialog`the dialog box has been set up to width restrictions, in accordance with our Chapter 5, "class vessel size restrictions," a As mentioned in the above, we can `UnconstrainedBox`offset `showDialog`the restriction on the width first , and then use the `SizedBox`specified width, the code is as follows:
 
@@ -878,13 +878,13 @@ UnconstrainedBox(
 
 After the code runs, the effect is shown in Figure 7-19:
 
-![Figure 7-19](https://pcdn.flutterchina.club/imgs/7-19.png)
+![Figure 7-19](../resources/imgs/7-19.png)
 
 ### Calendar selection
 
 Let's take a look at the Material style calendar selector, as shown in Figure 7-20:
 
-![Figure 7-20](https://pcdn.flutterchina.club/imgs/7-20.png)
+![Figure 7-20](../resources/imgs/7-20.png)
 
 Implementation code:
 
@@ -933,4 +933,4 @@ Future<DateTime> _showDatePicker2() {
 
 The running effect is shown in Figure 7-21:
 
-![Figure 7-21](https://pcdn.flutterchina.club/imgs/7-21.png)
+![Figure 7-21](../resources/imgs/7-21.png)

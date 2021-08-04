@@ -14,7 +14,7 @@ How to decide which management method to use? The following are some of the offi
 
 It will be better to manage the state encapsulation inside the Widget, but it will be more flexible in the parent Widget. Sometimes, if you are not sure how to manage the state, then the recommended first choice is to manage it in the parent widget (flexibility is more important).
 
-Next, we will illustrate the different ways of managing state by creating three simple examples TapboxA, TapboxB, and TapboxC. The functions of these examples are similar-create a box, and when you click on it, the background of the box will switch between green and gray. Status `_active`determination Color: green `true`, gray as `false`shown in Figure 3-4.![a large grey box with the text, 'Inactive'](https://pcdn.flutterchina.club/imgs/3-4.png)
+Next, we will illustrate the different ways of managing state by creating three simple examples TapboxA, TapboxB, and TapboxC. The functions of these examples are similar-create a box, and when you click on it, the background of the box will switch between green and gray. Status `_active`determination Color: green `true`, gray as `false`shown in Figure 3-4.![a large grey box with the text, 'Inactive'](../resources/imgs/3-4.png)
 
 The following example will be used `GestureDetector`to identify the click event. `GestureDetector`We will introduce the details in the chapter "Event Handling".
 

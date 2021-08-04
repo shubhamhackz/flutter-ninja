@@ -452,7 +452,7 @@ class ImageInternalTestRoute extends StatelessWidget {
 
 The running effect is shown in Figure 14-4:
 
-![Figure 14-4](https://pcdn.flutterchina.club/imgs/14-4.png)
+![Figure 14-4](../resources/imgs/14-4.png)
 
 Succeeded! Now, presumably `Image`the source code of Widget is no longer necessary to spend a chapter to introduce it, and readers who are interested can read it by themselves.
 

@@ -91,7 +91,7 @@ Column(
 
 The running effect is shown in Figure 7-4:
 
-![NavBar](https://pcdn.flutterchina.club/imgs/7-4.png)
+![NavBar](../resources/imgs/7-4.png)
 
 ### Material Color
 
@@ -119,7 +119,7 @@ static const int _bluePrimaryValue = 0xFF2196F3;
 
 `Colors.blue[50]`The `Colors.blue[900]`color value gradient from light blue to dark blue, the effect shown in Figure 7-5:
 
-![NavBar](https://pcdn.flutterchina.club/imgs/7-5.jpeg)
+![NavBar](../resources/imgs/7-5.jpeg)
 
 ## 7.4.2 Theme
 
@@ -226,7 +226,7 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
 
 After running, click the floating button in the lower right corner to switch the theme, as shown in Figure 7-6 and 7-7:
 
-![Figure 7-6](https://pcdn.flutterchina.club/imgs/7-6.png)![Figure 7-7](https://pcdn.flutterchina.club/imgs/7-7.png)
+![Figure 7-6](../resources/imgs/7-6.png)![Figure 7-7](../resources/imgs/7-7.png)
 
 There are three points to note:
 

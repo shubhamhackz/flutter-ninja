@@ -22,7 +22,7 @@ Text("Hello world",
 
 The running effect is shown in Figure 3-5:
 
-![image-20180829103242552](https://pcdn.flutterchina.club/imgs/3-5.png)
+![image-20180829103242552](../resources/imgs/3-5.png)
 
 -   `textAlign`: The alignment of the text; you can choose left, right or center. Note that the frame of reference for alignment is the Text widget itself. Although the center alignment is specified in this example, because the width of the text content is less than one line, the width of the text is equal to the length of the text content, then it is meaningless to specify the alignment at this time, only specify this attribute when the width of the text is greater than the length of the text content It makes sense. Below we specify a longer string:
    
@@ -35,7 +35,7 @@ The running effect is shown in Figure 3-5:
    
    The running effect is shown in Figure 3-6:
    
-   ![image-20180829104807535](https://pcdn.flutterchina.club/imgs/3-6.png)
+   ![image-20180829104807535](../resources/imgs/3-6.png)
    
 
 ​ If the string content exceeds one line, the Text width is equal to the screen width, and the second line of text will be displayed in the center.
@@ -64,7 +64,7 @@ Text("Hello world",
 
 The effect is shown in Figure 3-7:
 
-![3-7](https://pcdn.flutterchina.club/imgs/3-7.png)
+![3-7](../resources/imgs/3-7.png)
 
 This example only shows part of the properties of TextStyle. It also has some other properties. The property names are basically self-explanatory. I won't repeat them here. Readers can refer to the SDK documentation. It is worth noting that:
 
@@ -93,7 +93,7 @@ const TextSpan({
 
 Wherein `style`and `text`attribute represents the style and content of the text segments. `children`It is an `TextSpan`array, which means it `TextSpan`can include others `TextSpan`. It is `recognizer`used to recognize the gestures used on the text segment. Let's look at an effect (Figure 3-8), and then use `TextSpan`it to achieve it.
 
-![3-8](https://pcdn.flutterchina.club/imgs/3-8.png)
+![3-8](../resources/imgs/3-8.png)
 
 Source code:
 
@@ -149,7 +149,7 @@ DefaultTextStyle(
 
 In the above code, we first set a default text style, that is, the font is 20 pixels (logical pixels) and the color is red. Then it is `DefaultTextStyle`set to the Column node of the subtree, so that all descendants of Column will inherit this style by default, unless the Text display specifies that it does not inherit the style, as in Note 2 in the code. The example running effect is shown in Figure 3-9:
 
-![3-9](https://pcdn.flutterchina.club/imgs/3-9.png)
+![3-9](../resources/imgs/3-9.png)
 
 ### 3.3.5 Font
 

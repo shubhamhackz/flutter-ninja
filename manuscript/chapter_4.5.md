@@ -68,7 +68,7 @@ ConstrainedBox(
 
 The running effect is shown in Figure 4-9:
 
-![Figure 4-9](https://pcdn.flutterchina.club/imgs/4-9.png)
+![Figure 4-9](../resources/imgs/4-9.png)
 
 Since the first child text component `Text("Hello world")`does not specify a positioning and has a `alignment`value `Alignment.center`, it will be displayed in the center. The second sub-text component `Text("I am Jack")`only specifies the horizontal positioning ( `left`), so it belongs to partial positioning, that is, there is no positioning in the vertical direction, so its vertical alignment will be aligned according to the `alignment`specified alignment, that is, the vertical direction is centered. For the third sub-text component `Text("Your friend")`, the `Text`principle is the same as the second one , except that there is no positioning in the horizontal direction, the horizontal direction is centered.
 
@@ -97,6 +97,6 @@ Stack(
 
 The display effect is shown in Figure 4-10:
 
-![Figure 4-10](https://pcdn.flutterchina.club/imgs/4-10.png)
+![Figure 4-10](../resources/imgs/4-10.png)
 
 As you can see, since the second sub-text component is not positioned, the `fit`properties will work on it and will be full `Stack`. Since the `Stack`child elements are stacked, the first child text component is covered by the second, and the third is on the top layer, so it can be displayed normally.

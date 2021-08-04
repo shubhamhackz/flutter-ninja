@@ -20,7 +20,7 @@ We implement a page, which contains:
 
 The final effect is shown in Figure 5-18 and Figure 5-19:
 
-![Figure 5-18](https://pcdn.flutterchina.club/imgs/5-18.png)  ![Figure 5-19](https://pcdn.flutterchina.club/imgs/5-19.png)
+![Figure 5-18](../resources/imgs/5-18.png)  ![Figure 5-19](../resources/imgs/5-19.png)
 
 The implementation code is as follows:
 
@@ -124,7 +124,7 @@ Scaffold(
 
 The code running effect is shown in Figure 5-20:
 
-![Figure 5-20](https://pcdn.flutterchina.club/imgs/5-20.png)
+![Figure 5-20](../resources/imgs/5-20.png)
 
 You can see that the menu on the left has been replaced successfully.
 
@@ -134,7 +134,7 @@ The method to open the drawer menu in the code is `ScaffoldState`in, through whi
 
 Next, we add a Tab button group at the bottom of the navigation bar through the "bottom" attribute. The effect to be achieved is shown in Figure 5-21:
 
-![Figure 5-21](https://pcdn.flutterchina.club/imgs/5-21.png)
+![Figure 5-21](../resources/imgs/5-21.png)
 
 A component is provided in the Material component library `TabBar`, which can quickly generate a `Tab`menu. The following is the source code corresponding to the above figure:
 
@@ -225,7 +225,7 @@ Scaffold(
 
 The effect after running is shown in Figure 5-22:
 
-![Figure 5-22](https://pcdn.flutterchina.club/imgs/5-22.png)
+![Figure 5-22](../resources/imgs/5-22.png)
 
 Now, no matter if you click on the Tab menu in the navigation bar or swipe left and right on the page, the Tab page will switch, and the status of the Tab menu and the Tab page are always synchronized! How do they achieve synchronization? Attentive readers may have noticed, the above example `TabBar`and `TabBarView`the `controller`one and the same! This is the case, `TabBar`and `TabBarView`it is through the same one `controller`to realize the menu switching and sliding state synchronization. For `TabController`the detailed information, we will not introduce too much in this book. Readers can directly check the SDK when using it.
 
@@ -304,7 +304,7 @@ The drawer menu usually uses `Drawer`components as the root node. It implements 
 
 We can use `Scaffold`the `bottomNavigationBar`properties to set the bottom navigation, as shown in the example at the beginning of this section, we use the Material component library `BottomNavigationBar`and `BottomNavigationBarItem`two components to implement the Material style bottom navigation bar. You can see that the above implementation code is very simple, so I won't repeat it, but what if we want to achieve the bottom navigation bar with the effect shown in Figure 5-23?
 
-![Figure 5-23](https://pcdn.flutterchina.club/imgs/5-23.png)
+![Figure 5-23](../resources/imgs/5-23.png)
 
 A component is provided in the Material component library `BottomAppBar`, which can `FloatingActionButton`cooperate to achieve this "hole punching" effect. The source code is as follows:
 

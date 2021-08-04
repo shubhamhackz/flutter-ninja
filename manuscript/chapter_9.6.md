@@ -101,7 +101,7 @@ class _AnimatedSwitcherCounterRouteState extends State<AnimatedSwitcherCounterRo
 
 Run the sample code, when you click the "+1" button, the original number will gradually shrink until it is hidden, while the new number will gradually enlarge. I captured a frame of the animation execution process, as shown in Figure 9-5:
 
-![Figure 9-5](https://pcdn.flutterchina.club/imgs/9-5.png)
+![Figure 9-5](../resources/imgs/9-5.png)
 
 The above picture is a frame of switching animation after clicking the "+1" button for the first time. At this time, "0" is gradually shrinking, and "1" is in the middle of "0" and is gradually zooming in.
 
@@ -227,7 +227,7 @@ AnimatedSwitcher(
 
 After running, I intercepted a frame during the execution of the animation, as shown in Figure 9-6:
 
-![Figure 9-6](https://pcdn.flutterchina.club/imgs/9-6.png)
+![Figure 9-6](../resources/imgs/9-6.png)
 
 In the picture above, "0" slides out from the left, and "1" slides in from the right. It can be seen that we have implemented an animation similar to the routing switch in this clever way. In fact, the Flutter routing switch is also achieved through `AnimatedSwitcher`this.
 
@@ -324,7 +324,7 @@ AnimatedSwitcher(
 
 After running, I intercepted a frame during the execution of the animation, as shown in Figure 9-7:
 
-![Figure 9-7](https://pcdn.flutterchina.club/imgs/9-7.png)
+![Figure 9-7](../resources/imgs/9-7.png)
 
 In the picture above, "1" slides out from the bottom, and "2" slides in from the top. Readers can try to give `SlideTransitionX`a `direction`different value to view operating results.
 

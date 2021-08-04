@@ -12,7 +12,7 @@ The buttons in the Flutter Material component library do not support gradient ba
 
 Let's take a look at the final effect (Figure 10-1):
 
-![gradient-button](https://pcdn.flutterchina.club/imgs/10-1.png)
+![gradient-button](../resources/imgs/10-1.png)
 
 We `DecoratedBox`can support background color gradients and rounded corners, `InkWell`and there will be ripple effects when pressed by the finger, so we can achieve it by combining `DecoratedBox`and , the code is as follows:`InkWell``GradientButton`
 

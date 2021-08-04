@@ -41,7 +41,7 @@ Container(
 
 The running effect is shown in Figure 4-11:
 
-![Figure 4-11](https://pcdn.flutterchina.club/imgs/4-11.png)
+![Figure 4-11](../resources/imgs/4-11.png)
 
 `FlutterLogo`It is a component provided by the Flutter SDK, and the content is the trademark of Flutter. In the above example, we explicitly specified the `Container`width and height to be 120. If we do not explicitly specify the width and height, the same effect can be achieved by specifying `widthFactor`and `heightFactor`as 2 at the same time:
 
@@ -105,7 +105,7 @@ Align(
 
 We can first imagine the operating effect: `Alignment(2,0.0)`Bringing into the above coordinate conversion formula, `FlutterLogo`the actual offset coordinates that can be obtained are (90, 30). The actual operation is shown in Figure 4-12:
 
-![Figure 4-12](https://pcdn.flutterchina.club/imgs/4-12.png)
+![Figure 4-12](../resources/imgs/4-12.png)
 
 ### FractionalOffset
 
@@ -135,7 +135,7 @@ Container(
 
 The actual running effect is shown in Figure 4-13:
 
-![Figure 4-13](https://pcdn.flutterchina.club/imgs/4-13.png)
+![Figure 4-13](../resources/imgs/4-13.png)
 
 We will `FractionalOffset(0.2, 0.6)`bring in the coordinate conversion formula and the `FlutterLogo`actual offset is (12, 36), which is consistent with the actual running effect.
 
@@ -183,7 +183,7 @@ DecoratedBox(
 
 The running effect is shown in Figure 4-14:
 
-![Figure 4-14](https://pcdn.flutterchina.club/imgs/4-14.png)
+![Figure 4-14](../resources/imgs/4-14.png)
 
 ## to sum up
 

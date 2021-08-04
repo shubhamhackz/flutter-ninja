@@ -18,7 +18,7 @@ Below I will lead the reader to develop a Dart Package step by step.
 
 You can create a Package project through Android Studio: File>New>New Flutter Project, as shown in Figure 12-1:
 
-![Figure 12-1](https://pcdn.flutterchina.club/imgs/12-1.png)
+![Figure 12-1](../resources/imgs/12-1.png)
 
 You can also use `--template=package`to perform `flutter create`to create a command:
 
@@ -38,7 +38,7 @@ This will `hello/`create a package project with the following dedicated content 
 
 For pure Dart packages, you only need to add functions in the main file or in the files in the directory. To test the package, add [unit tests](https://flutter.io/testing/#unit-testing) in the directory . Let's take a look at how to organize the package code. Let's take shelf Package as an example. Its directory structure is shown in Figure 12-2:`lib/<package  name>.dart``lib``test`[](https://flutter.io/testing/#unit-testing)
 
-![Figure 12-2](https://pcdn.flutterchina.club/imgs/12-2.png)
+![Figure 12-2](../resources/imgs/12-2.png)
 
 In the "shelf.dart" in the lib root directory, multiple dart files in the "lib/src" directory are exported:
 

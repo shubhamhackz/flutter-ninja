@@ -49,7 +49,7 @@ class LanguageRoute extends StatelessWidget {
 
 The above code logic is very simple, only caveat is that we `build(…)`define which method `_buildLanguageItem(…)`process it in `LanguageRoute`defined in the class distinction of this method is that: in the `build(…)`method of the definition can be shared by `build(...)`a method context variables, the present embodiment is shared Up `localeModel`. Of course, if `_buildLanguageItem(…)`the implementation is more complicated, it is not recommended to do so, at this time it is best to use it as a `LanguageRoute`class method. The running effect of this page is shown in Figure 15-6 and 15-7:
 
-![15-6](https://pcdn.flutterchina.club/imgs/15-6.png)![15-7](https://pcdn.flutterchina.club/imgs/15-7.png)
+![15-6](../resources/imgs/15-6.png)![15-7](../resources/imgs/15-7.png)
 
 It takes effect immediately after switching the language.
 
@@ -90,6 +90,6 @@ class ThemeChangeRoute extends StatelessWidget{
 
 The running effect is shown in Figure 15-8:
 
-![15-8](https://pcdn.flutterchina.club/imgs/15-8.png)
+![15-8](../resources/imgs/15-8.png)
 
 After clicking on other theme color blocks, the APP theme color switch will take effect immediately.

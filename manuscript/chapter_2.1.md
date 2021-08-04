@@ -12,7 +12,7 @@ Create a new Flutter project via Android Studio or VS Code and name it "first_fl
 
 We first run the created project, the effect is shown in Figure 2-1:
 
-![picture 2-1](https://pcdn.flutterchina.club/imgs/2-1.png)
+![picture 2-1](../resources/imgs/2-1.png)
 
 In this counter example, every time you click the floating button with a "+" sign in the lower right corner, the number in the center of the screen will increase by 1.
 
