@@ -45,7 +45,7 @@ Pub ( [https://pub.dev/](https://pub.dev/) ) is Google’s official Dart Package
 
 Next, we implement a widget that displays a random string. There is an open source software package called "english_words", which contains thousands of commonly used English words and some useful functions. We first find the english_words package on pub (as shown in Figure 2-5) to determine its latest version number and whether it supports Flutter.
 
-![Figure 2-5](https://pcdn.flutterchina.club/imgs/2-5.png)
+![Figure 2-5](../resources/imgs/2-5.png)
 
 We see that the latest version of the "english_words" package is 3.1.3 and supports flutter. Next:
 
@@ -64,7 +64,7 @@ We see that the latest version of the "english_words" package is 3.1.3 and suppo
    
 2.  Download the package. When viewing pubspec.yaml in the editor view of Android Studio (Figure 2-6), click **Packages get in the** upper right corner .
    
-   ![Figure 2-6](https://pcdn.flutterchina.club/imgs/2-6.png)
+   ![Figure 2-6](../resources/imgs/2-6.png)
    
    This will install the dependent packages to your project. We can see the following in the console:
    
@@ -118,7 +118,7 @@ We see that the latest version of the "english_words" package is 3.1.3 and suppo
    
 5.  If the application is running, please use the hot reload button (⚡️ icon) to update the running application. Each time you click hot reload or save a project, a different word pair is randomly selected in the running application. This is because the word pair in the `build`internal method generated. Each time the hot update, the `build`method will be executed, and the running effect is shown in Figure 2-7.
    
-   ![Figure 2-7](https://pcdn.flutterchina.club/imgs/2-7.png)
+   ![Figure 2-7](../resources/imgs/2-7.png)
    
 
 ## Other ways of dependence

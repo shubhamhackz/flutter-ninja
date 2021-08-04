@@ -21,6 +21,6 @@ _request() async{
 
 As you can see, using Socket requires us to implement the Http protocol ourselves (the communication process with the server needs to be implemented by ourselves). This example is just a simple example, and does not handle redirection, cookies, etc. Refer to the demo demo for the complete code of this example, the effect after running is shown in Figure 11-2:
 
-![Figure 11-2](https://pcdn.flutterchina.club/imgs/11-2.png)
+![Figure 11-2](../resources/imgs/11-2.png)
 
 You can see that the response content is divided into two parts, the first part is the response header, and the second part is the response body. The server can dynamically output the response body according to the request information. Since the request header in this example is relatively simple, the response body will be different from the one accessed in the browser. Readers can add some request headers (such as user-agent) to see the output changes.

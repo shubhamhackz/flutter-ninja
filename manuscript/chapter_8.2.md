@@ -52,7 +52,7 @@ class _GestureDetectorTestRouteState extends State<GestureDetectorTestRoute> {
 
 The running effect is shown in Figure 8-2:
 
-![Figure 8-2](https://pcdn.flutterchina.club/imgs/8-2.png)
+![Figure 8-2](../resources/imgs/8-2.png)
 
 > **Note** : When monitoring `onTap`and `onDoubleTap`events at the same time, when the user triggers a tap event, there will be a delay of about 200 milliseconds. This is because after the user clicks it is likely to click again to trigger the double-click event, so it `GestureDetector`will wait for a while to determine Whether it is a double-click event. If the user only monitors `onTap`(not monitors `onDoubleTap`) the event, there is no delay.
 
@@ -107,7 +107,7 @@ class _DragState extends State<_Drag> with SingleTickerProviderStateMixin {
 
 After running, you can drag in any direction, and the running effect is shown in Figure 8-3:
 
-![Figure 8-3](https://pcdn.flutterchina.club/imgs/8-3.png)
+![Figure 8-3](../resources/imgs/8-3.png)
 
 Log:
 
@@ -190,7 +190,7 @@ class _ScaleTestRouteState extends State<_ScaleTestRoute> {
 
 The running effect is shown in Figure 8-4:
 
-![Figure 8-4](https://pcdn.flutterchina.club/imgs/8-4.png)
+![Figure 8-4](../resources/imgs/8-4.png)
 
 Now you can zoom in or zoom out on the picture by opening and contracting two fingers. This example is relatively simple. In practice, we usually need some other functions, such as double-clicking to zoom in or zooming out a certain multiple, and performing a slow-down zoom-in animation when two fingers are spread out of the screen. Readers can learn about the "Animation" chapter later. Try to implement it yourself after the content.
 
@@ -251,7 +251,7 @@ class _GestureRecognizerTestRouteState
 
 running result:
 
-![Figure 8-5](https://pcdn.flutterchina.club/imgs/8-5.png)
+![Figure 8-5](../resources/imgs/8-5.png)
 
 > Note: After use `GestureRecognizer`, you must call its `dispose()`method to release resources (mainly cancel the internal timer).
 

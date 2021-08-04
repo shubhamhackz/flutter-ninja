@@ -151,7 +151,7 @@ final int registrationDateMillis;
 
 `json_serializable`When you first create the class, you will see an error similar to Figure 11-4.
 
-![ide_warning](https://pcdn.flutterchina.club/imgs/11-4.png)
+![ide_warning](../resources/imgs/11-4.png)
 
 These errors are completely normal, because the generated code for the Model class does not yet exist. In order to solve this problem, we must run the code generator to generate serialization templates for us. There are two ways to run the code generator:
 

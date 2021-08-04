@@ -77,7 +77,7 @@ Optimized url input keyboard; it will display "/."
 
 -   `textInputAction`：Keyboard action button icon (ie, enter key icon), it is an enumerated value, there are multiple optional values, readers can view the API document for all the value list, the following is when the value `TextInputAction.search`is in the native Android system The keyboard style is shown in Figure 3-24:
    
-   ![Figure 3-24](https://pcdn.flutterchina.club/imgs/3-24.png)
+   ![Figure 3-24](../resources/imgs/3-24.png)
    
 -   `style`: The text style being edited.
    
@@ -132,7 +132,7 @@ Column(
 
 After running, the effect is shown in Figure 3-25:
 
-![Figure 3-25](https://pcdn.flutterchina.club/imgs/3-25.png)
+![Figure 3-25](../resources/imgs/3-25.png)
 
 ##### Get input
 
@@ -230,7 +230,7 @@ TextField(
 
 The running effect is shown in Figure 3-26:
 
-![Figure 3-26](https://pcdn.flutterchina.club/imgs/3-26.png)
+![Figure 3-26](../resources/imgs/3-26.png)
 
 ##### Control focus
 
@@ -241,7 +241,7 @@ Can focus `FocusNode`and `FocusScopeNode`to control, by default, the focus `Focu
 
 The effect we want to achieve is shown in Figure 3-27:
 
-![Figure 3-27](https://pcdn.flutterchina.club/imgs/3-27.png)
+![Figure 3-27](../resources/imgs/3-27.png)
 
 code show as below:
 
@@ -395,7 +395,7 @@ Theme(
 
 The running effect is shown in Figure 3-28:
 
-![Figure 3-28](https://pcdn.flutterchina.club/imgs/3-28.png)
+![Figure 3-28](../resources/imgs/3-28.png)
 
 We have successfully customized the underline color and question text style. Careful readers may have discovered that after customization in this way, the input box `labelText`will not be highlighted when it gets the focus , just like the "Username" in the picture above. "It was supposed to be blue, but it is now gray, and we still can’t define the underline width. Another flexible way is to hide `TextField`its own underline directly , and then `Container`define the style by de-nesting, such as:
 
@@ -578,7 +578,7 @@ class _FormTestRouteState extends State<FormTestRoute> {
 
 The effect after running is shown in Figure 3-29:
 
-![Figure 3-29](https://pcdn.flutterchina.club/imgs/3-29.png)
+![Figure 3-29](../resources/imgs/3-29.png)
 
 Note that the login button `onPressed`method can not `Form.of(context)`be obtained, because, here `context`is `FormTestRoute`the context, which `Form.of(context)`is based on the specified `context`to find the root, while `FormState`in `FormTestRoute`sub-tree, it will not do. The correct approach is through `Builder`to build the login button `Builder`will `widget`node `context`as a callback parameter:
 

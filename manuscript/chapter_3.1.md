@@ -110,7 +110,7 @@ Widget build(BuildContext context) {
 
 The effect after running is shown in Figure 3-1:
 
-![Figure 3-1](https://pcdn.flutterchina.club/imgs/3-1.png)
+![Figure 3-1](../resources/imgs/3-1.png)
 
 ### Context
 
@@ -140,7 +140,7 @@ class ContextRoute extends StatelessWidget {
 
 The effect after running is shown in Figure 3-1-1:
 
-![Figure 3-1-1](https://pcdn.flutterchina.club/imgs/3-1-1.png)
+![Figure 3-1-1](../resources/imgs/3-1-1.png)
 
 > **Note** : For `BuildContext`readers, you can first understand it. As the content of this book expands, some methods of Context will be used. Readers can have an intuitive understanding of it through specific scenarios. For `BuildContext`more content, we will also introduce in-depth later in the advanced part.
 
@@ -338,7 +338,7 @@ Let's take a look at each callback function:
 
 The life cycle of StatefulWidget is shown in Figure 3-2:
 
-![Figure 3-2](https://pcdn.flutterchina.club/imgs/3-2.jpg)
+![Figure 3-2](../resources/imgs/3-2.jpg)
 
 > **Note** : When inheriting and `StatefulWidget`rewriting its method, for `@mustCallSuper`the parent class method that contains annotations, the parent class method must be called first in the subclass method.
 
@@ -420,7 +420,7 @@ Scaffold(
 
 After the above example runs, click "Show SnackBar", the effect is shown in Figure 3-1-2:
 
-![Figure 3-1-2](https://pcdn.flutterchina.club/imgs/3-1-2.png)
+![Figure 3-1-2](../resources/imgs/3-1-2.png)
 
 Generally speaking, if the state of StatefulWidget is private (should not be exposed to the outside), then our code should not directly obtain its State object; if the state of StatefulWidget is to be exposed (usually there are some component operations Method), we can go directly to get its State object. However `context.findAncestorStateOfType`, the method of obtaining the state of StatefulWidget is universal. We cannot specify whether the state of StatefulWidget is private at the grammatical level, so there is a default convention in Flutter development: if the state of StatefulWidget is to be exposed, it should be StatefulWidget provides a `of`static method to obtain its State object, and developers can directly obtain it through this method; if State does not want to be exposed, no `of`method is provided . This convention can be seen everywhere in the Flutter SDK. Therefore, the above example `Scaffold`also provides a `of`method, we can actually call it directly:
 
@@ -522,7 +522,7 @@ class CupertinoTestRoute extends StatelessWidget {
 
 The following (Figure 3-3) is a screenshot of the page effect on iPhoneX:
 
-![Figure 3-3](https://pcdn.flutterchina.club/imgs/3-3.png)
+![Figure 3-3](../resources/imgs/3-3.png)
 
 ### About the example
 

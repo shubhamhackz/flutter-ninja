@@ -78,7 +78,7 @@ For more configuration attributes, readers can refer to the Paint class definiti
 
 Below we demonstrate the process of self-drawing UI through the drawing of the board and pieces in a backgammon game. First, let's take a look at our target effect, as shown in Figure 10-3:
 
-![Figure 10-3](https://pcdn.flutterchina.club/imgs/10-3.png)
+![Figure 10-3](../resources/imgs/10-3.png)
 
 Code:
 

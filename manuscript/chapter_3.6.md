@@ -42,7 +42,7 @@ class _SwitchAndCheckBoxTestRouteState extends State<SwitchAndCheckBoxTestRoute>
 
 In the above code, due to the need to maintain the selected state of the `Switch`sum `Checkbox`, it is `SwitchAndCheckBoxTestRoute`inherited from `StatefulWidget`. In its `build`method, a `Switch`sum is constructed respectively `Checkbox`, and the initial state is the selected state. When the user clicks, the state is reversed, and then the call is called back to `setState()`notify the Flutter framework to rebuild the UI.
 
-![Figure 3-23](https://pcdn.flutterchina.club/imgs/3-23.png)
+![Figure 3-23](../resources/imgs/3-23.png)
 
 ### Properties and appearance
 

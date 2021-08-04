@@ -65,7 +65,7 @@ GridView(
 
 ```
 
-![Figure 6-9](https://pcdn.flutterchina.club/imgs/6-9.png)
+![Figure 6-9](../resources/imgs/6-9.png)
 
 #### GridView.count
 
@@ -124,7 +124,7 @@ GridView(
 
 ```
 
-![Figure 6-10](https://pcdn.flutterchina.club/imgs/6-10.png)
+![Figure 6-10](../resources/imgs/6-10.png)
 
 #### GridView.extent
 
@@ -224,6 +224,6 @@ class _InfiniteGridViewState extends State<InfiniteGridView> {
 
 Flutter's `GridView`default sub-elements display space is equal, but in actual development, you may encounter a situation where the size of sub-elements is not equal, such as the following layout:
 
-![Figure 6-11](https://pcdn.flutterchina.club/imgs/6-11.png)
+![Figure 6-11](../resources/imgs/6-11.png)
 
 There is a package "flutter_staggered_grid_view" on Pub, which implements a staggered GridView layout model. This layout can be easily implemented. Readers can understand the details.

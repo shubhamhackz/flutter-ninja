@@ -52,4 +52,4 @@ class SingleChildScrollViewTestRoute extends StatelessWidget {
 
 The running effect is shown in Figure 6-1:
 
-![Figure 6-1](https://pcdn.flutterchina.club/imgs/6-1.png)
+![Figure 6-1](../resources/imgs/6-1.png)

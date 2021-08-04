@@ -131,7 +131,7 @@ class _TurnBoxRouteState extends State<TurnBoxRoute> {
 
 The effect after the test code runs is shown in Figure 10-2:
 
-![Figure 10-2](https://pcdn.flutterchina.club/imgs/10-2.png)
+![Figure 10-2](../resources/imgs/10-2.png)
 
 When we click the rotation button, the rotation of the two icons will rotate 1/5 circle, but the speed of rotation is different, readers can run an example to see the effect.
 

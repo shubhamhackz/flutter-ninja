@@ -13,7 +13,7 @@ Row(
 
 The running effect is shown in Figure 4-6:
 
-![Figure 4-6](https://pcdn.flutterchina.club/imgs/4-6.png)
+![Figure 4-6](../resources/imgs/4-6.png)
 
 As you can see, an error is reported in the overflow part on the right. This is because Row has only one line by default, and will not wrap if it exceeds the screen. We call a layout that automatically wraps lines beyond the display range of the screen as a stream layout. Flutter supports streaming layout through `Wrap`and `Flow`. After replacing Row in the above example with Wrap, the overflow part will automatically wrap. Below we introduce `Wrap`and respectively `Flow`.
 
@@ -74,7 +74,7 @@ Wrap(
 
 The running effect is shown in Figure 4-7:
 
-![Figure 4-7](https://pcdn.flutterchina.club/imgs/4-7.png)
+![Figure 4-7](../resources/imgs/4-7.png)
 
 ## 4.4.2 Flow
 
@@ -153,6 +153,6 @@ class TestFlowDelegate extends FlowDelegate {
 
 The running effect is shown in Figure 4-8:
 
-![Figure 4-8](https://pcdn.flutterchina.club/imgs/4-8.png)
+![Figure 4-8](../resources/imgs/4-8.png)
 
 It can be seen that our main task is to achieve `paintChildren`, and its main task is to determine the location of each child widget. Since Flow cannot adapt to the size of child widgets, we `getSize`specify the size of Flow by returning a fixed size.

@@ -32,7 +32,7 @@ To install and run Flutter, your development environment must meet the following
 
 1.  Go to flutter official website to download the latest available installation package, download address: [https://flutter.dev/docs/development/tools/sdk/releases](https://flutter.dev/docs/development/tools/sdk/releases) , after opening it, it is shown in Figure 1-2:
    
-   ![Figure 1-2](https://pcdn.flutterchina.club/imgs/1-2.png)
+   ![Figure 1-2](../resources/imgs/1-2.png)
    
 
 Note that the channel version of Flutter will change constantly, please refer to the official website of Flutter. Readers can also go to the Flutter github project to download the installation package at: [https://github.com/flutter/flutter/ releases](https://github.com/flutter/flutter/releases) .
@@ -251,7 +251,7 @@ In the project directory, the code of your application is located `lib/main.dart
 
 1.  Locate the Android Studio toolbar, as shown in Figure 1-3:
    
-   ![Figure 1-3](https://pcdn.flutterchina.club/imgs/1-3.png)
+   ![Figure 1-3](../resources/imgs/1-3.png)
    
 2.  In the **target selector** , select an Android device running the application. If it is not listed, please select **Tools>Android>AVD Manager** and create one there.
    
@@ -259,7 +259,7 @@ In the project directory, the code of your application is located `lib/main.dart
    
 4.  If everything is ok, you should see the launched application on your device or emulator:
    
-   ![Figure 1-4](https://pcdn.flutterchina.club/imgs/1-4.png)
+   ![Figure 1-4](../resources/imgs/1-4.png)
    
 
 #### Experience hot reload
@@ -390,19 +390,19 @@ To install the Flutter app on a real iOS device, you need some additional tools 
        
    -   To start your first iOS development project, you may need to log in to Xcode with your Apple ID, as shown in Figure 1-5:
        
-       ![Figure 1-5](https://pcdn.flutterchina.club/imgs/1-5.png)
+       ![Figure 1-5](../resources/imgs/1-5.png)
        
        Any Apple ID supports development and testing, but if you want to distribute the application to the App Store, you must register for the Apple Developer Program. Readers can learn about the details.
        
    -   When you attach a real device for iOS development for the first time, you need to trust your Mac and the development certificate on the device at the same time. When connecting an iOS device to a Mac for the first time, select it in the dialog box `Trust`.
        
-       ![Add trust](https://pcdn.flutterchina.club/imgs/1-6.png)
+       ![Add trust](../resources/imgs/1-6.png)
        
        Then, go to the iOS device **Settings** menu, select **General> Device Manager** and trust your certificate.
        
    -   If the automatic signature in Xcode fails, please verify that the **General> Identity> Bundle Identifier** value of the project is unique, as shown in Figure 1-7:
        
-       ![Verify that the bundle id is unique](https://pcdn.flutterchina.club/imgs/1-7.png)
+       ![Verify that the bundle id is unique](../resources/imgs/1-7.png)
        
    -   Running `flutter run`start flutter application.
        
@@ -415,17 +415,17 @@ To install the Flutter app on a real iOS device, you need some additional tools 
 
 One of the most common problems encountered when getting started with Android, the error is shown in Figure 1-8.
 
-![Figure 1-8](https://pcdn.flutterchina.club/imgs/1-8.png)
+![Figure 1-8](../resources/imgs/1-8.png)
 
 Re-run after installation, as shown in Figure 1-9:
 
-![install_request_components.png](https://pcdn.flutterchina.club/imgs/1-9.png)
+![install_request_components.png](../resources/imgs/1-9.png)
 
 ### Cannot connect to Android Repository
 
 This is also one of the most common problems. When you find yourself unable to download some dependencies, please give priority to this situation. Enter `File`-> `Settings`-> `Appearance & Behavior`-> `System Settings`-> `Android SDK`-> `SDK Update Sites`list, you can be seen at this time `Android Repository`can not connect, shown in Figure 1-10:
 
-![Failed to download dependencies](https://pcdn.flutterchina.club/imgs/1-10.png)
+![Failed to download dependencies](../resources/imgs/1-10.png)
 
 This is caused by going to Google to download the Android SDK, but Google is currently unable to access Google in China. Therefore, we can configure a proxy or use vpn.
 

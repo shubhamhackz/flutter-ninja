@@ -105,7 +105,7 @@ class ScrollControllerTestRouteState extends State<ScrollControllerTestRoute> {
 
 The code description has been included in the comments, let's take a look at the running effect:
 
-![Figure 6-14](https://pcdn.flutterchina.club/imgs/6-14.png)![Figure 6-15](https://pcdn.flutterchina.club/imgs/6-15.png)
+![Figure 6-14](../resources/imgs/6-14.png)![Figure 6-15](../resources/imgs/6-15.png)
 
 Since the height of the list item is 50 pixels, when sliding to the 20th list item, the "back to top" button will be displayed in the lower right corner. Click this button, and the ListView will perform a scrolling animation during the process of returning to the top. The animation time is 200 milliseconds , Animation curve is `Curves.ease`, we will introduce the details of animation in the chapter "Animation" later.
 
@@ -240,7 +240,7 @@ class _ScrollNotificationTestRouteState
 
 The running result is shown in Figure 6-16:
 
-![Figure 6-16](https://pcdn.flutterchina.club/imgs/6-16.png)
+![Figure 6-16](../resources/imgs/6-16.png)
 
 When a scroll event is received, the parameter type is `ScrollNotification`, it includes an `metrics`attribute, and its type is `ScrollMetrics`, the attribute contains information such as the current ViewPort and scroll position:
 

@@ -92,7 +92,7 @@ In the code above:
 
 For the sake of simplicity, when the app is started, if you have logged in to the app before, the user project list will be displayed; if you have not logged in before, a login button will be displayed, click it and jump to the login page. In addition, we implement a drawer menu, which contains the current user avatar and APP menu. Let's take a look at the effects to be achieved first, as shown in Figures 15-1 and 15-2:
 
-![15-1](https://pcdn.flutterchina.club/imgs/15-1.png)![15-2](https://pcdn.flutterchina.club/imgs/15-2.png)
+![15-1](../resources/imgs/15-1.png)![15-2](../resources/imgs/15-2.png)
 
 We create a "home_page.dart" file under "lib/routes", the implementation is as follows:
 
@@ -375,7 +375,7 @@ There are two points to note in the above code:
 
 The drawer menu is divided into two parts: the top avatar and the bottom function menu items. When the user is not logged in, a default gray placeholder will be displayed at the top of the drawer menu. If the user is logged in, the user's avatar will be displayed. There are two fixed menus, "Skin" and "Language" at the bottom of the drawer menu. If the user is logged in, there will be an additional "Logout" menu. The user clicks on the two menu items "skin" and "language" to enter the corresponding setting page. The effect of our drawer menu is shown in Figure 15-3 and 15-4:
 
-![15-3](https://pcdn.flutterchina.club/imgs/15-3.png)![15-4](https://pcdn.flutterchina.club/imgs/15-4.png)
+![15-3](../resources/imgs/15-3.png)![15-4](../resources/imgs/15-4.png)
 
 The implementation code is as follows:
 

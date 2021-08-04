@@ -104,7 +104,7 @@ Locale Function(List<Locale> locales, Iterable<Locale> supportedLocales)
 
 In the newer Android system, the user can set a language list. In this way, applications that support multiple languages ​​will get this list. The usual processing method for applications is to try to load the corresponding Locale in the order of the list. If the languages ​​are loaded successfully, it will stop. Figure 13-1 is a screenshot of the language list in the Android system:
 
-![Set language list](https://pcdn.flutterchina.club/imgs/13-1.jpeg)
+![Set language list](../resources/imgs/13-1.jpeg)
 
 In Flutter, it should be used first `localeListResolutionCallback`. Of course, you don't have to worry about the differences in the Android system. If in a lower version of the Android system, Flutter will automatically handle this situation. At this time, the Locale list will only contain one item.
 

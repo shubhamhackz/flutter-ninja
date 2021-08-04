@@ -6,7 +6,7 @@ Before introducing Flutter exception capture, we must first understand the Dart 
 
 In Java and Objective-C (hereinafter referred to as "OC"), if an exception occurs in the program and it is not caught, the program will terminate, but this is not true in Dart or JavaScript! Investigate the reason, this has something to do with their operating mechanism. Both Java and OC are programming languages ​​with a multithreaded model. When any thread triggers an exception and the exception is not caught, it will cause the entire process to exit. But Dart and JavaScript do not. They are both single-threaded models, and their operating mechanisms are very similar (but there are differences). Let's take a look at the general operating principle of Dart through a diagram provided by Dart:
 
-![Figure 2-12](https://pcdn.flutterchina.club/imgs/2-12.png)
+![Figure 2-12](../resources/imgs/2-12.png)
 
 Dart operates in a single-threaded message loop mechanism, which contains two task queues, one is the " **microtask queue** " **microtask queue** , and the other is called the "event queue" **event queue** . It can be found from the figure that the execution priority of the micro task queue is higher than that of the event queue.
 

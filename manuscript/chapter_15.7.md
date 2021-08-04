@@ -131,4 +131,4 @@ class _LoginRouteState extends State<LoginRoute> {
 
 The code is very simple, there are comments in key places, so I won't repeat them. Let's take a look at the running effect, as shown in Figure 15-5.
 
-![Figure 15-5](https://pcdn.flutterchina.club/imgs/15-5.png)
+![Figure 15-5](../resources/imgs/15-5.png)

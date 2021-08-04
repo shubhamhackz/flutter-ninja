@@ -58,7 +58,7 @@ Let's take a look at the specific code:
    
 3.  Build the UI. Now we build the test interface as shown in Figure 12-4:
    
-   ![12-4](https://pcdn.flutterchina.club/imgs/12-4.jpg) The line is the complete code:
+   ![12-4](../resources/imgs/12-4.jpg) The line is the complete code:
    
 ``` dart 
    import 'package:camera/camera.dart';
@@ -517,7 +517,7 @@ Since `AndroidView`and `UIKitView`are related to specific platforms, they are ca
    
    The running effect is shown in Figure 12-5:
    
-   ![12-5](https://pcdn.flutterchina.club/imgs/12-5.jpg)
+   ![12-5](../resources/imgs/12-5.jpg)
    
 
 Note that the overhead of using PlatformView is very large. Therefore, if a native component is not difficult to implement with Flutter, we should prefer Flutter implementation.

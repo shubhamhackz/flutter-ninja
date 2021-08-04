@@ -35,7 +35,7 @@ ConstrainedBox(
 
 The running effect is shown in Figure 5-2:
 
-![Figure 5-2](https://pcdn.flutterchina.club/imgs/5-2.png)
+![Figure 5-2](../resources/imgs/5-2.png)
 
 As you can see, although we set the height of the Container to 5 pixels, it ended up being 50 pixels. This is where the minimum height limit of the ConstrainedBox comes into effect. If the height of the Container is set to 80 pixels, the final height of the red area will also be 80 pixels, because in this example, the ConstrainedBox only limits the minimum height, not the maximum height.
 
@@ -70,7 +70,7 @@ SizedBox(
 
 The running effect is shown in Figure 5-3:
 
-![Figure 5-3](https://pcdn.flutterchina.club/imgs/5-3.png)
+![Figure 5-3](../resources/imgs/5-3.png)
 
 In fact, it `SizedBox`is just `ConstrainedBox`a customization. The above code is equivalent to:
 
@@ -118,7 +118,7 @@ ConstrainedBox(
 
 We have two fathers and sons above `ConstrainedBox`, and their restriction conditions are different. The effect after running is shown in Figure 5-4:
 
-![Figure 5-4](https://pcdn.flutterchina.club/imgs/5-4.png)
+![Figure 5-4](../resources/imgs/5-4.png)
 
 The final display is wide 90, high 60, that is a child `ConstrainedBox`'s `minWidth`entry into force, which `minHeight`is the parent `ConstrainedBox`to take effect. Based on this example alone, we still can’t sum up any rules. Let’s change the parent-child restrictions in the previous example:
 
@@ -135,7 +135,7 @@ ConstrainedBox(
 
 The running effect is shown in Figure 5-5:
 
-![Figure 5-5](https://pcdn.flutterchina.club/imgs/5-5.png)
+![Figure 5-5](../resources/imgs/5-5.png)
 
 The final display is still 90, high 60, the same effect, but with different meaning, because the `minWidth`entry into force of the father `ConstrainedBox`, and `minHeight`a child `ConstrainedBox`to take effect.
 
@@ -162,7 +162,7 @@ ConstrainedBox(
 
 In the above code, if there is no intermediate `UnconstrainedBox`, then according to the multiple restriction rules described above, a 90×100 red box will eventually be displayed. But because the limit of `UnconstrainedBox`the parent `ConstrainedBox`is "removed" , it will eventually be `ConstrainedBox`drawn according to the limit of the child `redBox`, that is, 90×20:
 
-![Figure 5-6](https://pcdn.flutterchina.club/imgs/5-6.png)
+![Figure 5-6](../resources/imgs/5-6.png)
 
 However, readers please note that `UnconstrainedBox`the "removal" of the parent component restriction is not a true removal: although the size of the red area in the above example is 90×20, there is still 80 empty space above it. That is to say, the parent limit `minHeight`(100.0) is still in effect, but it does not affect `redBox`the size of the final child element , but still occupies the corresponding space. It can be considered that the parent at this time `ConstrainedBox`acts on the child `UnconstrainedBox`, and is `redBox`only `ConstrainedBox`restricted by the child. , Readers must pay attention to this point.
 
@@ -189,7 +189,7 @@ AppBar(
 
 After the above code runs, the effect is shown in Figure 5-7:
 
-![Figure 5-6](https://pcdn.flutterchina.club/imgs/5-7.png)
+![Figure 5-6](../resources/imgs/5-7.png)
 
 We will find that the size of the loading button on the right has not changed! This is precisely because `AppBar`the `actions`button restrictions have been specified in , so if we want to customize the size of the loading button, we must `UnconstrainedBox`"remove" the restriction of the parent element. The code is as follows:
 
@@ -214,7 +214,7 @@ AppBar(
 
 The effect after running is shown in Figure 5-8:
 
-![Figure 5-8](https://pcdn.flutterchina.club/imgs/5-8.png)
+![Figure 5-8](../resources/imgs/5-8.png)
 
 It works!
 

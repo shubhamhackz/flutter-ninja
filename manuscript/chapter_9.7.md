@@ -122,7 +122,7 @@ AnimatedDecoratedBox(
 
 ```
 
-The effect before clicking is shown in Figure 9-8, and a frame of the transition process is captured after clicking as shown in Figure 9-9: ![img](https://pcdn.flutterchina.club/imgs/9-8.png?lastModify=1565699462)![img](https://pcdn.flutterchina.club/imgs/9-9.png?lastModify=1565699462)
+The effect before clicking is shown in Figure 9-8, and a frame of the transition process is captured after clicking as shown in Figure 9-9: ![img](../resources/imgs/9-8.png?lastModify=1565699462)![img](../resources/imgs/9-9.png?lastModify=1565699462)
 
 After clicking, the button background color will transition from blue to red. Figure 9-9 is a frame in the transition process, which is a bit purple. The background will turn red after the entire transition animation is over.
 
@@ -454,6 +454,6 @@ class _AnimatedWidgetsTestState extends State<AnimatedWidgetsTest> {
 
 The effect after running is shown in Figure 9-10:
 
-![Figure 9-10](https://pcdn.flutterchina.club/imgs/9-10.png)
+![Figure 9-10](../resources/imgs/9-10.png)
 
 Readers can click on the corresponding component to view the actual operating effect.

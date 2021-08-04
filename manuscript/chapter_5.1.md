@@ -62,4 +62,4 @@ class PaddingTestRoute extends StatelessWidget {
 
 The running effect is shown in Figure 5-1:
 
-![Figure 5-1](https://pcdn.flutterchina.club/imgs/5-1.png)
+![Figure 5-1](../resources/imgs/5-1.png)

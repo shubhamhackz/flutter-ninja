@@ -85,4 +85,4 @@ The code is divided into three parts:
 
 The running effect is as follows:
 
-![Figure 6-12](https://pcdn.flutterchina.club/imgs/6-12.png)![Figure 6-13](https://pcdn.flutterchina.club/imgs/6-13.png)
+![Figure 6-12](../resources/imgs/6-12.png)![Figure 6-13](../resources/imgs/6-13.png)

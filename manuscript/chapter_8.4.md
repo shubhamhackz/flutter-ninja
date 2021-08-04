@@ -160,7 +160,7 @@ In the above code, we will distribute a `MyNotification`type of notification eve
 
 The running effect is shown in Figure 8-6:
 
-![Figure 8-6](https://pcdn.flutterchina.club/imgs/8-6.png)
+![Figure 8-6](../resources/imgs/8-6.png)
 
 ### Stop bubbling
 

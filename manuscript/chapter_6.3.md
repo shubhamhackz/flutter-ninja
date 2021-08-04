@@ -90,7 +90,7 @@ ListView.builder(
 
 The running effect is shown in Figure 6-2:
 
-![Figure 6-2](https://pcdn.flutterchina.club/imgs/6-2.png)
+![Figure 6-2](../resources/imgs/6-2.png)
 
 ### ListView.separated
 
@@ -121,7 +121,7 @@ class ListView3 extends StatelessWidget {
 
 ```
 
-![Figure 6-3](https://pcdn.flutterchina.club/imgs/6-3.png)
+![Figure 6-3](../resources/imgs/6-3.png)
 
 ### Example: unlimited loading list
 
@@ -198,7 +198,7 @@ class _InfiniteListViewState extends State<InfiniteListView> {
 
 The effect after running is shown in Figure 6-4 and 6-5:
 
-![Figure 6-4](https://pcdn.flutterchina.club/imgs/6-4.png)![Figure 6-5](https://pcdn.flutterchina.club/imgs/6-5.png)
+![Figure 6-4](../resources/imgs/6-4.png)![Figure 6-5](../resources/imgs/6-5.png)
 
 The code is relatively simple, readers can refer to the comments in the code to understand, so I won't repeat it. It should be noted that `_retrieveData()`the function is to simulate obtaining data asynchronously from the data source. We use the `generateWordPairs()`method of the english_words package to generate 20 words each time.
 
@@ -206,7 +206,7 @@ The code is relatively simple, readers can refer to the comments in the code to 
 
 Many times we need to add a fixed header to the list. For example, if we want to implement a product list, we need to add a "product list" title at the top of the list. The desired effect is shown in Figure 6-6:
 
-![Figure 6-6](https://pcdn.flutterchina.club/imgs/6-6.png)
+![Figure 6-6](../resources/imgs/6-6.png)
 
 Based on previous experience, we wrote the following code:
 
@@ -247,7 +247,7 @@ SizedBox(
 
 The running effect is shown in Figure 6-7:
 
-![Figure 6-7](https://pcdn.flutterchina.club/imgs/6-7.png)
+![Figure 6-7](../resources/imgs/6-7.png)
 
 As you can see, no exception is triggered and the list has been displayed, but the height of our mobile phone screen is greater than 400, so there will be some blank space at the bottom. So what if we want to make the list fill up the screen space except the header? The intuitive method is that we dynamically calculate the remaining screen height by subtracting the height of the status bar, navigation bar, and header from the screen height. The code is as follows:
 
@@ -266,7 +266,7 @@ SizedBox(
 
 The running effect is shown in Figure 6-8:
 
-![Figure 6-8](https://pcdn.flutterchina.club/imgs/6-8.png)
+![Figure 6-8](../resources/imgs/6-8.png)
 
 As you can see, the desired effect is achieved, but this method is not elegant. If the page layout changes, for example, the height of the header changes due to the adjustment of the header layout, the height of the remaining space must be recalculated. So is there any way to automatically stretch `ListView`to fill the remaining space on the screen? Of course there is! The answer is `Flex`. As mentioned earlier, in the flexible layout, you can use the `Expanded`automatic stretch component size, and we also said that it `Column`is inherited from `Flex`, so we can directly use `Column`+ `Expanded`to achieve, the code is as follows:
 

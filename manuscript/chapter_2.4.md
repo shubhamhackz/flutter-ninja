@@ -180,7 +180,7 @@ The way to update the startup icon of the Flutter application is the same as tha
    
    In the root directory of the Flutter project, navigate to the `.../android/app/src/main/res`directory, which contains various resource folders (for example, the `mipmap-hdpi`placeholder image "ic_launcher.png" is already included, see Figure 2-8). Just follow the instructions in the [Android Developer Guide](https://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html#size) , replace it with the required resources, and follow the recommended icon size standards for each screen density (dpi).
    
-   ![Figure 2-8](https://pcdn.flutterchina.club/imgs/2-8.png)
+   ![Figure 2-8](../resources/imgs/2-8.png)
    
    > **Note:** If you rename a .png file, you must also at your `AndroidManifest.xml`'s label update name attribute.`<application>``android:icon`
    
@@ -188,12 +188,12 @@ The way to update the startup icon of the Flutter application is the same as tha
    
    In the root directory of the Flutter project, navigate to `.../ios/Runner`. The directory `Assets.xcassets/AppIcon.appiconset`already contains placeholder pictures (see Figure 2-9), just replace them with pictures of appropriate size and keep the original file name.
    
-   ![Figure 2-9](https://pcdn.flutterchina.club/imgs/2-9.png)
+   ![Figure 2-9](../resources/imgs/2-9.png)
    
 
 #### Update start page
 
-![Figure 2-10](https://pcdn.flutterchina.club/imgs/2-10.png)
+![Figure 2-10](../resources/imgs/2-10.png)
 
 When the Flutter framework is loaded, Flutter will use the local platform mechanism to draw the startup page. This launch page will last until the first frame of Flutter rendering the application.
 
@@ -209,4 +209,4 @@ To add a picture to the center of the splash screen, navigate to `.../ios/Runner
 
 You can also fully customize the storyboard by opening Xcode. Navigate to the Project Navigator `Runner/Runner`and `Assets.xcassets`drag in the picture by opening it , or customize it by using Interface Builder in LaunchScreen.storyboard, as shown in Figure 2-11.
 
-![Figure 2-11](https://pcdn.flutterchina.club/imgs/2-11.png)
+![Figure 2-11](../resources/imgs/2-11.png)

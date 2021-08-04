@@ -77,7 +77,7 @@ Curve is not specified in the above example, so the zooming process is linear (u
 
 After the above code is executed, two of the frames are intercepted, and the effect is shown in Figure 9-1 and 9-2:
 
-![Figure 9-1](https://pcdn.flutterchina.club/imgs/9-1.png)![Figure 9-2](https://pcdn.flutterchina.club/imgs/9-2.png)
+![Figure 9-1](../resources/imgs/9-1.png)![Figure 9-2](../resources/imgs/9-2.png)
 
 ### Simplify with AnimatedWidget
 

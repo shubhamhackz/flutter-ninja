@@ -28,7 +28,7 @@ Container({
 
 We use `Container`to achieve the card shown in Figure 5-16:
 
-![Figure 5-16](https://pcdn.flutterchina.club/imgs/5-16.png)
+![Figure 5-16](../resources/imgs/5-16.png)
 
 The implementation code is as follows:
 
@@ -81,7 +81,7 @@ Container(
 
 ```
 
-![Figure 5-17](https://pcdn.flutterchina.club/imgs/5-17.png)
+![Figure 5-17](../resources/imgs/5-17.png)
 
 It can be found that the intuitive feeling is that `margin`the white space is outside the container, while `padding`the white space is inside the container. Readers need to remember this difference. In fact, the `Container`inner `margin`sum `padding`is achieved through `Padding`components, the above sample code is actually equivalent to:
 
