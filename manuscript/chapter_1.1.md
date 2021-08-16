@@ -118,7 +118,7 @@ An important idea is put forward in React: the UI changes automatically when the
 React principle:
 
 - Developers only need to pay attention to state transition (data). When the state changes, the React framework will automatically rebuild the UI based on the new state.
-- After the React framework receives the user state change notification, it will calculate the changed part of the tree. To do that is uses a Diff algorithm which takes the current rendering tree, combined with the latest state change, and then updates only the changed part of the DOM. Thereby the reconstruction of the entire tree is avoided which improves performance.
+- After the React framework receives the user state change notification, it will calculate the changed part of the tree. For that purpose, it uses a Diff algorithm which takes the current rendering tree, combined with the latest state change, and then updates only the changed part of the DOM. Thereby the reconstruction of the entire tree is avoided which improves performance.
 
 It is worth noting that in the second step, the React framework will not immediately calculate and render the changed part of the DOM tree after the state changes. On the contrary, React will build an abstraction layer on the basis of the **DOM** , namely the **virtual DOM** tree. Any changes made to the data and state will be automatically and efficiently synchronized to the virtual DOM, and finally synchronized to the real DOM in batches, instead of operating the DOM every time it changes. Why shouldn't we directly manipulate the DOM tree on every state change? Because every DOM operation in the browser may cause the browser to redraw or reflow:
 
